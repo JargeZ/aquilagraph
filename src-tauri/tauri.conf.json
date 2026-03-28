@@ -1,18 +1,18 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "visualizer",
+  "productName": "tauri-tanstack-start-react-template",
   "version": "0.1.0",
   "identifier": "com.jargez.visualizer",
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist"
+    "beforeDevCommand": "pnpm dev:vite",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "pnpm build:vite",
+    "frontendDist": "../.output/public"
   },
   "app": {
     "windows": [
       {
-        "title": "visualizer",
+        "title": "tauri-tanstack-start-react-template",
         "width": 800,
         "height": 600
       }

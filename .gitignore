@@ -7,10 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Tanstack Start
 node_modules
 dist
 dist-ssr
 *.local
+count.txt
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+todos.json
 
 # Editor directories and files
 .vscode/*
