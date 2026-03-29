@@ -3,7 +3,7 @@ name: Core analysis pipeline
 overview: "Построить пайплайн анализа Python-кода: парсинг через @luciformresearch/codeparsers, собственная модель ExecutableElement с классификацией, преобразование в ts-graphviz граф с DOT-сериализацией, UI конфигурации селекторов и отображение графа. Разработка через атомарные тесты на test_python_project/src."
 todos:
   - id: deps
-    content: Установить ts-graphviz, @luciformresearch/codeparsers, @hpcc-js/wasm-graphviz. Настроить vitest для WASM.
+    content: Установить ts-graphviz, @ts-graphviz/react, @luciformresearch/codeparsers. Настроить vitest для WASM.
     status: pending
   - id: config-types
     content: Создать src/core/config/analysis-config.ts с типами AnalysisConfig, SelectorConfig. Дефолтный конфиг.
@@ -33,7 +33,7 @@ todos:
     content: Создать src/components/analysis-config-panel.tsx -- форма конфигурации селекторов с сохранением в localStorage.
     status: pending
   - id: ui-graph-view
-    content: Создать src/components/graph-view.tsx -- рендер DOT в SVG через @hpcc-js/wasm-graphviz.
+    content: "Создать src/components/graph-view.tsx -- React-компонент графа через @ts-graphviz/react (Digraph, Subgraph, Node, Edge) + renderToDot() для DOT-вывода."
     status: pending
   - id: ui-integration
     content: Обновить src/routes/$projectId.tsx -- добавить AnalysisConfigPanel, кнопку анализа и GraphView.
@@ -47,7 +47,7 @@ isProject: false
 
 Текущий проект: Tauri + Vite + TanStack Start + React 19 + Tailwind v4. Есть страница `/$projectId` с выбором папки и подсчётом файлов. Тестовый Python-проект в `test_python_project/src/` содержит три модуля (`utils`, `core_module`, `export_module`) с классами, методами, функциями, декораторами и наследованием.
 
-Новые зависимости: `ts-graphviz`, `@luciformresearch/codeparsers`
+Новые зависимости: `ts-graphviz`, `@ts-graphviz/react`, `@luciformresearch/codeparsers`
 
 ---
 
@@ -100,8 +100,10 @@ flowchart TD
 ## 1. Зависимости
 
 ```bash
-pnpm add @ts-graphviz/react @luciformresearch/codeparsers
+pnpm add ts-graphviz @ts-graphviz/react @luciformresearch/codeparsers
 ```
+
+`@ts-graphviz/react` -- React-компоненты (`<Digraph>`, `<Subgraph>`, `<Node>`, `<Edge>`) и `renderToDot()` для декларативного построения графов через JSX. `ts-graphviz` -- ядро с `toDot()` для программного API (используется в тестах и core-логике).
 
 В [vitest.config.ts](vitest.config.ts) может потребоваться настройка `deps.optimizer` для WASM-пакетов codeparsers.
 
@@ -274,15 +276,16 @@ export class ControllingElement extends ExecutableElement {
 
 ## 5. Подмодуль графа -- `src/core/graph/`
 
-### `graph-builder.ts`
+### `graph-builder.ts` (программный API -- ts-graphviz)
 
 - `buildGraph(elements: ExecutableElement[], config: AnalysisConfig): Digraph`
-- Создаёт `Digraph` из `ts-graphviz`
+- Создаёт `Digraph` из `ts-graphviz` (программный API: `new Digraph()`, `.addSubgraph()`, `.addNode()`, `.addEdge()`)
 - Группирует элементы по `module` (через `getModuleName(ref, config.moduleDepth)`) -- каждый модуль = `Subgraph` с `label`
 - Внутри модуля группирует по `className` -- если не null, создаёт вложенный `Subgraph` с label = className
 - Для каждого элемента -- `Node` с id = reference, label = короткое имя (например `execute`)
 - Атрибуты нод по типу: разные цвета/формы для controlling / businessLogic / sideEffect / unclassified
 - Для каждого `element.uses` -- `Edge` от element к target
+- Используется в core-логике и тестах; `toDot(graph)` для сериализации в DOT
 
 ### Тесты: `src/core/graph/__tests__/graph-builder.test.ts`
 
@@ -362,10 +365,43 @@ export async function analyzeProject(
 
 ### Отображение графа -- `src/components/graph-view.tsx`
 
-- Получает `dot: string`
-- Использует `@hpcc-js/wasm-graphviz` для рендера DOT -> SVG
-- Отображает SVG с поддержкой zoom/pan (базовый CSS overflow + transform)
-- Fallback: если WASM не загрузился -- показывает DOT как `<pre>` блок
+Использует `@ts-graphviz/react` для декларативного построения графа через JSX:
+
+- Принимает `elements: ExecutableElement[]` и `config: AnalysisConfig`
+- Рендерит React-компоненты `<Digraph>`, `<Subgraph>`, `<Node>`, `<Edge>` из `@ts-graphviz/react`
+- Группировка по модулям и классам через вложенные `<Subgraph>`
+- Стилизация нод по типу (controlling / businessLogic / sideEffect) через атрибуты Graphviz (color, shape, style)
+- `renderToDot(<GraphComponent />)` генерирует DOT-строку для отображения
+- DOT-вывод показывается в `<pre>` блоке с возможностью копирования
+- Компонент-обёртка отображает и DOT-текст, и (опционально в будущем) визуальный рендер
+
+```tsx
+import { Digraph, Subgraph, Node, Edge, renderToDot } from '@ts-graphviz/react';
+
+const ProjectGraph = ({ elements, config }) => (
+  <Digraph id="G">
+    {moduleGroups.map(mod => (
+      <Subgraph key={mod.name} id={`cluster_${mod.name}`} label={mod.name}>
+        {mod.classes.map(cls => (
+          <Subgraph key={cls.name} id={`cluster_${mod.name}_${cls.name}`} label={cls.name}>
+            {cls.elements.map(el => (
+              <Node key={el.reference} id={el.reference} label={el.name} />
+            ))}
+          </Subgraph>
+        ))}
+        {mod.standalone.map(el => (
+          <Node key={el.reference} id={el.reference} label={el.name} />
+        ))}
+      </Subgraph>
+    ))}
+    {edges.map(e => (
+      <Edge key={e.key} targets={[e.from, e.to]} />
+    ))}
+  </Digraph>
+);
+
+const dot = renderToDot(<ProjectGraph elements={elements} config={config} />);
+```
 
 ### Обновление `src/routes/$projectId.tsx`
 
