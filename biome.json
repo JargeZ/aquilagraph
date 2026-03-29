@@ -20,6 +20,7 @@
       "!!node_modules",
       "!!.output",
       "!!.tanstack",
+      "!!storybook-static",
       "!src/routeTree.gen.ts"
     ]
   },
@@ -46,7 +47,8 @@
       "correctness": {
         "useHookAtTopLevel": "error",
         "useImportExtensions": "off",
-        "noUnresolvedImports": "off"
+        "noUnresolvedImports": "off",
+        "noUndeclaredDependencies": "off"
       },
       "nursery": {
         "noFloatingPromises": "error",
@@ -62,7 +64,14 @@
         "useComponentExportOnlyModules": {
           "level": "error",
           "options": {
-            "allowExportNames": ["Route"]
+            "allowExportNames": [
+              "Route",
+              "ProjectPage",
+              "Home",
+              "meta",
+              "buttonVariants",
+              "tabsListVariants"
+            ]
           }
         }
       },

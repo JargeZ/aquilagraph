@@ -1,20 +1,17 @@
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+
+import { AppShell } from "@/components/AppShell";
 
 import appCss from "../styles.css?url";
 
 export const RootComponent: React.FC = () => {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <HeadContent />
       </head>
       <body className="antialiased">
-        <Outlet />
+        <AppShell />
         <Scripts />
       </body>
     </html>
@@ -32,7 +29,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Tauri + TanStack Start",
+        title: "Visualizer",
       },
     ],
     links: [

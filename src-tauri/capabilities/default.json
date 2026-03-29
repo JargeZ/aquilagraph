@@ -2,11 +2,25 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    "dialog:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        { "path": "$HOME/**/*" },
+        { "path": "$DOCUMENT/**/*" },
+        { "path": "$DOWNLOAD/**/*" },
+        { "path": "$DESKTOP/**/*" },
+        { "path": "$DATA/**/*" },
+        { "path": "$LOCALDATA/**/*" }
+      ]
+    },
+    "fs:allow-read-dir",
+    "fs:allow-read-file",
+    "fs:allow-exists",
+    "fs:allow-stat"
   ]
 }

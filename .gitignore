@@ -20,6 +20,7 @@ count.txt
 .output
 .vinxi
 todos.json
+storybook-static
 
 # Editor directories and files
 .vscode/*
