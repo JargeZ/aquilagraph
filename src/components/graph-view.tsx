@@ -1,18 +1,12 @@
-import { useMemo, useState } from "react";
-import {
-  Digraph,
-  Subgraph,
-  Node,
-  Edge,
-  renderToDot,
-} from "@ts-graphviz/react";
+import { Digraph, Edge, Node, renderToDot, Subgraph } from "@ts-graphviz/react";
+import { Button } from "@ui/molecules/button/button";
+import { useEffect, useId, useState } from "react";
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import type {
-  ExecutableElement,
   ElementType,
+  ExecutableElement,
 } from "@/core/model/executable-element";
 import { getModuleName } from "@/core/model/reference-builder";
-import { Button } from "@ui/molecules/button/button";
 
 const TYPE_STYLES: Record<ElementType, { color: string; shape: string }> = {
   controlling: { color: "#4A90D9", shape: "box" },
@@ -50,7 +44,7 @@ function groupElements(
       if (!mod.classes.has(el.className)) {
         mod.classes.set(el.className, []);
       }
-      mod.classes.get(el.className)!.push(el);
+      mod.classes.get(el.className)?.push(el);
     } else {
       mod.standalone.push(el);
     }
@@ -61,10 +55,8 @@ function groupElements(
   );
 }
 
-function ProjectGraphComponent({
-  elements,
-  config,
-}: GraphViewProps) {
+function ProjectGraphComponent({ elements, config }: GraphViewProps) {
+  const digraphId = useId().replaceAll(":", "");
   const modules = groupElements(elements, config.moduleDepth);
   const elementSet = new Set(elements);
 
@@ -79,7 +71,7 @@ function ProjectGraphComponent({
 
   return (
     <Digraph
-      id="G"
+      id={digraphId}
       rankdir="LR"
       fontname="Helvetica"
       node={{ fontname: "Helvetica", fontsize: 10 }}
@@ -141,16 +133,39 @@ function ProjectGraphComponent({
 
 export function GraphView({ elements, config }: GraphViewProps) {
   const [copied, setCopied] = useState(false);
+  const [dot, setDot] = useState<string | null>(null);
+  const [dotPending, setDotPending] = useState(true);
 
-  const dot = useMemo(() => {
-    try {
-      return renderToDot(
-        <ProjectGraphComponent elements={elements} config={config} />,
-      );
-    } catch {
-      return null;
-    }
+  useEffect(() => {
+    let cancelled = false;
+    setDotPending(true);
+    setDot(null);
+    void renderToDot(
+      <ProjectGraphComponent elements={elements} config={config} />,
+    )
+      .then((d) => {
+        if (!cancelled) {
+          setDot(d);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setDot(null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setDotPending(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [elements, config]);
+
+  if (dotPending) {
+    return <p className="text-sm text-muted-foreground">Генерируем граф…</p>;
+  }
 
   if (!dot) {
     return (

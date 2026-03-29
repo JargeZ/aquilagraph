@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import type { ScopeFileAnalysis } from "@luciformresearch/codeparsers";
+import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
 import { toDot } from "ts-graphviz";
 import { initParser } from "../../parser/python-parser";
 import { scanProject } from "../../parser/project-scanner";

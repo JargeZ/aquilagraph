@@ -1,7 +1,6 @@
-import {
-  PythonScopeExtractionParser,
-  type ScopeFileAnalysis,
-} from "@luciformresearch/codeparsers";
+import "./tauri-web-tree-sitter-setup";
+import { PythonScopeExtractionParser } from "@internal/codeparsers-python-scope";
+import type { ScopeFileAnalysis } from "./codeparsers-types";
 
 let parserInstance: PythonScopeExtractionParser | null = null;
 let initPromise: Promise<void> | null = null;

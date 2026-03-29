@@ -1,10 +1,51 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/** Nitro/TanStack dev can fall through to SPA HTML for unknown paths — WASM then "parses" as HTML. */
+function serveTreeSitterWasmFromPublic(projectRoot: string): Plugin {
+  const wasmDir = path.join(projectRoot, "public/wasm");
+  return {
+    name: "serve-tree-sitter-wasm",
+    enforce: "pre",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const pathname = req.url?.split("?")[0] ?? "";
+        if (!pathname.startsWith("/wasm/")) {
+          next();
+          return;
+        }
+        const rel = pathname.slice("/wasm/".length);
+        if (!rel || rel.includes("..")) {
+          next();
+          return;
+        }
+        const file = path.join(wasmDir, rel);
+        if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+          next();
+          return;
+        }
+        res.setHeader("Content-Type", "application/wasm");
+        res.setHeader("Cache-Control", "no-cache");
+        fs.createReadStream(file).on("error", next).pipe(res);
+      });
+    },
+  };
+}
+const codeparsersPkgRoot = path.resolve(
+  __dirname,
+  "node_modules/@luciformresearch/codeparsers",
+);
 
 type TanStackStartInputConfig = NonNullable<
   Parameters<typeof tanstackStart>[0]
@@ -52,7 +93,23 @@ const spaWithPrerenderOptions: SpaOptions = {
 
 // See: https://vite.dev/config/
 export default defineConfig(async () => ({
+  resolve: {
+    alias: {
+      // @luciformresearch/codeparsers pulls Node's `path`; map to browser build
+      path: "path-browserify",
+      // Barrel export loads Node-only `piscina`; use scope-extraction entry (not in package exports)
+      "@internal/codeparsers-python-scope": path.join(
+        codeparsersPkgRoot,
+        "dist/esm/scope-extraction/PythonScopeExtractionParser.js",
+      ),
+      "@internal/codeparsers-wasm-loader": path.join(
+        codeparsersPkgRoot,
+        "dist/esm/wasm/WasmLoader.js",
+      ),
+    },
+  },
   plugins: [
+    serveTreeSitterWasmFromPublic(__dirname),
     devtools(),
     nitro(),
     // this is the plugin that enables path aliases

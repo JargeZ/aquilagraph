@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "compilerOptions": {
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,7 +24,13 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui/*": ["./src/ui/*"]
+      "@ui/*": ["./src/ui/*"],
+      "@internal/codeparsers-python-scope": [
+        "./node_modules/@luciformresearch/codeparsers/dist/esm/scope-extraction/PythonScopeExtractionParser.js"
+      ],
+      "@internal/codeparsers-wasm-loader": [
+        "./node_modules/@luciformresearch/codeparsers/dist/esm/wasm/WasmLoader.js"
+      ]
     }
   },
   "references": [

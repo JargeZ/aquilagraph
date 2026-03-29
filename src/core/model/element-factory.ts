@@ -1,4 +1,7 @@
-import type { ScopeFileAnalysis, ScopeInfo } from "@luciformresearch/codeparsers";
+import type {
+  ScopeFileAnalysis,
+  ScopeInfo,
+} from "@/core/parser/codeparsers-types";
 import { ExecutableElement } from "./executable-element";
 import {
   buildReference,

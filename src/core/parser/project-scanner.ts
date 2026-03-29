@@ -1,4 +1,4 @@
-import type { ScopeFileAnalysis } from "@luciformresearch/codeparsers";
+import type { ScopeFileAnalysis } from "./codeparsers-types";
 import { parseFile } from "./python-parser";
 
 export interface FileSystemAdapter {
