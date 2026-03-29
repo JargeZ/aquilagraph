@@ -1,5 +1,6 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { open } from "@tauri-apps/plugin-dialog";
+import { readDir, readTextFile } from "@tauri-apps/plugin-fs";
 import { Button } from "@ui/molecules/button/button";
 import { useCallback, useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
@@ -11,6 +12,15 @@ import {
   PROJECTS_STORAGE_KEY,
   type Project,
 } from "@/types/project";
+import {
+  DEFAULT_ANALYSIS_CONFIG,
+  getAnalysisConfigKey,
+  type AnalysisConfig,
+} from "@/core/config/analysis-config";
+import { AnalysisConfigPanel } from "@/components/analysis-config-panel";
+import { GraphView } from "@/components/graph-view";
+import { analyzeProject, type AnalysisResult } from "@/core/analyze";
+import type { FileSystemAdapter } from "@/core/parser/project-scanner";
 
 export const Route = createFileRoute("/$projectId")({
   beforeLoad: ({ params }) => {
@@ -20,6 +30,25 @@ export const Route = createFileRoute("/$projectId")({
   },
   component: ProjectPage,
 });
+
+function createTauriFsAdapter(basePath: string): FileSystemAdapter {
+  return {
+    readFile: (filePath: string) =>
+      readTextFile(basePath ? `${basePath}/${filePath}` : filePath),
+    listDir: async (dirPath: string) => {
+      const fullPath = basePath
+        ? dirPath
+          ? `${basePath}/${dirPath}`
+          : basePath
+        : dirPath;
+      const entries = await readDir(fullPath);
+      return entries.map((e) => ({
+        name: e.name,
+        isDirectory: e.isDirectory,
+      }));
+    },
+  };
+}
 
 export function ProjectPage(): React.ReactNode {
   const { projectId } = Route.useParams();
@@ -31,6 +60,16 @@ export function ProjectPage(): React.ReactNode {
   const [fileCount, setFileCount] = useState<number | null>(null);
   const [countError, setCountError] = useState<string | null>(null);
   const [countLoading, setCountLoading] = useState(false);
+
+  const [analysisConfig, setAnalysisConfig] = useLocalStorage<AnalysisConfig>(
+    getAnalysisConfigKey(projectId),
+    DEFAULT_ANALYSIS_CONFIG,
+  );
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null,
+  );
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
 
   const rootPath = pathsByProject[projectId] ?? null;
 
@@ -93,10 +132,32 @@ export function ProjectPage(): React.ReactNode {
     setPathsByProject((prev) => ({ ...prev, [projectId]: path }));
   }, [projectId, setPathsByProject]);
 
+  const runAnalysis = useCallback(async () => {
+    if (!rootPath) return;
+    if (!isTauriRuntime()) {
+      setAnalysisError("Анализ доступен в приложении Tauri.");
+      return;
+    }
+    setAnalysisLoading(true);
+    setAnalysisError(null);
+    try {
+      const fs = createTauriFsAdapter(rootPath);
+      const result = await analyzeProject("", analysisConfig, fs);
+      setAnalysisResult(result);
+    } catch (e) {
+      setAnalysisError(
+        e instanceof Error ? e.message : "Ошибка анализа",
+      );
+      setAnalysisResult(null);
+    } finally {
+      setAnalysisLoading(false);
+    }
+  }, [rootPath, analysisConfig]);
+
   const project = projects.find((p) => p.id === projectId);
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6 rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
+    <div className="mx-auto flex max-w-5xl flex-col gap-6 rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
       <div>
         <h1 className="text-lg font-semibold text-foreground">
           {project?.name ?? "Проект"}
@@ -146,6 +207,37 @@ export function ProjectPage(): React.ReactNode {
           </p>
         )}
       </section>
+
+      <section className="border-t border-border pt-4">
+        <AnalysisConfigPanel
+          config={analysisConfig}
+          onChange={setAnalysisConfig}
+        />
+      </section>
+
+      <section className="flex flex-col gap-3 border-t border-border pt-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            onClick={() => void runAnalysis()}
+            disabled={!rootPath || analysisLoading}
+          >
+            {analysisLoading ? "Анализируем…" : "Анализировать"}
+          </Button>
+        </div>
+        {analysisError && (
+          <p className="text-sm text-destructive">{analysisError}</p>
+        )}
+      </section>
+
+      {analysisResult && (
+        <section className="border-t border-border pt-4">
+          <GraphView
+            elements={analysisResult.elements}
+            config={analysisConfig}
+          />
+        </section>
+      )}
     </div>
   );
 }

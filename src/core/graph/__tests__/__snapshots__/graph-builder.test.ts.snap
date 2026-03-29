@@ -1,0 +1,411 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildGraph > DOT with include filter only shows matching elements (snapshot) 1`] = `
+"digraph "G" {
+  rankdir = "LR";
+  fontname = "Helvetica";
+  node [
+    fontname = "Helvetica";
+    fontsize = 10;
+  ];
+  subgraph "cluster_export_module" {
+    label = "export_module";
+    style = "dashed";
+    "export_module.tasks.run_exports.task_ExportAllTasks" [
+      label = "task_ExportAllTasks";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    subgraph "cluster_export_module_PerformExport" {
+      label = "PerformExport";
+      style = "rounded";
+      "export_module.actions.perform_export.PerformExport" [
+        label = "PerformExport";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.actions.perform_export.PerformExport.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module_TodoTaskViewSet" {
+      label = "TodoTaskViewSet";
+      style = "rounded";
+      "export_module.views.todotask.TodoTaskViewSet" [
+        label = "TodoTaskViewSet";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.list" [
+        label = "list";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+}"
+`;
+
+exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
+"digraph "G" {
+  rankdir = "LR";
+  fontname = "Helvetica";
+  node [
+    fontname = "Helvetica";
+    fontsize = 10;
+  ];
+  subgraph "cluster_core_module" {
+    label = "core_module";
+    style = "dashed";
+    "core_module.tasks.run_todo_sync.task_RunTodoSync" [
+      label = "task_RunTodoSync";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    subgraph "cluster_core_module_AddTaskToList" {
+      label = "AddTaskToList";
+      style = "rounded";
+      "core_module.actions.add_task_to_list.AddTaskToList" [
+        label = "AddTaskToList";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" [
+        label = "_internal_preconditions_check";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList._internal_empty" [
+        label = "_internal_empty";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_core_module_GetTasksList" {
+      label = "GetTasksList";
+      style = "rounded";
+      "core_module.actions.get_tasks_list.GetTasksList" [
+        label = "GetTasksList";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.get_tasks_list.GetTasksList.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_export_module" {
+    label = "export_module";
+    style = "dashed";
+    "export_module.tasks.run_exports.task_ExportAllTasks" [
+      label = "task_ExportAllTasks";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    subgraph "cluster_export_module_PerformExport" {
+      label = "PerformExport";
+      style = "rounded";
+      "export_module.actions.perform_export.PerformExport" [
+        label = "PerformExport";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.actions.perform_export.PerformExport.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module_TodoTaskViewSet" {
+      label = "TodoTaskViewSet";
+      style = "rounded";
+      "export_module.views.todotask.TodoTaskViewSet" [
+        label = "TodoTaskViewSet";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.list" [
+        label = "list";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_utils" {
+    label = "utils";
+    style = "dashed";
+    subgraph "cluster_utils_BaseBusinessAction" {
+      label = "BaseBusinessAction";
+      style = "rounded";
+      "utils.base_action.BaseBusinessAction" [
+        label = "BaseBusinessAction";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
+  "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+}"
+`;
+
+exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
+"digraph "G" {
+  rankdir = "LR";
+  fontname = "Helvetica";
+  node [
+    fontname = "Helvetica";
+    fontsize = 10;
+  ];
+  subgraph "cluster_core_module.actions" {
+    label = "core_module.actions";
+    style = "dashed";
+    subgraph "cluster_core_module.actions_AddTaskToList" {
+      label = "AddTaskToList";
+      style = "rounded";
+      "core_module.actions.add_task_to_list.AddTaskToList" [
+        label = "AddTaskToList";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" [
+        label = "_internal_preconditions_check";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.add_task_to_list.AddTaskToList._internal_empty" [
+        label = "_internal_empty";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_core_module.actions_GetTasksList" {
+      label = "GetTasksList";
+      style = "rounded";
+      "core_module.actions.get_tasks_list.GetTasksList" [
+        label = "GetTasksList";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.get_tasks_list.GetTasksList.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_core_module.tasks" {
+    label = "core_module.tasks";
+    style = "dashed";
+    "core_module.tasks.run_todo_sync.task_RunTodoSync" [
+      label = "task_RunTodoSync";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+  }
+  subgraph "cluster_export_module.actions" {
+    label = "export_module.actions";
+    style = "dashed";
+    subgraph "cluster_export_module.actions_PerformExport" {
+      label = "PerformExport";
+      style = "rounded";
+      "export_module.actions.perform_export.PerformExport" [
+        label = "PerformExport";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.actions.perform_export.PerformExport.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_export_module.tasks" {
+    label = "export_module.tasks";
+    style = "dashed";
+    "export_module.tasks.run_exports.task_ExportAllTasks" [
+      label = "task_ExportAllTasks";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+  }
+  subgraph "cluster_export_module.views" {
+    label = "export_module.views";
+    style = "dashed";
+    subgraph "cluster_export_module.views_TodoTaskViewSet" {
+      label = "TodoTaskViewSet";
+      style = "rounded";
+      "export_module.views.todotask.TodoTaskViewSet" [
+        label = "TodoTaskViewSet";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.list" [
+        label = "list";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_utils.base_action" {
+    label = "utils.base_action";
+    style = "dashed";
+    subgraph "cluster_utils.base_action_BaseBusinessAction" {
+      label = "BaseBusinessAction";
+      style = "rounded";
+      "utils.base_action.BaseBusinessAction" [
+        label = "BaseBusinessAction";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
+  "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+}"
+`;

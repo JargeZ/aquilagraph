@@ -5,5 +5,10 @@ export default defineConfig({
   plugins: [viteTsConfigPaths({ projects: ["./tsconfig.json"] })],
   test: {
     environment: "jsdom",
+    server: {
+      deps: {
+        inline: ["@luciformresearch/codeparsers"],
+      },
+    },
   },
 });
