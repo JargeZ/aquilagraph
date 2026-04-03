@@ -25,22 +25,22 @@ afterEach(() => {
 });
 
 describe("GraphView + analyze pipeline", () => {
-  it("parses the test Python project and renders a digraph DOT preview", async () => {
+  it("parses the test Python project and renders graph tabs", async () => {
     const fs = createNodeFsAdapter(getTestProjectRoot());
     const result = await analyzeProject("", TEST_PROJECT_CONFIG, fs);
 
     expect(result.elements.length).toBeGreaterThan(0);
     expect(result.dot).toContain("digraph");
 
-    const { container } = render(
-      <GraphView elements={result.elements} config={TEST_PROJECT_CONFIG} />,
+    render(
+      <GraphView
+        elements={result.elements}
+        graph={result.graph}
+        dot={result.dot}
+      />,
     );
 
-    await screen.findByRole("heading", { name: /Граф \(\d+ элементов\)/ });
-
-    const pre = container.querySelector("pre");
-    expect(pre).not.toBeNull();
-    expect(pre?.textContent ?? "").toContain("digraph");
-    expect(pre?.textContent ?? "").toMatch(/digraph|subgraph|->/);
+    expect(screen.getByRole("tab", { name: /Граф/ })).toBeDefined();
+    expect(screen.getByRole("tab", { name: /DOT/ })).toBeDefined();
   }, 60_000);
 });

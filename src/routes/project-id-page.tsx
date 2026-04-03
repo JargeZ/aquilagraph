@@ -227,7 +227,8 @@ export default function ProjectIdPage(): React.ReactNode {
         <section className="border-t border-border pt-4">
           <GraphView
             elements={analysisResult.elements}
-            config={analysisConfig}
+            graph={analysisResult.graph}
+            dot={analysisResult.dot}
           />
         </section>
       )}
