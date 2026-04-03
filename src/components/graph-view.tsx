@@ -148,8 +148,8 @@ function GraphCanvas({
   };
 
   return (
-    <div className="flex gap-3">
-      <div className="h-150 min-w-0 flex-1 overflow-hidden rounded-lg border border-border">
+    <div className="flex h-full gap-3">
+      <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -194,34 +194,32 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <Tabs defaultValue="graph">
-        <div className="flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="graph">Граф ({elements.length})</TabsTrigger>
-            <TabsTrigger value="dot">DOT</TabsTrigger>
-          </TabsList>
-        </div>
+    <Tabs defaultValue="graph" className="flex h-full flex-col">
+      <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1">
+        <TabsList>
+          <TabsTrigger value="graph">Граф ({elements.length})</TabsTrigger>
+          <TabsTrigger value="dot">DOT</TabsTrigger>
+        </TabsList>
+      </div>
 
-        <TabsContent value="graph">
-          <ReactFlowProvider>
-            <GraphCanvas graph={graph} elements={elements} />
-          </ReactFlowProvider>
-        </TabsContent>
+      <TabsContent value="graph" className="min-h-0 flex-1">
+        <ReactFlowProvider>
+          <GraphCanvas graph={graph} elements={elements} />
+        </ReactFlowProvider>
+      </TabsContent>
 
-        <TabsContent value="dot">
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-end">
-              <Button variant="outline" size="sm" onClick={handleCopy}>
-                {copied ? "Скопировано" : "Копировать DOT"}
-              </Button>
-            </div>
-            <pre className="max-h-150 overflow-auto rounded-lg border border-border bg-muted/30 p-4 font-mono text-xs text-foreground">
-              {dot}
-            </pre>
+      <TabsContent value="dot" className="min-h-0 flex-1 overflow-auto p-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-end">
+            <Button variant="outline" size="sm" onClick={handleCopy}>
+              {copied ? "Скопировано" : "Копировать DOT"}
+            </Button>
           </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+          <pre className="overflow-auto rounded-lg border border-border bg-muted/30 p-4 font-mono text-xs text-foreground">
+            {dot}
+          </pre>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 }

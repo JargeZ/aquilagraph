@@ -1,5 +1,4 @@
 import {
-  Link,
   Outlet,
   useNavigate,
   useRouterState,
@@ -31,8 +30,8 @@ export const AppShell: React.FC = () => {
   useEffect(() => setHydrated(true), []);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="border-b border-border bg-card px-4 py-2">
+    <div className="flex h-screen flex-col bg-background text-foreground">
+      <header className="shrink-0 border-b border-border bg-card px-4 py-1">
         <Tabs
           value={value}
           onValueChange={(next) => {
@@ -53,18 +52,8 @@ export const AppShell: React.FC = () => {
               ))}
           </TabsList>
         </Tabs>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Создавайте проекты на{" "}
-          <Link
-            to="/"
-            className="text-primary underline-offset-2 hover:underline"
-          >
-            главной
-          </Link>
-          .
-        </p>
       </header>
-      <main className="flex-1 p-4">
+      <main className="min-h-0 flex-1">
         <Outlet />
       </main>
     </div>
