@@ -24,6 +24,7 @@ import {
   type FlowNode,
 } from "@/core/graph/digraph-to-flow";
 import type { ExecutableElement } from "@/core/model/executable-element";
+import { DotSvgCanvas } from "./dot-svg-canvas";
 import { ElementNode } from "./flow-nodes/element-node";
 import { GroupNode } from "./flow-nodes/group-node";
 
@@ -119,7 +120,35 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
   );
 }
 
-function GraphCanvas({
+function DotGraphCanvas({
+  dot,
+  elements,
+}: {
+  dot: string;
+  elements: ExecutableElement[];
+}) {
+  const [selectedElement, setSelectedElement] =
+    useState<ExecutableElement | null>(null);
+
+  return (
+    <div className="flex h-full gap-3">
+      <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+        <DotSvgCanvas
+          dot={dot}
+          elements={elements}
+          onSelectElement={setSelectedElement}
+        />
+      </div>
+      {selectedElement && (
+        <div className="w-64 shrink-0">
+          <NodeDetailsPanel element={selectedElement} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FlowCanvas({
   graph,
   elements,
 }: {
@@ -198,13 +227,18 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
       <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1">
         <TabsList>
           <TabsTrigger value="graph">Граф ({elements.length})</TabsTrigger>
+          <TabsTrigger value="flow">Flow</TabsTrigger>
           <TabsTrigger value="dot">DOT</TabsTrigger>
         </TabsList>
       </div>
 
       <TabsContent value="graph" className="min-h-0 flex-1">
+        <DotGraphCanvas dot={dot} elements={elements} />
+      </TabsContent>
+
+      <TabsContent value="flow" className="min-h-0 flex-1">
         <ReactFlowProvider>
-          <GraphCanvas graph={graph} elements={elements} />
+          <FlowCanvas graph={graph} elements={elements} />
         </ReactFlowProvider>
       </TabsContent>
 
