@@ -1,7 +1,17 @@
+import { Button } from "@ui/molecules/button/button";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import svgPanZoom from "svg-pan-zoom";
 import type { ExecutableElement } from "@/core/model/executable-element";
+import { isTauriRuntime } from "@/lib/is-tauri";
 import { getVizInstance } from "@/lib/viz-instance";
+
+type WindowWithSavePicker = Window &
+  typeof globalThis & {
+    showSaveFilePicker?: (options: {
+      suggestedName?: string;
+      types?: { description: string; accept: Record<string, string[]> }[];
+    }) => Promise<FileSystemFileHandle>;
+  };
 
 interface DotSvgCanvasProps {
   dot: string;
@@ -26,6 +36,7 @@ export function DotSvgCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<ReturnType<typeof svgPanZoom> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [svgReady, setSvgReady] = useState(false);
 
   const elementsByRef = useMemo(() => {
     const map = new Map<string, ExecutableElement>();
@@ -40,6 +51,7 @@ export function DotSvgCanvas({
     if (!container) return;
 
     let cancelled = false;
+    setSvgReady(false);
 
     getVizInstance()
       .then((viz) => {
@@ -53,6 +65,7 @@ export function DotSvgCanvas({
 
         container.replaceChildren(svg);
         setError(null);
+        setSvgReady(true);
 
         panZoomRef.current = svgPanZoom(svg, {
           zoomEnabled: true,
@@ -65,11 +78,15 @@ export function DotSvgCanvas({
         });
       })
       .catch((err) => {
-        if (!cancelled) setError(String(err));
+        if (!cancelled) {
+          setError(String(err));
+          setSvgReady(false);
+        }
       });
 
     return () => {
       cancelled = true;
+      setSvgReady(false);
       panZoomRef.current?.destroy();
       panZoomRef.current = null;
     };
@@ -91,6 +108,63 @@ export function DotSvgCanvas({
     [elementsByRef, onSelectElement],
   );
 
+  const handleDownloadSvg = useCallback(async () => {
+    const svg = containerRef.current?.querySelector("svg");
+    if (!svg) return;
+    let source = new XMLSerializer().serializeToString(svg);
+    if (!/^<svg\b[^>]*xmlns=/.test(source)) {
+      source = source.replace(
+        "<svg",
+        '<svg xmlns="http://www.w3.org/2000/svg"',
+      );
+    }
+    const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+
+    if (isTauriRuntime()) {
+      const { save } = await import("@tauri-apps/plugin-dialog");
+      const { writeTextFile } = await import("@tauri-apps/plugin-fs");
+      const path = await save({
+        title: "Сохранить граф как SVG",
+        defaultPath: "graph.svg",
+        filters: [{ name: "SVG", extensions: ["svg"] }],
+      });
+      if (path === null) return;
+      await writeTextFile(path, source);
+      return;
+    }
+
+    const w = window as WindowWithSavePicker;
+    if (typeof w.showSaveFilePicker === "function") {
+      try {
+        const handle = await w.showSaveFilePicker({
+          suggestedName: "graph.svg",
+          types: [
+            {
+              description: "SVG",
+              accept: { "image/svg+xml": [".svg"] },
+            },
+          ],
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        return;
+      } catch (e) {
+        if (e instanceof DOMException && e.name === "AbortError") return;
+      }
+    }
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "graph.svg";
+    a.rel = "noopener";
+    document.body.append(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, []);
+
   if (error) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-destructive">
@@ -100,10 +174,20 @@ export function DotSvgCanvas({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="relative h-full w-full"
-      onClick={handleClick}
-    />
+    <div className="relative h-full w-full">
+      <div ref={containerRef} className="h-full w-full" onClick={handleClick} />
+      <div className="pointer-events-none absolute top-2 right-2 z-10">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="pointer-events-auto shadow-sm"
+          disabled={!svgReady}
+          onClick={() => void handleDownloadSvg()}
+        >
+          Скачать SVG
+        </Button>
+      </div>
+    </div>
   );
 }
