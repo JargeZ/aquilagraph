@@ -114,10 +114,13 @@ describe("classifyElements", () => {
     };
     const classified = classifyElements(freshElements(), config);
     const controlling = classified.filter((e) => e.type === "controlling");
-    expect(
-      controlling.every((e) => e.reference.includes("ViewSet")),
-    ).toBe(true);
-    expect(controlling.length).toBe(3);
+    const refs = controlling.map((e) => e.reference);
+    expect(controlling.every((e) => e.reference.includes("ViewSet"))).toBe(
+      true,
+    );
+    expect(refs).toContain("core_module.views.core.CoreViewSet");
+    expect(refs).toContain("export_module.views.todotask.TodoTaskViewSet");
+    expect(controlling.length).toBe(5);
   });
 
   it("applies include filter", () => {

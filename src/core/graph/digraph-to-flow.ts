@@ -27,6 +27,7 @@ export interface FlowGraph {
 const NODE_WIDTH = 160;
 const NODE_HEIGHT = 40;
 const GROUP_PADDING = 40;
+const MODULE_SPACING = 60;
 
 const COLOR_BY_TYPE: Record<ElementType, string> = {
   controlling: "#4A90D9",
@@ -135,8 +136,7 @@ export function digraphToFlow(graph: RootGraphModel): FlowGraph {
     }
   }
 
-  applyDagreLayout(flowNodes, flowEdges, childToParent);
-  repositionByType(flowNodes, moduleGroupIds);
+  applyDagreLayout(flowNodes, flowEdges, childToParent, moduleGroupIds);
 
   return { nodes: flowNodes, edges: flowEdges };
 }
@@ -145,6 +145,7 @@ function applyDagreLayout(
   nodes: FlowNode[],
   edges: Edge[],
   childToParent: Map<string, string>,
+  moduleGroupIds: string[],
 ) {
   const g = new Graph({ compound: true });
   g.setGraph({
@@ -210,6 +211,9 @@ function applyDagreLayout(
     }
   }
 
+  computeGroupBounds(nodes, absolutePositions, groupChildren, groupIds);
+  ensureModuleSpacing(nodes, absolutePositions, groupChildren);
+  repositionByType(nodes, moduleGroupIds, absolutePositions);
   computeGroupBounds(nodes, absolutePositions, groupChildren, groupIds);
 
   for (const node of nodes) {
@@ -296,27 +300,66 @@ function computeGroupBounds(
   }
 }
 
-function repositionByType(nodes: FlowNode[], moduleGroupIds: string[]) {
+function ensureModuleSpacing(
+  nodes: FlowNode[],
+  absolutePositions: Map<string, { x: number; y: number }>,
+  groupChildren: Map<string, string[]>,
+) {
+  const topModules = nodes.filter(
+    (n) => n.type === "group" && !n.parentId,
+  );
+  if (topModules.length < 2) return;
+
+  topModules.sort((a, b) => {
+    const posA = absolutePositions.get(a.id);
+    const posB = absolutePositions.get(b.id);
+    return (posA?.x ?? 0) - (posB?.x ?? 0);
+  });
+
+  let cumulativeShift = 0;
+  for (let i = 1; i < topModules.length; i++) {
+    const prev = topModules[i - 1];
+    const curr = topModules[i];
+    const prevPos = absolutePositions.get(prev.id)!;
+    const currPos = absolutePositions.get(curr.id)!;
+    const prevWidth = (prev.style?.width as number) ?? 0;
+
+    const gap = currPos.x + cumulativeShift - (prevPos.x + prevWidth);
+    if (gap < MODULE_SPACING) {
+      cumulativeShift += MODULE_SPACING - gap;
+    }
+
+    if (cumulativeShift > 0) {
+      shiftSubtree(curr.id, cumulativeShift, absolutePositions, groupChildren);
+    }
+  }
+}
+
+function shiftSubtree(
+  nodeId: string,
+  dx: number,
+  absolutePositions: Map<string, { x: number; y: number }>,
+  groupChildren: Map<string, string[]>,
+) {
+  const pos = absolutePositions.get(nodeId);
+  if (pos) {
+    absolutePositions.set(nodeId, { x: pos.x + dx, y: pos.y });
+  }
+  for (const childId of groupChildren.get(nodeId) ?? []) {
+    shiftSubtree(childId, dx, absolutePositions, groupChildren);
+  }
+}
+
+function repositionByType(
+  nodes: FlowNode[],
+  moduleGroupIds: string[],
+  absolutePositions: Map<string, { x: number; y: number }>,
+) {
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   for (const moduleId of moduleGroupIds) {
-    const children = nodes.filter(
-      (n) => n.parentId === moduleId && n.type === "element",
-    );
-    if (children.length === 0) continue;
-
-    const nestedGroupChildren = nodes
-      .filter((n) => n.parentId !== moduleId && n.type === "element")
-      .filter((n) => {
-        let current = nodeMap.get(n.parentId ?? "");
-        while (current) {
-          if (current.id === moduleId) return true;
-          current = nodeMap.get(current.parentId ?? "");
-        }
-        return false;
-      });
-
-    const allModuleElements = [...children, ...nestedGroupChildren];
+    const allModuleElements = collectModuleElements(nodes, moduleId, nodeMap);
+    if (allModuleElements.length === 0) continue;
 
     const controlling = allModuleElements.filter(
       (n) =>
@@ -330,25 +373,51 @@ function repositionByType(nodes: FlowNode[], moduleGroupIds: string[]) {
     );
 
     if (controlling.length > 0) {
-      const minX = Math.min(...allModuleElements.map((n) => n.position.x));
+      const minX = Math.min(
+        ...allModuleElements.map((n) => absolutePositions.get(n.id)!.x),
+      );
       const sorted = [...controlling].sort(
-        (a, b) => a.position.y - b.position.y,
+        (a, b) => absolutePositions.get(a.id)!.y - absolutePositions.get(b.id)!.y,
       );
       for (const node of sorted) {
-        node.position = { x: minX, y: node.position.y };
+        const pos = absolutePositions.get(node.id)!;
+        absolutePositions.set(node.id, { x: minX, y: pos.y });
       }
     }
 
     if (sideEffect.length > 0) {
-      const minY = Math.min(...allModuleElements.map((n) => n.position.y));
-      const sorted = [...sideEffect].sort(
-        (a, b) => a.position.x - b.position.x,
+      const minY = Math.min(
+        ...allModuleElements.map((n) => absolutePositions.get(n.id)!.y),
       );
-      let xOffset = sorted[0].position.x;
+      const sorted = [...sideEffect].sort(
+        (a, b) => absolutePositions.get(a.id)!.x - absolutePositions.get(b.id)!.x,
+      );
+      let xOffset = absolutePositions.get(sorted[0].id)!.x;
       for (const node of sorted) {
-        node.position = { x: xOffset, y: minY };
+        absolutePositions.set(node.id, { x: xOffset, y: minY });
         xOffset += NODE_WIDTH + 20;
       }
     }
   }
+}
+
+function collectModuleElements(
+  nodes: FlowNode[],
+  moduleId: string,
+  nodeMap: Map<string, FlowNode>,
+): FlowNode[] {
+  const directChildren = nodes.filter(
+    (n) => n.parentId === moduleId && n.type === "element",
+  );
+  const nestedChildren = nodes
+    .filter((n) => n.parentId !== moduleId && n.type === "element")
+    .filter((n) => {
+      let current = nodeMap.get(n.parentId ?? "");
+      while (current) {
+        if (current.id === moduleId) return true;
+        current = nodeMap.get(current.parentId ?? "");
+      }
+      return false;
+    });
+  return [...directChildren, ...nestedChildren];
 }

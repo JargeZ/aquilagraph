@@ -8,7 +8,10 @@ import { createElementsFromAnalyses } from "./model/element-factory";
 import { classifyElements } from "./model/element-classifier";
 import { resolveUses } from "./model/uses-resolver";
 import { buildGraph } from "./graph/graph-builder";
-import { filterIsolatedNodes } from "./graph/graph-filter";
+import {
+  filterIsolatedNodes,
+  filterUnclassifiedNodes,
+} from "./graph/graph-filter";
 
 export interface AnalysisResult {
   elements: ExecutableElement[];
@@ -29,9 +32,13 @@ export async function analyzeProject(
   resolveUses(classified, analyses);
 
   const connected = filterIsolatedNodes(classified);
+  const visible =
+    config.hideUnclassified !== false
+      ? filterUnclassifiedNodes(connected)
+      : connected;
 
-  const graph = buildGraph(connected, config);
+  const graph = buildGraph(visible, config);
   const dot = toDot(graph);
 
-  return { elements: connected, graph, dot };
+  return { elements: visible, graph, dot };
 }

@@ -8,6 +8,7 @@ export interface AnalysisConfig {
   include: string[];
   exclude: string[];
   moduleDepth: number;
+  hideUnclassified: boolean;
   selectors: {
     controlling: SelectorConfig;
     businessLogic: SelectorConfig;
@@ -25,6 +26,7 @@ export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
   include: [],
   exclude: [],
   moduleDepth: 1,
+  hideUnclassified: true,
   selectors: {
     controlling: {},
     businessLogic: {},

@@ -56,20 +56,36 @@ export function AnalysisConfigPanel({
         />
       </div>
 
-      <div>
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">
-          Глубина модуля
+      <div className="flex items-center gap-6">
+        <div>
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">
+            Глубина модуля
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={10}
+            value={config.moduleDepth}
+            onChange={(e) =>
+              updateField("moduleDepth", Math.max(1, Number(e.target.value)))
+            }
+            className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
+          />
+        </div>
+
+        <label className="flex cursor-pointer items-center gap-2 select-none">
+          <input
+            type="checkbox"
+            checked={config.hideUnclassified !== false}
+            onChange={(e) =>
+              updateField("hideUnclassified", e.target.checked)
+            }
+            className="size-4 rounded border-border accent-primary"
+          />
+          <span className="text-xs font-medium text-muted-foreground">
+            Скрыть неклассифицированные
+          </span>
         </label>
-        <input
-          type="number"
-          min={1}
-          max={10}
-          value={config.moduleDepth}
-          onChange={(e) =>
-            updateField("moduleDepth", Math.max(1, Number(e.target.value)))
-          }
-          className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
-        />
       </div>
 
       <SelectorSection
@@ -157,13 +173,7 @@ function TextAreaField({
       <textarea
         rows={rows}
         value={value.join("\n")}
-        onChange={(e) =>
-          onChange(
-            e.target.value
-              .split("\n")
-              .filter((line) => line.trim() !== ""),
-          )
-        }
+        onChange={(e) => onChange(e.target.value.split("\n"))}
         className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
         placeholder="regex-паттерн..."
       />

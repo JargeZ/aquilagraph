@@ -14,6 +14,10 @@ export function classifyElements(
   return filtered;
 }
 
+function nonBlankPatterns(patterns: string[]): string[] {
+  return patterns.filter((p) => p.trim() !== "");
+}
+
 function applyFilters(
   elements: ExecutableElement[],
   include: string[],
@@ -21,15 +25,15 @@ function applyFilters(
 ): ExecutableElement[] {
   let result = elements;
 
-  if (include.length > 0) {
-    const includePatterns = include.map((p) => new RegExp(p));
+  const includePatterns = nonBlankPatterns(include).map((p) => new RegExp(p));
+  if (includePatterns.length > 0) {
     result = result.filter((el) =>
       includePatterns.some((re) => re.test(el.reference)),
     );
   }
 
-  if (exclude.length > 0) {
-    const excludePatterns = exclude.map((p) => new RegExp(p));
+  const excludePatterns = nonBlankPatterns(exclude).map((p) => new RegExp(p));
+  if (excludePatterns.length > 0) {
     result = result.filter(
       (el) => !excludePatterns.some((re) => re.test(el.reference)),
     );
@@ -52,16 +56,18 @@ function matchesSelector(
   el: ExecutableElement,
   selector: SelectorConfig,
 ): boolean {
+  const references = nonBlankPatterns(selector.references ?? []);
   if (
-    selector.references?.length &&
-    selector.references.some((p) => new RegExp(p).test(el.reference))
+    references.length &&
+    references.some((p) => new RegExp(p).test(el.reference))
   ) {
     return true;
   }
 
+  const childsOf = nonBlankPatterns(selector.childsOf ?? []);
   if (
-    selector.childsOf?.length &&
-    selector.childsOf.some((p) => {
+    childsOf.length &&
+    childsOf.some((p) => {
       const re = new RegExp(p);
       return el.parentClasses.some((pc) => re.test(pc));
     })
@@ -69,9 +75,10 @@ function matchesSelector(
     return true;
   }
 
+  const decoratedWith = nonBlankPatterns(selector.decoratedWith ?? []);
   if (
-    selector.decoratedWith?.length &&
-    selector.decoratedWith.some((p) => {
+    decoratedWith.length &&
+    decoratedWith.some((p) => {
       const re = new RegExp(p);
       return el.decorators.some((d) => re.test(d));
     })
