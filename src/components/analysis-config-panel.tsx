@@ -38,6 +38,20 @@ export function AnalysisConfigPanel({
     [config, onChange],
   );
 
+  const updateGroupInBucket = useCallback(
+    (group: keyof AnalysisConfig["groupInBucket"], checked: boolean) => {
+      const prev = {
+        ...DEFAULT_ANALYSIS_CONFIG.groupInBucket,
+        ...config.groupInBucket,
+      };
+      onChange({
+        ...config,
+        groupInBucket: { ...prev, [group]: checked },
+      });
+    },
+    [config, onChange],
+  );
+
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-sm font-semibold text-foreground">
@@ -120,18 +134,33 @@ export function AnalysisConfigPanel({
       <SelectorSection
         title="Controlling"
         color="#4A90D9"
+        groupInBucket={
+          config.groupInBucket?.controlling ??
+          DEFAULT_ANALYSIS_CONFIG.groupInBucket.controlling
+        }
+        onGroupInBucketChange={(v) => updateGroupInBucket("controlling", v)}
         selector={config.selectors.controlling}
         onChange={(s) => updateSelector("controlling", ...s)}
       />
       <SelectorSection
         title="Business Logic"
         color="#50C878"
+        groupInBucket={
+          config.groupInBucket?.businessLogic ??
+          DEFAULT_ANALYSIS_CONFIG.groupInBucket.businessLogic
+        }
+        onGroupInBucketChange={(v) => updateGroupInBucket("businessLogic", v)}
         selector={config.selectors.businessLogic}
         onChange={(s) => updateSelector("businessLogic", ...s)}
       />
       <SelectorSection
         title="Side Effects"
         color="#FFB347"
+        groupInBucket={
+          config.groupInBucket?.sideEffects ??
+          DEFAULT_ANALYSIS_CONFIG.groupInBucket.sideEffects
+        }
+        onGroupInBucketChange={(v) => updateGroupInBucket("sideEffects", v)}
         selector={config.selectors.sideEffects}
         onChange={(s) => updateSelector("sideEffects", ...s)}
       />
@@ -142,22 +171,39 @@ export function AnalysisConfigPanel({
 function SelectorSection({
   title,
   color,
+  groupInBucket,
+  onGroupInBucketChange,
   selector,
   onChange,
 }: {
   title: string;
   color: string;
+  groupInBucket: boolean;
+  onGroupInBucketChange: (checked: boolean) => void;
   selector: SelectorConfig;
   onChange: (update: [keyof SelectorConfig, string[]]) => void;
 }) {
   return (
     <div className="rounded-lg border border-border p-3">
-      <div className="mb-2 flex items-center gap-2">
-        <span
-          className="inline-block size-3 rounded-sm"
-          style={{ backgroundColor: color }}
-        />
-        <span className="text-xs font-semibold text-foreground">{title}</span>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block size-3 rounded-sm"
+            style={{ backgroundColor: color }}
+          />
+          <span className="text-xs font-semibold text-foreground">{title}</span>
+        </div>
+        <label className="flex cursor-pointer items-center gap-2 select-none">
+          <input
+            type="checkbox"
+            checked={groupInBucket}
+            onChange={(e) => onGroupInBucketChange(e.target.checked)}
+            className="size-4 rounded border-border accent-primary"
+          />
+          <span className="text-xs font-medium text-muted-foreground">
+            Сгруппировать в бакет
+          </span>
+        </label>
       </div>
       <div className="grid grid-cols-3 gap-3">
         <TextAreaField

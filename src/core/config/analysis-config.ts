@@ -14,6 +14,12 @@ export interface AnalysisConfig {
    */
   minMethodsForClassDetail: number;
   hideUnclassified: boolean;
+  /** Для каждой классификации — оборачивать ноды в отдельный кластер (бакет) на графе. */
+  groupInBucket: {
+    controlling: boolean;
+    businessLogic: boolean;
+    sideEffects: boolean;
+  };
   selectors: {
     controlling: SelectorConfig;
     businessLogic: SelectorConfig;
@@ -33,6 +39,11 @@ export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
   moduleDepth: 1,
   minMethodsForClassDetail: 3,
   hideUnclassified: true,
+  groupInBucket: {
+    controlling: false,
+    businessLogic: false,
+    sideEffects: false,
+  },
   selectors: {
     controlling: {},
     businessLogic: {},

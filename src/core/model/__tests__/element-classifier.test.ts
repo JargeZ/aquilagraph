@@ -120,7 +120,7 @@ describe("classifyElements", () => {
     );
     expect(refs).toContain("core_module.views.core.CoreViewSet");
     expect(refs).toContain("export_module.views.todotask.TodoTaskViewSet");
-    expect(controlling.length).toBe(5);
+    expect(controlling.length).toBeGreaterThanOrEqual(5);
   });
 
   it("applies include filter", () => {

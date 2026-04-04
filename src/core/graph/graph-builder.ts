@@ -15,6 +15,25 @@ const TYPE_STYLES: Record<
   unclassified: { color: "#D3D3D3", shape: "ellipse", style: "filled" },
 };
 
+/** Подписи кластеров-бакетов на графе (как в панели настроек). */
+const TYPE_CLUSTER_LABEL: Record<
+  "controlling" | "businessLogic" | "sideEffect",
+  string
+> = {
+  controlling: "Controlling",
+  businessLogic: "Business Logic",
+  sideEffect: "Side Effects",
+};
+
+type GraphContainer = {
+  subgraph: (
+    id: string,
+    fn: (sg: GraphContainer) => void,
+  ) => unknown;
+  node: (id: string, attrs: Record<string, unknown>) => void;
+  set: (key: unknown, value: unknown) => void;
+};
+
 interface ModuleGroup {
   name: string;
   classes: Map<string, ExecutableElement[]>;
@@ -52,22 +71,35 @@ export function buildGraph(
             const classEl = classElements.find(
               (e) => e.reference === fullClassRef,
             );
-            if (classEl) addNode(sg, classEl);
+            if (classEl) {
+              addElementsWithOptionalTypeBuckets(
+                sg as GraphContainer,
+                [classEl],
+                `cluster_${mod.name}_${className}`,
+                config,
+              );
+            }
           } else {
             sg.subgraph(`cluster_${mod.name}_${className}`, (csg) => {
               csg.set(attribute.label, className);
               csg.set(attribute.style, "rounded");
 
-              for (const el of classElements) {
-                addNode(csg, el);
-              }
+              addElementsWithOptionalTypeBuckets(
+                csg as GraphContainer,
+                classElements,
+                `cluster_${mod.name}_${className}`,
+                config,
+              );
             });
           }
         }
 
-        for (const el of mod.standalone) {
-          addNode(sg, el);
-        }
+        addElementsWithOptionalTypeBuckets(
+          sg as GraphContainer,
+          mod.standalone,
+          `cluster_${mod.name}_standalone`,
+          config,
+        );
       });
     }
 
@@ -150,6 +182,83 @@ function canonicalReference(
     }
   }
   return el.reference;
+}
+
+function mergedGroupInBucket(config: AnalysisConfig) {
+  return {
+    ...DEFAULT_ANALYSIS_CONFIG.groupInBucket,
+    ...config.groupInBucket,
+  };
+}
+
+function elementTypeUsesBucket(
+  type: ElementType,
+  config: AnalysisConfig,
+): boolean {
+  const g = mergedGroupInBucket(config);
+  switch (type) {
+    case "controlling":
+      return g.controlling;
+    case "businessLogic":
+      return g.businessLogic;
+    case "sideEffect":
+      return g.sideEffects;
+    default:
+      return false;
+  }
+}
+
+function partitionElementsForBuckets(
+  elements: ExecutableElement[],
+  config: AnalysisConfig,
+): {
+  ungrouped: ExecutableElement[];
+  bucketed: Map<"controlling" | "businessLogic" | "sideEffect", ExecutableElement[]>;
+} {
+  const ungrouped: ExecutableElement[] = [];
+  const bucketed = new Map<
+    "controlling" | "businessLogic" | "sideEffect",
+    ExecutableElement[]
+  >();
+  for (const el of elements) {
+    if (!elementTypeUsesBucket(el.type, config)) {
+      ungrouped.push(el);
+      continue;
+    }
+    const t = el.type as "controlling" | "businessLogic" | "sideEffect";
+    const list = bucketed.get(t);
+    if (list) list.push(el);
+    else bucketed.set(t, [el]);
+  }
+  return { ungrouped, bucketed };
+}
+
+function addElementsWithOptionalTypeBuckets(
+  parent: GraphContainer,
+  elements: ExecutableElement[],
+  clusterIdPrefix: string,
+  config: AnalysisConfig,
+): void {
+  const { ungrouped, bucketed } = partitionElementsForBuckets(
+    elements,
+    config,
+  );
+  for (const el of ungrouped) {
+    addNode(parent, el);
+  }
+  for (const [type, els] of bucketed) {
+    if (els.length === 0) continue;
+    const style = TYPE_STYLES[type];
+    parent.subgraph(`${clusterIdPrefix}_bucket_${type}`, (tg) => {
+      tg.set(attribute.label, TYPE_CLUSTER_LABEL[type]);
+      tg.set(attribute.color, style.color);
+      tg.set(attribute.fontcolor, style.color);
+      tg.set(attribute.style, "dashed");
+      for (const el of els) {
+        addNode(tg, el);
+      }
+    });
+  }
 }
 
 function addNode(

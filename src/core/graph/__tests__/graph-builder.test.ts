@@ -13,7 +13,7 @@ import { resolveUses } from "../../model/uses-resolver";
 import { buildGraph, buildDot } from "../graph-builder";
 import type { AnalysisConfig } from "../../config/analysis-config";
 import { DEFAULT_ANALYSIS_CONFIG } from "../../config/analysis-config";
-import type { ExecutableElement } from "../../model/executable-element";
+import { ExecutableElement } from "../../model/executable-element";
 
 const ROOT = getTestProjectRoot();
 
@@ -139,5 +139,50 @@ describe("buildGraph", () => {
     const dot = buildDot(elements, config);
 
     expect(dot).toContain(`"${ADD_TASK_EXECUTE}"`);
+  });
+
+  it("wraps nodes in dashed bucket clusters when groupInBucket is enabled", () => {
+    const base = {
+      decorators: [] as string[],
+      parentClasses: [] as string[],
+      sourceFile: "x.py",
+      startLine: 1,
+      endLine: 2,
+    };
+    const elements = [
+      new ExecutableElement({
+        ...base,
+        reference: "mod.A",
+        module: "mod",
+        className: "A",
+        name: "A",
+        type: "controlling",
+      }),
+      new ExecutableElement({
+        ...base,
+        reference: "mod.A.foo",
+        module: "mod",
+        className: "A",
+        name: "foo",
+        type: "businessLogic",
+      }),
+    ];
+    const config: AnalysisConfig = {
+      ...DEFAULT_ANALYSIS_CONFIG,
+      minMethodsForClassDetail: 0,
+      groupInBucket: {
+        controlling: true,
+        businessLogic: true,
+        sideEffects: true,
+      },
+    };
+    const dot = buildDot(elements, config);
+
+    expect(dot).toContain('subgraph "cluster_mod_A_bucket_controlling"');
+    expect(dot).toContain('subgraph "cluster_mod_A_bucket_businessLogic"');
+    expect(dot).toContain('label = "Controlling"');
+    expect(dot).toContain('label = "Business Logic"');
+    expect(dot).toMatch(/cluster_mod_A_bucket_controlling[\s\S]*style = "dashed"/);
+    expect(dot).toMatch(/cluster_mod_A_bucket_businessLogic[\s\S]*color = "#50C878"/);
   });
 });
