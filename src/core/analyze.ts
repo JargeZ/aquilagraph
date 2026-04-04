@@ -1,4 +1,4 @@
-import type { Digraph } from "ts-graphviz";
+import type { RootGraphModel } from "ts-graphviz";
 import { toDot } from "ts-graphviz";
 import type { AnalysisConfig } from "./config/analysis-config";
 import type { ExecutableElement } from "./model/executable-element";
@@ -15,7 +15,7 @@ import {
 
 export interface AnalysisResult {
   elements: ExecutableElement[];
-  graph: Digraph;
+  graph: RootGraphModel;
   dot: string;
 }
 

@@ -18,10 +18,11 @@ import type { ExecutableElement } from "../../model/executable-element";
 const ROOT = getTestProjectRoot();
 
 let analyses: ScopeFileAnalysis[];
-let rawElements: ExecutableElement[];
 
 const TEST_CONFIG: AnalysisConfig = {
   ...DEFAULT_ANALYSIS_CONFIG,
+  /** 0 — всегда субграф по классам (поведение до порога). */
+  minMethodsForClassDetail: 0,
   selectors: {
     controlling: { childsOf: ["ModelViewSet"] },
     businessLogic: { childsOf: ["BaseBusinessAction"] },
@@ -29,11 +30,16 @@ const TEST_CONFIG: AnalysisConfig = {
   },
 };
 
+const ADD_TASK_CLASS =
+  "core_module.actions.add_task_to_list.AddTaskToList";
+const ADD_TASK_EXECUTE = `${ADD_TASK_CLASS}.execute`;
+const GET_TASKS_CLASS =
+  "core_module.actions.get_tasks_list.GetTasksList";
+
 beforeAll(async () => {
   await initParser();
   const fs = createNodeFsAdapter(ROOT);
   analyses = await scanProject("", fs);
-  rawElements = createElementsFromAnalyses(analyses);
 }, 30_000);
 
 function prepareElements(config: AnalysisConfig): ExecutableElement[] {
@@ -107,5 +113,31 @@ describe("buildGraph", () => {
     expect(dot).not.toContain("cluster_core_module");
     expect(dot).toContain("cluster_export_module");
     expect(dot).toMatchSnapshot();
+  });
+
+  it("collapses AddTaskToList to a single class node when minMethodsForClassDetail is 3", () => {
+    const config: AnalysisConfig = {
+      ...TEST_CONFIG,
+      minMethodsForClassDetail: 3,
+    };
+    const elements = prepareElements(config);
+    const dot = buildDot(elements, config);
+
+    expect(dot).toContain(`"${ADD_TASK_CLASS}"`);
+    expect(dot).not.toContain(`"${ADD_TASK_EXECUTE}"`);
+    expect(dot).toContain(
+      `"${ADD_TASK_CLASS}" -> "${GET_TASKS_CLASS}"`,
+    );
+  });
+
+  it("expands AddTaskToList with method nodes when minMethodsForClassDetail is 2", () => {
+    const config: AnalysisConfig = {
+      ...TEST_CONFIG,
+      minMethodsForClassDetail: 2,
+    };
+    const elements = prepareElements(config);
+    const dot = buildDot(elements, config);
+
+    expect(dot).toContain(`"${ADD_TASK_EXECUTE}"`);
   });
 });

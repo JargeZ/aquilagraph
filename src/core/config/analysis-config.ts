@@ -8,6 +8,11 @@ export interface AnalysisConfig {
   include: string[];
   exclude: string[];
   moduleDepth: number;
+  /**
+   * Минимум методов с исходящими рёбрами к другим нодам графа, чтобы показать класс субграфом.
+   * Значение <= 0 отключает свёртку (всегда субграф с методами, как до этой настройки).
+   */
+  minMethodsForClassDetail: number;
   hideUnclassified: boolean;
   selectors: {
     controlling: SelectorConfig;
@@ -26,6 +31,7 @@ export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
   include: [],
   exclude: [],
   moduleDepth: 1,
+  minMethodsForClassDetail: 3,
   hideUnclassified: true,
   selectors: {
     controlling: {},

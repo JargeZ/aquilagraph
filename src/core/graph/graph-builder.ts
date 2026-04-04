@@ -1,6 +1,7 @@
 import { digraph, toDot, attribute } from "ts-graphviz";
-import type { Digraph } from "ts-graphviz";
+import type { RootGraphModel } from "ts-graphviz";
 import type { AnalysisConfig } from "../config/analysis-config";
+import { DEFAULT_ANALYSIS_CONFIG } from "../config/analysis-config";
 import type { ExecutableElement, ElementType } from "../model/executable-element";
 import { getModuleName } from "../model/reference-builder";
 
@@ -23,8 +24,17 @@ interface ModuleGroup {
 export function buildGraph(
   elements: ExecutableElement[],
   config: AnalysisConfig,
-): Digraph {
+): RootGraphModel {
   const modules = groupByModule(elements, config.moduleDepth);
+  const elementSet = new Set(elements);
+  const threshold =
+    config.minMethodsForClassDetail ??
+    DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail;
+  const collapsedClassFullRefs = computeCollapsedClassRefs(
+    modules,
+    elementSet,
+    threshold,
+  );
 
   return digraph("G", (g) => {
     g.set(attribute.rankdir, "LR");
@@ -37,14 +47,22 @@ export function buildGraph(
         sg.set(attribute.style, "dashed");
 
         for (const [className, classElements] of mod.classes) {
-          sg.subgraph(`cluster_${mod.name}_${className}`, (csg) => {
-            csg.set(attribute.label, className);
-            csg.set(attribute.style, "rounded");
+          const fullClassRef = fullClassReference(classElements, className);
+          if (collapsedClassFullRefs.has(fullClassRef)) {
+            const classEl = classElements.find(
+              (e) => e.reference === fullClassRef,
+            );
+            if (classEl) addNode(sg, classEl);
+          } else {
+            sg.subgraph(`cluster_${mod.name}_${className}`, (csg) => {
+              csg.set(attribute.label, className);
+              csg.set(attribute.style, "rounded");
 
-            for (const el of classElements) {
-              addNode(csg, el);
-            }
-          });
+              for (const el of classElements) {
+                addNode(csg, el);
+              }
+            });
+          }
         }
 
         for (const el of mod.standalone) {
@@ -53,14 +71,85 @@ export function buildGraph(
       });
     }
 
+    const edgeSeen = new Set<string>();
     for (const el of elements) {
       for (const target of el.uses) {
-        if (elements.includes(target)) {
-          g.edge([el.reference, target.reference]);
-        }
+        if (!elementSet.has(target)) continue;
+        const from = canonicalReference(el, collapsedClassFullRefs);
+        const to = canonicalReference(target, collapsedClassFullRefs);
+        if (from === to) continue;
+        const key = `${from}\0${to}`;
+        if (edgeSeen.has(key)) continue;
+        edgeSeen.add(key);
+        g.edge([from, to]);
       }
     }
   });
+}
+
+function fullClassReference(
+  classElements: ExecutableElement[],
+  className: string,
+): string {
+  const mod = classElements[0]?.module ?? "";
+  return `${mod}.${className}`;
+}
+
+function isMethodElement(el: ExecutableElement): boolean {
+  return (
+    el.className != null &&
+    el.reference !== `${el.module}.${el.className}`
+  );
+}
+
+function countConnectingMethods(
+  classElements: ExecutableElement[],
+  elementSet: Set<ExecutableElement>,
+): number {
+  let n = 0;
+  for (const el of classElements) {
+    if (!isMethodElement(el)) continue;
+    if (el.uses.some((t) => elementSet.has(t))) n += 1;
+  }
+  return n;
+}
+
+function computeCollapsedClassRefs(
+  modules: ModuleGroup[],
+  elementSet: Set<ExecutableElement>,
+  threshold: number,
+): Set<string> {
+  const collapsed = new Set<string>();
+  if (threshold <= 0) {
+    return collapsed;
+  }
+  for (const mod of modules) {
+    for (const [className, classElements] of mod.classes) {
+      if (classElements.length === 0) continue;
+      if (countConnectingMethods(classElements, elementSet) >= threshold) {
+        continue;
+      }
+      const fullRef = fullClassReference(classElements, className);
+      const hasClassNode = classElements.some((e) => e.reference === fullRef);
+      if (hasClassNode) {
+        collapsed.add(fullRef);
+      }
+    }
+  }
+  return collapsed;
+}
+
+function canonicalReference(
+  el: ExecutableElement,
+  collapsedClassFullRefs: Set<string>,
+): string {
+  if (el.className) {
+    const classRef = `${el.module}.${el.className}`;
+    if (collapsedClassFullRefs.has(classRef)) {
+      return classRef;
+    }
+  }
+  return el.reference;
 }
 
 function addNode(

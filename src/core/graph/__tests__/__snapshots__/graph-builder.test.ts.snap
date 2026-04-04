@@ -39,6 +39,30 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fontcolor = "#FFFFFF";
       ];
     }
+    subgraph "cluster_export_module_TaskSerializer" {
+      label = "TaskSerializer";
+      style = "rounded";
+      "export_module.serializers.task_serializer.TaskSerializer" [
+        label = "TaskSerializer";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
     subgraph "cluster_export_module_TodoTaskViewSet" {
       label = "TodoTaskViewSet";
       style = "rounded";
@@ -69,6 +93,10 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
     }
   }
   "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "export_module.serializers.task_serializer.TaskSerializer";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport.execute";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";
 }"
 `;
 
@@ -147,6 +175,26 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fontcolor = "#FFFFFF";
       ];
     }
+    subgraph "cluster_core_module_CoreViewSet" {
+      label = "CoreViewSet";
+      style = "rounded";
+      "core_module.views.core.CoreViewSet" [
+        label = "CoreViewSet";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.views.core.CoreViewSet.create" [
+        label = "create";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
   }
   subgraph "cluster_export_module" {
     label = "export_module";
@@ -174,6 +222,30 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "execute";
         color = "#50C878";
         fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module_TaskSerializer" {
+      label = "TaskSerializer";
+      style = "rounded";
+      "export_module.serializers.task_serializer.TaskSerializer" [
+        label = "TaskSerializer";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
@@ -228,10 +300,18 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
   "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
   "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
   "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList.execute";
+  "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
   "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "export_module.serializers.task_serializer.TaskSerializer";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport.execute";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";
 }"
 `;
 
@@ -315,6 +395,30 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       fontcolor = "#FFFFFF";
     ];
   }
+  subgraph "cluster_core_module.views" {
+    label = "core_module.views";
+    style = "dashed";
+    subgraph "cluster_core_module.views_CoreViewSet" {
+      label = "CoreViewSet";
+      style = "rounded";
+      "core_module.views.core.CoreViewSet" [
+        label = "CoreViewSet";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.views.core.CoreViewSet.create" [
+        label = "create";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
   subgraph "cluster_export_module.actions" {
     label = "export_module.actions";
     style = "dashed";
@@ -333,6 +437,34 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "execute";
         color = "#50C878";
         fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_export_module.serializers" {
+    label = "export_module.serializers";
+    style = "dashed";
+    subgraph "cluster_export_module.serializers_TaskSerializer" {
+      label = "TaskSerializer";
+      style = "rounded";
+      "export_module.serializers.task_serializer.TaskSerializer" [
+        label = "TaskSerializer";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_export_module.serializers_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
@@ -403,9 +535,17 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
   "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
   "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
   "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList.execute";
+  "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
   "export_module.actions.perform_export.PerformExport.execute" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
   "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "export_module.serializers.task_serializer.TaskSerializer";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport.execute";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";
 }"
 `;

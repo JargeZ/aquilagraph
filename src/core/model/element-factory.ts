@@ -59,7 +59,7 @@ export function createElementsFromAnalyses(
 
 function resolveClassName(
   scope: ScopeInfo,
-  allScopes: ScopeInfo[],
+  _allScopes: ScopeInfo[],
 ): string | null {
   if (scope.type === "class") return scope.name;
   if (scope.type === "method" && scope.parent) return scope.parent;

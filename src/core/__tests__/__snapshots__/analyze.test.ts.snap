@@ -11,6 +11,22 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
   subgraph "cluster_core_module" {
     label = "core_module";
     style = "dashed";
+    "core_module.actions.add_task_to_list.AddTaskToList" [
+      label = "AddTaskToList";
+      color = "#50C878";
+      fillcolor = "#50C878";
+      shape = "ellipse";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    "core_module.actions.get_tasks_list.GetTasksList" [
+      label = "GetTasksList";
+      color = "#50C878";
+      fillcolor = "#50C878";
+      shape = "ellipse";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
     "core_module.tasks.run_todo_sync.task_RunTodoSync" [
       label = "task_RunTodoSync";
       color = "#FFB347";
@@ -19,42 +35,14 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
-    subgraph "cluster_core_module_AddTaskToList" {
-      label = "AddTaskToList";
+    subgraph "cluster_core_module_CoreViewSet" {
+      label = "CoreViewSet";
       style = "rounded";
-      "core_module.actions.add_task_to_list.AddTaskToList.execute" [
-        label = "execute";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-      "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" [
-        label = "_internal_preconditions_check";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-    }
-    subgraph "cluster_core_module_GetTasksList" {
-      label = "GetTasksList";
-      style = "rounded";
-      "core_module.actions.get_tasks_list.GetTasksList" [
-        label = "GetTasksList";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-      "core_module.actions.get_tasks_list.GetTasksList.execute" [
-        label = "execute";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
+      "core_module.views.core.CoreViewSet.create" [
+        label = "create";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -63,6 +51,14 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
   subgraph "cluster_export_module" {
     label = "export_module";
     style = "dashed";
+    "export_module.actions.perform_export.PerformExport" [
+      label = "PerformExport";
+      color = "#50C878";
+      fillcolor = "#50C878";
+      shape = "ellipse";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
     "export_module.tasks.run_exports.task_ExportAllTasks" [
       label = "task_ExportAllTasks";
       color = "#FFB347";
@@ -71,26 +67,34 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
-    subgraph "cluster_export_module_PerformExport" {
-      label = "PerformExport";
+    subgraph "cluster_export_module_TodoTaskViewSet" {
+      label = "TodoTaskViewSet";
       style = "rounded";
-      "export_module.actions.perform_export.PerformExport.execute" [
-        label = "execute";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
+      "export_module.views.todotask.TodoTaskViewSet.list" [
+        label = "list";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "export_module.views.todotask.TodoTaskViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
     }
   }
-  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
-  "core_module.actions.add_task_to_list.AddTaskToList.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
-  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
-  "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" -> "core_module.actions.get_tasks_list.GetTasksList";
-  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList.execute";
-  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.actions.get_tasks_list.GetTasksList";
-  "export_module.actions.perform_export.PerformExport.execute" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
-  "export_module.actions.perform_export.PerformExport.execute" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "core_module.actions.add_task_to_list.AddTaskToList" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList";
+  "export_module.actions.perform_export.PerformExport" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
+  "export_module.actions.perform_export.PerformExport" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";
 }"
 `;

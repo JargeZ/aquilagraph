@@ -8,6 +8,7 @@ class AddTaskToList(BaseBusinessAction):
     ) -> list[int]:
         list = GetTasksList().execute(user_id=1)
         self._internal_preconditions_check()
+        self._internal_empty()
         return list
 
     def _internal_preconditions_check(self):

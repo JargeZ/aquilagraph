@@ -24,9 +24,11 @@ describe("discoverPythonFiles", () => {
     expect(files).toContain("export_module/actions/perform_export.py");
     expect(files).toContain("export_module/tasks/run_exports.py");
     expect(files).toContain("export_module/views/todotask.py");
+    expect(files).toContain("core_module/views/core.py");
+    expect(files).toContain("export_module/serializers/task_serializer.py");
 
     expect(files.every((f) => !f.includes("__init__"))).toBe(true);
-    expect(files.length).toBe(7);
+    expect(files.length).toBe(9);
   });
 });
 
@@ -35,7 +37,7 @@ describe("scanProject", () => {
     const fs = createNodeFsAdapter(ROOT);
     const analyses = await scanProject("", fs);
 
-    expect(analyses.length).toBe(7);
+    expect(analyses.length).toBe(9);
 
     const filePaths = analyses.map((a) => a.filePath);
     expect(filePaths).toContain("utils/base_action.py");

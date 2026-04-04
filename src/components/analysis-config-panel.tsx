@@ -3,6 +3,7 @@ import type {
   AnalysisConfig,
   SelectorConfig,
 } from "@/core/config/analysis-config";
+import { DEFAULT_ANALYSIS_CONFIG } from "@/core/config/analysis-config";
 
 interface AnalysisConfigPanelProps {
   config: AnalysisConfig;
@@ -56,7 +57,7 @@ export function AnalysisConfigPanel({
         />
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex flex-wrap items-start gap-6">
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">
             Глубина модуля
@@ -71,6 +72,34 @@ export function AnalysisConfigPanel({
             }
             className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
           />
+        </div>
+
+        <div className="max-w-md">
+          <label
+            className="mb-1 block text-xs font-medium text-muted-foreground"
+            title="Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+          >
+            Минимально методов для детализации
+          </label>
+          <input
+            type="number"
+            min={1}
+            value={
+              config.minMethodsForClassDetail ??
+              DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail
+            }
+            onChange={(e) =>
+              updateField(
+                "minMethodsForClassDetail",
+                Math.max(1, Number(e.target.value)),
+              )
+            }
+            className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
+          />
+          <p className="mt-1 text-xs text-muted-foreground">
+            Класс будет сгруппирован в субграф, если в классе есть как минимум
+            заданное количество методов, которые ведут к другим нодам
+          </p>
         </div>
 
         <label className="flex cursor-pointer items-center gap-2 select-none">
