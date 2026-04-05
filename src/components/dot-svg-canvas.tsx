@@ -18,6 +18,7 @@ import {
   shortClickPointerMove,
   shortClickPointerUpClearDeferred,
 } from "@/lib/short-click-gesture";
+import { attachSvgPanZoomTrackpadWheel } from "@/lib/svg-pan-zoom-trackpad-wheel";
 import { getVizInstance } from "@/lib/viz-instance";
 import { applyVizSvgHighlight } from "@/lib/viz-svg-highlight";
 
@@ -77,7 +78,10 @@ export function DotSvgCanvas({
     if (!container) return;
 
     let cancelled = false;
+    let detachTrackpadWheel: (() => void) | null = null;
     setSvgReady(false);
+
+    const zoomScaleSensitivity = 0.3;
 
     getVizInstance()
       .then(async (viz) => {
@@ -96,14 +100,27 @@ export function DotSvgCanvas({
         setError(null);
         setSvgReady(true);
 
-        panZoomRef.current = svgPanZoom(svg, {
+        if (cancelled) return;
+
+        const panZoom = svgPanZoom(svg, {
           zoomEnabled: true,
           controlIconsEnabled: true,
           fit: true,
           center: true,
           minZoom: 0.1,
           maxZoom: 10,
-          zoomScaleSensitivity: 0.3,
+          zoomScaleSensitivity,
+        });
+        panZoomRef.current = panZoom;
+
+        if (cancelled) {
+          panZoom.destroy();
+          panZoomRef.current = null;
+          return;
+        }
+
+        detachTrackpadWheel = attachSvgPanZoomTrackpadWheel(svg, panZoom, {
+          zoomScaleSensitivity,
         });
       })
       .catch((err) => {
@@ -116,6 +133,8 @@ export function DotSvgCanvas({
     return () => {
       cancelled = true;
       setSvgReady(false);
+      detachTrackpadWheel?.();
+      detachTrackpadWheel = null;
       panZoomRef.current?.destroy();
       panZoomRef.current = null;
     };
