@@ -4,13 +4,17 @@
  * Рёбра: <g class="edge"><title>tail-&gt;head</title>… (в DOM текст обычно "tail->head")
  */
 
+import { computeLinkReachSets } from "@/core/graph/link-highlight";
+
 const HL_CLASSES = [
   "viz-hl-sel",
   "viz-hl-uses",
   "viz-hl-usedby",
+  "viz-hl-both",
   "viz-hl-dim",
   "viz-hl-edge-out",
   "viz-hl-edge-in",
+  "viz-hl-edge-both",
   "viz-hl-edge-dim",
 ] as const;
 
@@ -39,6 +43,13 @@ const VIZ_HIGHLIGHT_CSS = `
     stroke-width: 2px !important;
   }
 
+  g.node.viz-hl-both polygon,
+  g.node.viz-hl-both ellipse,
+  g.node.viz-hl-both path {
+    stroke: #8b5cf6 !important;
+    stroke-width: 2px !important;
+  }
+
   g.node.viz-hl-dim polygon,
   g.node.viz-hl-dim ellipse,
   g.node.viz-hl-dim path,
@@ -57,6 +68,13 @@ const VIZ_HIGHLIGHT_CSS = `
   g.edge.viz-hl-edge-in polyline,
   g.edge.viz-hl-edge-in polygon {
     stroke: #f59e0b !important;
+    stroke-width: 3.5 !important;
+  }
+
+  g.edge.viz-hl-edge-both path,
+  g.edge.viz-hl-edge-both polyline,
+  g.edge.viz-hl-edge-both polygon {
+    stroke: #8b5cf6 !important;
     stroke-width: 3.5 !important;
   }
 
@@ -108,32 +126,34 @@ export function applyVizSvgHighlight(
 
   if (!selectedRef) return;
 
-  const usesTargets = new Set<string>();
-  const usedBySources = new Set<string>();
-  for (const e of edges) {
-    if (e.source === selectedRef) usesTargets.add(e.target);
-    if (e.target === selectedRef) usedBySources.add(e.source);
-  }
+  const { forward, backward } = computeLinkReachSets(edges, selectedRef);
 
   for (const g of root.querySelectorAll("g.node")) {
     const id = firstTitleText(g);
     if (!id) continue;
     if (id === selectedRef) g.classList.add("viz-hl-sel");
-    else if (usesTargets.has(id)) g.classList.add("viz-hl-uses");
-    else if (usedBySources.has(id)) g.classList.add("viz-hl-usedby");
-    else g.classList.add("viz-hl-dim");
+    else {
+      const inF = forward.has(id);
+      const inB = backward.has(id);
+      if (inF && inB) g.classList.add("viz-hl-both");
+      else if (inF) g.classList.add("viz-hl-uses");
+      else if (inB) g.classList.add("viz-hl-usedby");
+      else g.classList.add("viz-hl-dim");
+    }
   }
 
   for (const g of root.querySelectorAll("g.edge")) {
     const parsed = parseVizEdgeTitle(firstTitleText(g));
     if (!parsed) continue;
     const { from, to } = parsed;
-    const touches = from === selectedRef || to === selectedRef;
-    if (!touches) {
+    const inF = forward.has(from) && forward.has(to);
+    const inB = backward.has(from) && backward.has(to);
+    if (!inF && !inB) {
       g.classList.add("viz-hl-edge-dim");
       continue;
     }
-    if (from === selectedRef) g.classList.add("viz-hl-edge-out");
+    if (inF && inB) g.classList.add("viz-hl-edge-both");
+    else if (inF) g.classList.add("viz-hl-edge-out");
     else g.classList.add("viz-hl-edge-in");
   }
 }

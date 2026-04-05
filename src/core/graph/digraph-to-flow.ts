@@ -4,7 +4,12 @@ import type { NodeModel, RootGraphModel, SubgraphModel } from "ts-graphviz";
 import type { ElementType } from "../model/executable-element";
 
 /** Подсветка связей при выборе узла в Flow (см. graph-view). */
-export type LinkHighlightRole = "selected" | "uses" | "usedBy" | "dimmed";
+export type LinkHighlightRole =
+  | "selected"
+  | "uses"
+  | "usedBy"
+  | "both"
+  | "dimmed";
 
 export interface ElementNodeData extends Record<string, unknown> {
   label: string;

@@ -25,6 +25,7 @@ import {
   type ElementNodeData,
   type FlowNode,
 } from "@/core/graph/digraph-to-flow";
+import { computeLinkReachSets } from "@/core/graph/link-highlight";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { DotSvgCanvas } from "./dot-svg-canvas";
 import { ElementNode } from "./flow-nodes/element-node";
@@ -181,12 +182,11 @@ function FlowCanvas({
       return { flowNodes: nodes, flowEdges: edges };
     }
 
-    const usesTargets = new Set<string>();
-    const usedBySources = new Set<string>();
-    for (const e of edges) {
-      if (e.source === selectedRef) usesTargets.add(e.target);
-      if (e.target === selectedRef) usedBySources.add(e.source);
-    }
+    const edgePairs = edges.map((e) => ({
+      source: e.source,
+      target: e.target,
+    }));
+    const { forward, backward } = computeLinkReachSets(edgePairs, selectedRef);
 
     const flowNodes = nodes.map((n) => {
       if (n.type !== "element") return n;
@@ -199,14 +199,23 @@ function FlowCanvas({
           data: { ...data, linkHighlight: "selected" as const },
         };
       }
-      if (usesTargets.has(r)) {
+      const inF = forward.has(r);
+      const inB = backward.has(r);
+      if (inF && inB) {
+        return {
+          ...n,
+          selected: false,
+          data: { ...data, linkHighlight: "both" as const },
+        };
+      }
+      if (inF) {
         return {
           ...n,
           selected: false,
           data: { ...data, linkHighlight: "uses" as const },
         };
       }
-      if (usedBySources.has(r)) {
+      if (inB) {
         return {
           ...n,
           selected: false,
@@ -222,16 +231,16 @@ function FlowCanvas({
     });
 
     const flowEdges: Edge[] = edges.map((e) => {
-      const touches = e.source === selectedRef || e.target === selectedRef;
-      if (!touches) {
+      const inF = forward.has(e.source) && forward.has(e.target);
+      const inB = backward.has(e.source) && backward.has(e.target);
+      if (!inF && !inB) {
         return {
           ...e,
           style: { ...e.style, opacity: 0.12 },
           interactionWidth: 0,
         };
       }
-      const outgoing = e.source === selectedRef;
-      const stroke = outgoing ? "#0ea5e9" : "#f59e0b";
+      const stroke = inF && inB ? "#8b5cf6" : inF ? "#0ea5e9" : "#f59e0b";
       return {
         ...e,
         style: {

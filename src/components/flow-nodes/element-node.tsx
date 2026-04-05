@@ -5,6 +5,7 @@ export type ElementFlowNode = Node<ElementNodeData, "element">;
 
 const USES_RING = "0 0 0 2px #0ea5e9, 0 0 0 4px rgba(14,165,233,0.35)";
 const USEDBY_RING = "0 0 0 2px #f59e0b, 0 0 0 4px rgba(245,158,11,0.35)";
+const BOTH_RING = "0 0 0 2px #8b5cf6, 0 0 0 4px rgba(139,92,246,0.35)";
 
 export function ElementNode({ data, selected }: NodeProps<ElementFlowNode>) {
   const role = data.linkHighlight;
@@ -15,7 +16,9 @@ export function ElementNode({ data, selected }: NodeProps<ElementFlowNode>) {
         ? USES_RING
         : role === "usedBy"
           ? USEDBY_RING
-          : undefined;
+          : role === "both"
+            ? BOTH_RING
+            : undefined;
 
   return (
     <div
@@ -29,7 +32,9 @@ export function ElementNode({ data, selected }: NodeProps<ElementFlowNode>) {
               ? "#0ea5e9"
               : role === "usedBy"
                 ? "#f59e0b"
-                : "transparent",
+                : role === "both"
+                  ? "#8b5cf6"
+                  : "transparent",
         color: "#fff",
         minWidth: 80,
         boxShadow: ring,
