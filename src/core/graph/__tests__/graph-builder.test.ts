@@ -178,11 +178,17 @@ describe("buildGraph", () => {
     };
     const dot = buildDot(elements, config);
 
-    expect(dot).toContain('subgraph "cluster_mod_A_bucket_controlling"');
-    expect(dot).toContain('subgraph "cluster_mod_A_bucket_businessLogic"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_controlling"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_controlling_A"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_businessLogic"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_businessLogic_A"');
     expect(dot).toContain('label = "Controlling"');
     expect(dot).toContain('label = "Business Logic"');
-    expect(dot).toMatch(/cluster_mod_A_bucket_controlling[\s\S]*style = "dashed"/);
-    expect(dot).toMatch(/cluster_mod_A_bucket_businessLogic[\s\S]*color = "#50C878"/);
+    expect(dot).toMatch(
+      /subgraph "cluster_mod_bucket_controlling"[\s\S]*style = "dashed"/,
+    );
+    expect(dot).toMatch(
+      /subgraph "cluster_mod_bucket_businessLogic"[\s\S]*color = "#50C878"/,
+    );
   });
 });

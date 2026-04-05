@@ -19,6 +19,18 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
+    subgraph "cluster_export_module_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
     subgraph "cluster_export_module_PerformExport" {
       label = "PerformExport";
       style = "rounded";
@@ -52,18 +64,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
-        color = "#D3D3D3";
-        fillcolor = "#D3D3D3";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-    }
-    subgraph "cluster_export_module_Meta" {
-      label = "Meta";
-      style = "rounded";
-      "export_module.serializers.task_serializer.Meta" [
-        label = "Meta";
         color = "#D3D3D3";
         fillcolor = "#D3D3D3";
         shape = "ellipse";
@@ -163,26 +163,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fontcolor = "#FFFFFF";
       ];
     }
-    subgraph "cluster_core_module_GetTasksList" {
-      label = "GetTasksList";
-      style = "rounded";
-      "core_module.actions.get_tasks_list.GetTasksList" [
-        label = "GetTasksList";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-      "core_module.actions.get_tasks_list.GetTasksList.execute" [
-        label = "execute";
-        color = "#50C878";
-        fillcolor = "#50C878";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-    }
     subgraph "cluster_core_module_CoreViewSet" {
       label = "CoreViewSet";
       style = "rounded";
@@ -199,6 +179,26 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         color = "#4A90D9";
         fillcolor = "#4A90D9";
         shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+    subgraph "cluster_core_module_GetTasksList" {
+      label = "GetTasksList";
+      style = "rounded";
+      "core_module.actions.get_tasks_list.GetTasksList" [
+        label = "GetTasksList";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.actions.get_tasks_list.GetTasksList.execute" [
+        label = "execute";
+        color = "#50C878";
+        fillcolor = "#50C878";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -251,6 +251,18 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
+    subgraph "cluster_export_module_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
     subgraph "cluster_export_module_PerformExport" {
       label = "PerformExport";
       style = "rounded";
@@ -284,18 +296,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
-        color = "#D3D3D3";
-        fillcolor = "#D3D3D3";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-    }
-    subgraph "cluster_export_module_Meta" {
-      label = "Meta";
-      style = "rounded";
-      "export_module.serializers.task_serializer.Meta" [
-        label = "Meta";
         color = "#D3D3D3";
         fillcolor = "#D3D3D3";
         shape = "ellipse";
@@ -544,6 +544,18 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
   subgraph "cluster_export_module.serializers" {
     label = "export_module.serializers";
     style = "dashed";
+    subgraph "cluster_export_module.serializers_Meta" {
+      label = "Meta";
+      style = "rounded";
+      "export_module.serializers.task_serializer.Meta" [
+        label = "Meta";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
     subgraph "cluster_export_module.serializers_TaskSerializer" {
       label = "TaskSerializer";
       style = "rounded";
@@ -557,18 +569,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
-        color = "#D3D3D3";
-        fillcolor = "#D3D3D3";
-        shape = "ellipse";
-        style = "filled";
-        fontcolor = "#FFFFFF";
-      ];
-    }
-    subgraph "cluster_export_module.serializers_Meta" {
-      label = "Meta";
-      style = "rounded";
-      "export_module.serializers.task_serializer.Meta" [
-        label = "Meta";
         color = "#D3D3D3";
         fillcolor = "#D3D3D3";
         shape = "ellipse";

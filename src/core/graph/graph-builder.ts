@@ -25,6 +25,14 @@ const TYPE_CLUSTER_LABEL: Record<
   sideEffect: "Side Effects",
 };
 
+const BUCKET_ELEMENT_TYPES = [
+  "controlling",
+  "businessLogic",
+  "sideEffect",
+] as const satisfies readonly ElementType[];
+
+type BucketElementType = (typeof BUCKET_ELEMENT_TYPES)[number];
+
 type GraphContainer = {
   subgraph: (
     id: string,
@@ -65,40 +73,11 @@ export function buildGraph(
         sg.set(attribute.label, mod.name);
         sg.set(attribute.style, "dashed");
 
-        for (const [className, classElements] of mod.classes) {
-          const fullClassRef = fullClassReference(classElements, className);
-          if (collapsedClassFullRefs.has(fullClassRef)) {
-            const classEl = classElements.find(
-              (e) => e.reference === fullClassRef,
-            );
-            if (classEl) {
-              addElementsWithOptionalTypeBuckets(
-                sg as GraphContainer,
-                [classEl],
-                `cluster_${mod.name}_${className}`,
-                config,
-              );
-            }
-          } else {
-            sg.subgraph(`cluster_${mod.name}_${className}`, (csg) => {
-              csg.set(attribute.label, className);
-              csg.set(attribute.style, "rounded");
-
-              addElementsWithOptionalTypeBuckets(
-                csg as GraphContainer,
-                classElements,
-                `cluster_${mod.name}_${className}`,
-                config,
-              );
-            });
-          }
-        }
-
-        addElementsWithOptionalTypeBuckets(
+        addModuleClusterContents(
           sg as GraphContainer,
-          mod.standalone,
-          `cluster_${mod.name}_standalone`,
+          mod,
           config,
+          collapsedClassFullRefs,
         );
       });
     }
@@ -208,56 +187,139 @@ function elementTypeUsesBucket(
   }
 }
 
-function partitionElementsForBuckets(
-  elements: ExecutableElement[],
-  config: AnalysisConfig,
-): {
-  ungrouped: ExecutableElement[];
-  bucketed: Map<"controlling" | "businessLogic" | "sideEffect", ExecutableElement[]>;
-} {
-  const ungrouped: ExecutableElement[] = [];
-  const bucketed = new Map<
-    "controlling" | "businessLogic" | "sideEffect",
-    ExecutableElement[]
-  >();
-  for (const el of elements) {
-    if (!elementTypeUsesBucket(el.type, config)) {
-      ungrouped.push(el);
-      continue;
-    }
-    const t = el.type as "controlling" | "businessLogic" | "sideEffect";
-    const list = bucketed.get(t);
-    if (list) list.push(el);
-    else bucketed.set(t, [el]);
+function bucketFlagForElementType(
+  merged: ReturnType<typeof mergedGroupInBucket>,
+  type: BucketElementType,
+): boolean {
+  switch (type) {
+    case "controlling":
+      return merged.controlling;
+    case "businessLogic":
+      return merged.businessLogic;
+    case "sideEffect":
+      return merged.sideEffects;
   }
-  return { ungrouped, bucketed };
 }
 
-function addElementsWithOptionalTypeBuckets(
-  parent: GraphContainer,
-  elements: ExecutableElement[],
-  clusterIdPrefix: string,
-  config: AnalysisConfig,
-): void {
-  const { ungrouped, bucketed } = partitionElementsForBuckets(
-    elements,
-    config,
-  );
-  for (const el of ungrouped) {
-    addNode(parent, el);
+interface ModuleBucketContents {
+  standalone: ExecutableElement[];
+  byClass: Map<string, ExecutableElement[]>;
+}
+
+function collectModuleBucketContents(
+  mod: ModuleGroup,
+  bucketType: BucketElementType,
+  collapsedClassFullRefs: Set<string>,
+): ModuleBucketContents {
+  const standalone = mod.standalone.filter((el) => el.type === bucketType);
+  const byClass = new Map<string, ExecutableElement[]>();
+
+  for (const [className, classElements] of mod.classes) {
+    const fullClassRef = fullClassReference(classElements, className);
+    if (collapsedClassFullRefs.has(fullClassRef)) {
+      const classEl = classElements.find((e) => e.reference === fullClassRef);
+      if (classEl && classEl.type === bucketType) {
+        byClass.set(className, [classEl]);
+      }
+      continue;
+    }
+    const ofType = classElements.filter((el) => el.type === bucketType);
+    if (ofType.length > 0) {
+      byClass.set(className, ofType);
+    }
   }
-  for (const [type, els] of bucketed) {
-    if (els.length === 0) continue;
-    const style = TYPE_STYLES[type];
-    parent.subgraph(`${clusterIdPrefix}_bucket_${type}`, (tg) => {
-      tg.set(attribute.label, TYPE_CLUSTER_LABEL[type]);
-      tg.set(attribute.color, style.color);
-      tg.set(attribute.fontcolor, style.color);
-      tg.set(attribute.style, "dashed");
-      for (const el of els) {
-        addNode(tg, el);
+
+  return { standalone, byClass };
+}
+
+function isModuleBucketEmpty(contents: ModuleBucketContents): boolean {
+  if (contents.standalone.length > 0) return false;
+  return contents.byClass.size === 0;
+}
+
+function setBucketClusterAttrs(
+  container: GraphContainer,
+  bucketType: BucketElementType,
+): void {
+  const style = TYPE_STYLES[bucketType];
+  container.set(attribute.label, TYPE_CLUSTER_LABEL[bucketType]);
+  container.set(attribute.color, style.color);
+  container.set(attribute.fontcolor, style.color);
+  container.set(attribute.style, "dashed");
+}
+
+/**
+ * Содержимое кластера модуля: при включённых бакетах — один субграф на классификацию,
+ * внутри — субграфы классов; остальные ноды — в обычных субграфах класса на уровне модуля.
+ */
+function addModuleClusterContents(
+  sg: GraphContainer,
+  mod: ModuleGroup,
+  config: AnalysisConfig,
+  collapsedClassFullRefs: Set<string>,
+): void {
+  const merged = mergedGroupInBucket(config);
+
+  for (const bucketType of BUCKET_ELEMENT_TYPES) {
+    if (!bucketFlagForElementType(merged, bucketType)) continue;
+    const contents = collectModuleBucketContents(
+      mod,
+      bucketType,
+      collapsedClassFullRefs,
+    );
+    if (isModuleBucketEmpty(contents)) continue;
+
+    sg.subgraph(`cluster_${mod.name}_bucket_${bucketType}`, (bg) => {
+      setBucketClusterAttrs(bg, bucketType);
+      for (const el of contents.standalone) {
+        addNode(bg, el);
+      }
+      const classEntries = Array.from(contents.byClass.entries()).sort((a, b) =>
+        a[0].localeCompare(b[0]),
+      );
+      for (const [className, els] of classEntries) {
+        bg.subgraph(`cluster_${mod.name}_bucket_${bucketType}_${className}`, (csg) => {
+          csg.set(attribute.label, className);
+          csg.set(attribute.style, "rounded");
+          for (const el of els) {
+            addNode(csg, el);
+          }
+        });
       }
     });
+  }
+
+  const sortedClasses = Array.from(mod.classes.entries()).sort((a, b) =>
+    a[0].localeCompare(b[0]),
+  );
+  for (const [className, classElements] of sortedClasses) {
+    const fullClassRef = fullClassReference(classElements, className);
+    if (collapsedClassFullRefs.has(fullClassRef)) {
+      const classEl = classElements.find((e) => e.reference === fullClassRef);
+      if (!classEl) continue;
+      if (elementTypeUsesBucket(classEl.type, config)) {
+        continue;
+      }
+      addNode(sg, classEl);
+      continue;
+    }
+    const nonBucket = classElements.filter(
+      (el) => !elementTypeUsesBucket(el.type, config),
+    );
+    if (nonBucket.length === 0) continue;
+    sg.subgraph(`cluster_${mod.name}_${className}`, (csg) => {
+      csg.set(attribute.label, className);
+      csg.set(attribute.style, "rounded");
+      for (const el of nonBucket) {
+        addNode(csg, el);
+      }
+    });
+  }
+
+  for (const el of mod.standalone) {
+    if (!elementTypeUsesBucket(el.type, config)) {
+      addNode(sg, el);
+    }
   }
 }
 
