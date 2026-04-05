@@ -11,6 +11,13 @@ import type { RootGraphModel } from "ts-graphviz";
 import { graphModelEdgePairs } from "@/core/graph/digraph-to-flow";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
+import {
+  createShortClickPointerRef,
+  isShortClick,
+  shortClickPointerDown,
+  shortClickPointerMove,
+  shortClickPointerUpClearDeferred,
+} from "@/lib/short-click-gesture";
 import { getVizInstance } from "@/lib/viz-instance";
 import { applyVizSvgHighlight } from "@/lib/viz-svg-highlight";
 
@@ -30,8 +37,6 @@ interface DotSvgCanvasProps {
   selectedRef?: string | null;
   onSelectElement?: (element: ExecutableElement | null) => void;
 }
-
-const PAN_CLICK_DRAG_PX = 6;
 
 function findNodeGroup(target: EventTarget | null): SVGGElement | null {
   let el = target as Element | null;
@@ -53,13 +58,7 @@ export function DotSvgCanvas({
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<SvgPanZoomHandle | null>(null);
-  /** После панорамы svg-pan-zoom всё равно приходит click — не снимать выбор с фона. */
-  const pointerPanRef = useRef({
-    down: false,
-    x: 0,
-    y: 0,
-    movedBeyondThreshold: false,
-  });
+  const shortClickRef = useRef(createShortClickPointerRef());
   const [error, setError] = useState<string | null>(null);
   const [svgReady, setSvgReady] = useState(false);
 
@@ -123,35 +122,14 @@ export function DotSvgCanvas({
   }, [dot]);
 
   useEffect(() => {
-    const clearStalePanFlag = () => {
-      pointerPanRef.current.movedBeyondThreshold = false;
-    };
-    window.addEventListener("pointerdown", clearStalePanFlag, true);
-    return () =>
-      window.removeEventListener("pointerdown", clearStalePanFlag, true);
-  }, []);
-
-  useEffect(() => {
     if (!svgReady) return;
     const svg = containerRef.current?.querySelector("svg");
     if (!(svg instanceof SVGSVGElement)) return;
 
-    const onPointerDown = (e: PointerEvent) => {
-      if (e.button !== 0) return;
-      pointerPanRef.current.down = true;
-      pointerPanRef.current.x = e.clientX;
-      pointerPanRef.current.y = e.clientY;
-    };
-    const onPointerMove = (e: PointerEvent) => {
-      const s = pointerPanRef.current;
-      if (!s.down || e.buttons !== 1) return;
-      if (Math.hypot(e.clientX - s.x, e.clientY - s.y) > PAN_CLICK_DRAG_PX) {
-        s.movedBeyondThreshold = true;
-      }
-    };
-    const onPointerEnd = () => {
-      pointerPanRef.current.down = false;
-    };
+    const ref = shortClickRef.current;
+    const onPointerDown = (e: PointerEvent) => shortClickPointerDown(ref, e);
+    const onPointerMove = (e: PointerEvent) => shortClickPointerMove(ref, e);
+    const onPointerEnd = () => shortClickPointerUpClearDeferred(ref);
 
     svg.addEventListener("pointerdown", onPointerDown);
     svg.addEventListener("pointermove", onPointerMove);
@@ -179,7 +157,7 @@ export function DotSvgCanvas({
     (e: React.MouseEvent) => {
       const group = findNodeGroup(e.target);
       if (!group) {
-        if (pointerPanRef.current.movedBeyondThreshold) return;
+        if (!isShortClick(shortClickRef.current)) return;
         onSelectElement?.(null);
         return;
       }

@@ -177,27 +177,30 @@ function FlowCanvas({
 
   const selectedRef = selectedElement?.reference ?? null;
 
+  const flowWrapRef = useRef<HTMLDivElement>(null);
   const skipPaneClearAfterViewportChangeRef = useRef(false);
   const viewportAtMoveStartRef = useRef<Viewport | null>(null);
 
+  /** Новый жест: сбросить «после панорамы», иначе следующий короткий клик по фону ошибочно проигнорируется. */
   useEffect(() => {
-    const onPointerDownCapture = () => {
+    const el = flowWrapRef.current;
+    if (!el) return;
+    const reset = () => {
       skipPaneClearAfterViewportChangeRef.current = false;
     };
-    window.addEventListener("pointerdown", onPointerDownCapture, true);
-    return () =>
-      window.removeEventListener("pointerdown", onPointerDownCapture, true);
+    el.addEventListener("pointerdown", reset, true);
+    return () => el.removeEventListener("pointerdown", reset, true);
   }, []);
 
   const onMoveStart = useCallback((_e: unknown, vp: Viewport) => {
     viewportAtMoveStartRef.current = { x: vp.x, y: vp.y, zoom: vp.zoom };
   }, []);
 
+  /** Pointer на обёртке при pan часто не двигается (capture у React Flow) — смотрим сдвиг viewport. */
   const onMoveEnd = useCallback((_e: unknown, vp: Viewport) => {
     const start = viewportAtMoveStartRef.current;
     viewportAtMoveStartRef.current = null;
     if (!start) return;
-    // Только панорама (сдвиг), не зум колёсиком — иначе клик по фону после zoom не снимет выбор.
     if (start.x !== vp.x || start.y !== vp.y) {
       skipPaneClearAfterViewportChangeRef.current = true;
     }
@@ -309,7 +312,7 @@ function FlowCanvas({
 
   return (
     <div className="flex h-full gap-3">
-      <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+      <div ref={flowWrapRef} className="min-h-0 min-w-0 flex-1 overflow-hidden">
         <ReactFlow
           nodes={flowNodes}
           edges={flowEdges}
