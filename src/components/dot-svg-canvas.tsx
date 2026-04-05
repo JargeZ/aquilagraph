@@ -50,6 +50,16 @@ function findNodeGroup(target: EventTarget | null): SVGGElement | null {
 
 type SvgPanZoomHandle = { destroy(): void };
 
+type SvgPanZoomPublicInstance = SvgPanZoomHandle & {
+  resize(): unknown;
+};
+
+/**
+ * svg-pan-zoom клампит зум к [minZoom, maxZoom] × начальный масштаб после fit.
+ * Дефолт библиотеки maxZoom=10 часто не хватает, чтобы «влезть» в детали большого графа.
+ */
+const SVG_PAN_ZOOM_MAX_ZOOM = 100;
+
 export function DotSvgCanvas({
   dot,
   graph,
@@ -107,10 +117,10 @@ export function DotSvgCanvas({
           controlIconsEnabled: true,
           fit: true,
           center: true,
-          minZoom: 0.1,
-          maxZoom: 10,
+          minZoom: 0.05,
+          maxZoom: SVG_PAN_ZOOM_MAX_ZOOM,
           zoomScaleSensitivity,
-        });
+        }) as SvgPanZoomPublicInstance;
         panZoomRef.current = panZoom;
 
         if (cancelled) {
@@ -122,6 +132,16 @@ export function DotSvgCanvas({
         detachTrackpadWheel = attachSvgPanZoomTrackpadWheel(svg, panZoom, {
           zoomScaleSensitivity,
         });
+
+        // Flex/вкладки: если fit посчитан при нулевых размерах, зум и границы ломаются — один пересчёт после layout.
+        if (svg.clientWidth < 4 || svg.clientHeight < 4) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (cancelled) return;
+              panZoom.resize();
+            });
+          });
+        }
       })
       .catch((err) => {
         if (!cancelled) {
