@@ -31,6 +31,8 @@ interface DotSvgCanvasProps {
   onSelectElement?: (element: ExecutableElement | null) => void;
 }
 
+const PAN_CLICK_DRAG_PX = 6;
+
 function findNodeGroup(target: EventTarget | null): SVGGElement | null {
   let el = target as Element | null;
   while (el && el instanceof SVGElement) {
@@ -51,6 +53,13 @@ export function DotSvgCanvas({
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<SvgPanZoomHandle | null>(null);
+  /** После панорамы svg-pan-zoom всё равно приходит click — не снимать выбор с фона. */
+  const pointerPanRef = useRef({
+    down: false,
+    x: 0,
+    y: 0,
+    movedBeyondThreshold: false,
+  });
   const [error, setError] = useState<string | null>(null);
   const [svgReady, setSvgReady] = useState(false);
 
@@ -113,6 +122,52 @@ export function DotSvgCanvas({
     };
   }, [dot]);
 
+  useEffect(() => {
+    const clearStalePanFlag = () => {
+      pointerPanRef.current.movedBeyondThreshold = false;
+    };
+    window.addEventListener("pointerdown", clearStalePanFlag, true);
+    return () =>
+      window.removeEventListener("pointerdown", clearStalePanFlag, true);
+  }, []);
+
+  useEffect(() => {
+    if (!svgReady) return;
+    const svg = containerRef.current?.querySelector("svg");
+    if (!(svg instanceof SVGSVGElement)) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      pointerPanRef.current.down = true;
+      pointerPanRef.current.x = e.clientX;
+      pointerPanRef.current.y = e.clientY;
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      const s = pointerPanRef.current;
+      if (!s.down || e.buttons !== 1) return;
+      if (Math.hypot(e.clientX - s.x, e.clientY - s.y) > PAN_CLICK_DRAG_PX) {
+        s.movedBeyondThreshold = true;
+      }
+    };
+    const onPointerEnd = () => {
+      pointerPanRef.current.down = false;
+    };
+
+    svg.addEventListener("pointerdown", onPointerDown);
+    svg.addEventListener("pointermove", onPointerMove);
+    svg.addEventListener("pointerup", onPointerEnd);
+    svg.addEventListener("pointercancel", onPointerEnd);
+    svg.addEventListener("lostpointercapture", onPointerEnd);
+
+    return () => {
+      svg.removeEventListener("pointerdown", onPointerDown);
+      svg.removeEventListener("pointermove", onPointerMove);
+      svg.removeEventListener("pointerup", onPointerEnd);
+      svg.removeEventListener("pointercancel", onPointerEnd);
+      svg.removeEventListener("lostpointercapture", onPointerEnd);
+    };
+  }, [svgReady]);
+
   useLayoutEffect(() => {
     if (!svgReady) return;
     const svg = containerRef.current?.querySelector("svg");
@@ -124,6 +179,7 @@ export function DotSvgCanvas({
     (e: React.MouseEvent) => {
       const group = findNodeGroup(e.target);
       if (!group) {
+        if (pointerPanRef.current.movedBeyondThreshold) return;
         onSelectElement?.(null);
         return;
       }

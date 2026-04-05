@@ -1,4 +1,4 @@
-import type { Edge } from "@xyflow/react";
+import type { Edge, Viewport } from "@xyflow/react";
 import {
   Background,
   BackgroundVariant,
@@ -18,7 +18,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@ui/molecules/tabs/tabs";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
 import {
   digraphToFlow,
@@ -177,6 +177,40 @@ function FlowCanvas({
 
   const selectedRef = selectedElement?.reference ?? null;
 
+  const skipPaneClearAfterViewportChangeRef = useRef(false);
+  const viewportAtMoveStartRef = useRef<Viewport | null>(null);
+
+  useEffect(() => {
+    const onPointerDownCapture = () => {
+      skipPaneClearAfterViewportChangeRef.current = false;
+    };
+    window.addEventListener("pointerdown", onPointerDownCapture, true);
+    return () =>
+      window.removeEventListener("pointerdown", onPointerDownCapture, true);
+  }, []);
+
+  const onMoveStart = useCallback((_e: unknown, vp: Viewport) => {
+    viewportAtMoveStartRef.current = { x: vp.x, y: vp.y, zoom: vp.zoom };
+  }, []);
+
+  const onMoveEnd = useCallback((_e: unknown, vp: Viewport) => {
+    const start = viewportAtMoveStartRef.current;
+    viewportAtMoveStartRef.current = null;
+    if (!start) return;
+    // Только панорама (сдвиг), не зум колёсиком — иначе клик по фону после zoom не снимет выбор.
+    if (start.x !== vp.x || start.y !== vp.y) {
+      skipPaneClearAfterViewportChangeRef.current = true;
+    }
+  }, []);
+
+  const onPaneClick = useCallback(() => {
+    if (skipPaneClearAfterViewportChangeRef.current) {
+      skipPaneClearAfterViewportChangeRef.current = false;
+      return;
+    }
+    setSelectedElement(null);
+  }, []);
+
   const { flowNodes, flowEdges } = useMemo(() => {
     if (!selectedRef) {
       return { flowNodes: nodes, flowEdges: edges };
@@ -261,13 +295,17 @@ function FlowCanvas({
     return { flowNodes, flowEdges };
   }, [nodes, edges, selectedRef]);
 
-  const onNodeClick: NodeMouseHandler<FlowNode> = (_event, node) => {
-    if (node.type === "element") {
-      const data = node.data as ElementNodeData;
-      const el = elementsByRef.get(data.reference);
-      setSelectedElement(el ?? null);
-    }
-  };
+  const onNodeClick: NodeMouseHandler<FlowNode> = useCallback(
+    (_event, node) => {
+      skipPaneClearAfterViewportChangeRef.current = false;
+      if (node.type === "element") {
+        const data = node.data as ElementNodeData;
+        const el = elementsByRef.get(data.reference);
+        setSelectedElement(el ?? null);
+      }
+    },
+    [elementsByRef],
+  );
 
   return (
     <div className="flex h-full gap-3">
@@ -277,7 +315,9 @@ function FlowCanvas({
           edges={flowEdges}
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
-          onPaneClick={() => setSelectedElement(null)}
+          onMoveStart={onMoveStart}
+          onMoveEnd={onMoveEnd}
+          onPaneClick={onPaneClick}
           fitView
           minZoom={0.1}
           maxZoom={2}
