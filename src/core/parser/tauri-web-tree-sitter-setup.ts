@@ -1,5 +1,4 @@
 import { WasmLoader } from "@internal/codeparsers-wasm-loader";
-import { isTauriRuntime } from "@/lib/is-tauri";
 
 /**
  * Vite injects `globalThis.process` without `versions`. web-tree-sitter does
@@ -20,9 +19,11 @@ function ensureProcessVersionsForWebTreeSitter(): void {
 }
 
 /**
- * PythonScopeExtractionParser always requests `environment: 'node'`, which
- * breaks in the Tauri webview. Force browser loading against /wasm/* assets
- * (populated by scripts/sync-tree-sitter-wasm.mjs).
+ * PythonScopeExtractionParser always requests `environment: 'node'`. WasmLoader
+ * then picks the Node loader, which uses filesystem paths — that fails in any
+ * real browser (Emscripten often reports only "Aborted()"). Force browser
+ * loading against /wasm/* (populated by scripts/sync-tree-sitter-wasm.mjs).
+ * Skip in Vitest/jsdom so tests keep using the Node wasm path.
  */
 function resolveWasmBaseUrl(): string {
   const prefix = (import.meta.env.BASE_URL ?? "/").replace(/\/+$/, "");
@@ -58,6 +59,14 @@ function install(): void {
 // Always patch — Vite/bundlers can inject `process` without `versions` in any browser env
 ensureProcessVersionsForWebTreeSitter();
 
-if (isTauriRuntime()) {
+function shouldInstallBrowserWasmLoader(): boolean {
+  if (typeof window === "undefined") return false;
+  if (typeof process !== "undefined" && process.env.VITEST === "true") {
+    return false;
+  }
+  return true;
+}
+
+if (shouldInstallBrowserWasmLoader()) {
   install();
 }
