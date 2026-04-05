@@ -1,10 +1,19 @@
-import { createFileRoute, Outlet, redirect, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { ProjectAnalysisProvider } from "@/contexts/project-analysis-context";
-import { isValidUuid, PROJECTS_STORAGE_KEY, type Project } from "@/types/project";
+import {
+  isValidUuid,
+  PROJECTS_STORAGE_KEY,
+  type Project,
+} from "@/types/project";
 
-function ProjectLayout() {
+export function ProjectLayout() {
   const { projectId } = Route.useParams();
   const navigate = useNavigate();
   const [projects] = useLocalStorage<Project[]>(PROJECTS_STORAGE_KEY, []);
@@ -17,7 +26,7 @@ function ProjectLayout() {
   }, [projects, projectId, navigate]);
 
   return (
-    <ProjectAnalysisProvider projectId={projectId}>
+    <ProjectAnalysisProvider key={projectId} projectId={projectId}>
       <Outlet />
     </ProjectAnalysisProvider>
   );

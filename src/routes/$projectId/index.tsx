@@ -1,64 +1,89 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
-import { useProjectAnalysis } from "@/contexts/project-analysis-context";
+import type { ReactNode } from "react";
 import { GraphView } from "@/components/graph-view";
+import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
+import { ProjectGraphToolbar } from "@/components/project/project-graph-toolbar";
+import { useProjectAnalysis } from "@/contexts/use-project-analysis";
+import { isTauriRuntime } from "@/lib/is-tauri";
 
-function ProjectGraphPage() {
-  const { projectId, project, analysisResult, analysisLoading } =
-    useProjectAnalysis();
+export function ProjectGraphPage() {
+  const {
+    projectId,
+    project,
+    rootPath,
+    analysisResult,
+    analysisLoading,
+    analysisError,
+  } = useProjectAnalysis();
+
+  let body: ReactNode;
+  if (analysisLoading) {
+    body = <GraphViewSkeleton />;
+  } else if (analysisResult) {
+    body = (
+      <GraphView
+        elements={analysisResult.elements}
+        graph={analysisResult.graph}
+        dot={analysisResult.dot}
+      />
+    );
+  } else if (analysisError) {
+    body = (
+      <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="max-w-md text-sm text-destructive">{analysisError}</p>
+        <Button asChild variant="outline" size="sm">
+          <Link to="/$projectId/settings" params={{ projectId }}>
+            Настройки
+          </Link>
+        </Button>
+      </div>
+    );
+  } else if (!rootPath) {
+    body = (
+      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+        <div className="flex flex-col gap-2">
+          <p className="text-lg font-medium text-foreground">
+            Каталог не выбран
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Укажите папку проекта в настройках — анализ запустится
+            автоматически.
+          </p>
+        </div>
+        <Button asChild>
+          <Link to="/$projectId/settings" params={{ projectId }}>
+            Открыть настройки
+          </Link>
+        </Button>
+      </div>
+    );
+  } else if (!isTauriRuntime()) {
+    body = (
+      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+        <p className="max-w-md text-sm text-muted-foreground">
+          Анализ и просмотр графа доступны в десктоп-приложении Tauri.
+        </p>
+        <Button asChild variant="outline" size="sm">
+          <Link to="/$projectId/settings" params={{ projectId }}>
+            Настройки
+          </Link>
+        </Button>
+      </div>
+    );
+  } else {
+    body = <GraphViewSkeleton />;
+  }
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-border bg-card px-4 py-1.5">
-        <h1 className="truncate text-sm font-medium text-foreground">
-          {project?.name ?? "Проект"}
-        </h1>
-        <div className="flex items-center gap-2">
-          {analysisLoading && (
-            <span className="text-xs text-muted-foreground">
-              Анализируем…
-            </span>
-          )}
-          <Button variant="outline" size="sm" asChild>
-            <Link
-              to="/$projectId/settings"
-              params={{ projectId }}
-            >
-              Настройки
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <ProjectGraphToolbar
+        projectId={projectId}
+        projectName={project?.name}
+        analysisLoading={analysisLoading}
+      />
 
-      <div className="min-h-0 flex-1">
-        {analysisResult ? (
-          <GraphView
-            elements={analysisResult.elements}
-            graph={analysisResult.graph}
-            dot={analysisResult.dot}
-          />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-            <div className="flex flex-col gap-2">
-              <p className="text-lg font-medium text-foreground">
-                Граф пока не построен
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Перейдите в настройки, выберите каталог проекта и запустите
-                анализ.
-              </p>
-            </div>
-            <Button asChild>
-              <Link
-                to="/$projectId/settings"
-                params={{ projectId }}
-              >
-                Открыть настройки
-              </Link>
-            </Button>
-          </div>
-        )}
-      </div>
+      <div className="min-h-0 flex-1">{body}</div>
     </div>
   );
 }

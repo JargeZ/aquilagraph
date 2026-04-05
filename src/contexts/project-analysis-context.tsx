@@ -1,8 +1,8 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { readDir, readTextFile } from "@tauri-apps/plugin-fs";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { type AnalysisResult, analyzeProject } from "@/core/analyze";
+import { analyzeProject } from "@/core/analyze";
 import {
   type AnalysisConfig,
   DEFAULT_ANALYSIS_CONFIG,
@@ -16,6 +16,7 @@ import {
   PROJECTS_STORAGE_KEY,
   type Project,
 } from "@/types/project";
+import { ProjectAnalysisContext } from "./project-analysis-context-shared";
 
 function createTauriFsAdapter(basePath: string): FileSystemAdapter {
   return {
@@ -34,37 +35,6 @@ function createTauriFsAdapter(basePath: string): FileSystemAdapter {
       }));
     },
   };
-}
-
-interface ProjectAnalysisContextValue {
-  projectId: string;
-  project: Project | undefined;
-  rootPath: string | null;
-  pickDirectory: () => Promise<void>;
-  fileCount: number | null;
-  countLoading: boolean;
-  countError: string | null;
-  refreshCount: () => Promise<void>;
-  analysisConfig: AnalysisConfig;
-  setAnalysisConfig: (config: AnalysisConfig) => void;
-  analysisResult: AnalysisResult | null;
-  analysisLoading: boolean;
-  analysisError: string | null;
-  runAnalysis: () => Promise<void>;
-}
-
-const ProjectAnalysisContext = createContext<ProjectAnalysisContextValue | null>(
-  null,
-);
-
-export function useProjectAnalysis(): ProjectAnalysisContextValue {
-  const ctx = useContext(ProjectAnalysisContext);
-  if (!ctx) {
-    throw new Error(
-      "useProjectAnalysis must be used within ProjectAnalysisProvider",
-    );
-  }
-  return ctx;
 }
 
 export function ProjectAnalysisProvider({
@@ -92,6 +62,10 @@ export function ProjectAnalysisProvider({
   );
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+
+  const analysisInFlightRef = useRef(false);
+  const analysisGenerationRef = useRef(0);
+  const runAnalysisRef = useRef<() => Promise<void>>(async () => {});
 
   const project = projects.find((p) => p.id === projectId);
   const rootPath = pathsByProject[projectId] ?? null;
@@ -148,26 +122,51 @@ export function ProjectAnalysisProvider({
 
   const runAnalysis = useCallback(async () => {
     if (!rootPath) return;
+    if (analysisInFlightRef.current) return;
     if (!isTauriRuntime()) {
       setAnalysisError("Анализ доступен в приложении Tauri.");
       return;
     }
+    const generation = analysisGenerationRef.current;
+    analysisInFlightRef.current = true;
     setAnalysisLoading(true);
     setAnalysisError(null);
     try {
       const fs = createTauriFsAdapter(rootPath);
       const result = await analyzeProject("", analysisConfig, fs);
+      if (analysisGenerationRef.current !== generation) return;
       setAnalysisResult(result);
     } catch (e) {
       console.error("[runAnalysis] failed:", e);
+      if (analysisGenerationRef.current !== generation) return;
       const msg =
         e instanceof Error ? e.message : typeof e === "string" ? e : String(e);
       setAnalysisError(msg || "Неизвестная ошибка анализа");
       setAnalysisResult(null);
     } finally {
-      setAnalysisLoading(false);
+      analysisInFlightRef.current = false;
+      if (analysisGenerationRef.current === generation) {
+        setAnalysisLoading(false);
+      }
     }
   }, [rootPath, analysisConfig]);
+
+  runAnalysisRef.current = runAnalysis;
+
+  useEffect(() => {
+    analysisGenerationRef.current += 1;
+    analysisInFlightRef.current = false;
+    setAnalysisResult(null);
+    setAnalysisError(null);
+    if (!rootPath) {
+      setAnalysisLoading(false);
+    }
+  }, [rootPath]);
+
+  useEffect(() => {
+    if (!rootPath || !isTauriRuntime()) return;
+    void runAnalysisRef.current();
+  }, [rootPath]);
 
   return (
     <ProjectAnalysisContext.Provider

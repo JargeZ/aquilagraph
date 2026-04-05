@@ -1,9 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "@ui/molecules/button/button";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnalysisConfigPanel } from "@/components/analysis-config-panel";
-import { useProjectAnalysis } from "@/contexts/project-analysis-context";
+import { ProjectAnalysisRunSection } from "@/components/project/project-analysis-run-section";
+import { ProjectDirectorySection } from "@/components/project/project-directory-section";
+import { ProjectFileCountSection } from "@/components/project/project-file-count-section";
+import { ProjectSettingsToolbar } from "@/components/project/project-settings-toolbar";
+import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 
-function ProjectSettingsPage() {
+export function ProjectSettingsPage() {
+  const navigate = useNavigate();
   const {
     projectId,
     project,
@@ -20,67 +24,32 @@ function ProjectSettingsPage() {
     runAnalysis,
   } = useProjectAnalysis();
 
+  const handleAnalyzeAndView = () => {
+    void runAnalysis();
+    void navigate({ to: "/$projectId", params: { projectId } });
+  };
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-1.5">
-        <Button variant="ghost" size="sm" asChild>
-          <Link to="/$projectId" params={{ projectId }}>
-            ← Назад
-          </Link>
-        </Button>
-        <h1 className="truncate text-sm font-medium text-foreground">
-          Настройки — {project?.name ?? "Проект"}
-        </h1>
-      </div>
+      <ProjectSettingsToolbar
+        projectId={projectId}
+        projectName={project?.name}
+      />
 
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto flex max-w-4xl flex-col gap-6">
-          <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-medium text-foreground">Каталог</h2>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={pickDirectory}
-              >
-                Выбрать папку
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => void refreshCount()}
-                disabled={!rootPath || countLoading}
-              >
-                Обновить счётчик
-              </Button>
-            </div>
-            {rootPath ? (
-              <p className="break-all text-sm text-muted-foreground">
-                {rootPath}
-              </p>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                Папка не выбрана — нажмите «Выбрать папку».
-              </p>
-            )}
-          </section>
+          <ProjectDirectorySection
+            rootPath={rootPath}
+            onPickDirectory={() => void pickDirectory()}
+            onRefreshCount={() => void refreshCount()}
+            countLoading={countLoading}
+          />
 
-          <section className="border-t border-border pt-4">
-            <h2 className="text-sm font-medium text-foreground">Файлы</h2>
-            {countLoading ? (
-              <p className="mt-2 text-sm text-muted-foreground">Считаем…</p>
-            ) : countError ? (
-              <p className="mt-2 text-sm text-destructive">{countError}</p>
-            ) : fileCount !== null ? (
-              <p className="mt-2 text-2xl font-semibold tabular-nums text-foreground">
-                {fileCount}
-              </p>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Выберите каталог, чтобы увидеть число файлов.
-              </p>
-            )}
-          </section>
+          <ProjectFileCountSection
+            fileCount={fileCount}
+            countLoading={countLoading}
+            countError={countError}
+          />
 
           <section className="border-t border-border pt-4">
             <AnalysisConfigPanel
@@ -89,20 +58,12 @@ function ProjectSettingsPage() {
             />
           </section>
 
-          <section className="flex flex-col gap-3 border-t border-border pt-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                type="button"
-                onClick={() => void runAnalysis()}
-                disabled={!rootPath || analysisLoading}
-              >
-                {analysisLoading ? "Анализируем…" : "Анализировать"}
-              </Button>
-            </div>
-            {analysisError && (
-              <p className="text-sm text-destructive">{analysisError}</p>
-            )}
-          </section>
+          <ProjectAnalysisRunSection
+            disabled={!rootPath || analysisLoading}
+            loading={analysisLoading}
+            error={analysisError}
+            onRun={handleAnalyzeAndView}
+          />
         </div>
       </div>
     </div>

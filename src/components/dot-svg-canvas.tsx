@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react";
-import svgPanZoom from "svg-pan-zoom";
 import type { RootGraphModel } from "ts-graphviz";
 import { graphModelEdgePairs } from "@/core/graph/digraph-to-flow";
 import type { ExecutableElement } from "@/core/model/executable-element";
@@ -41,6 +40,8 @@ function findNodeGroup(target: EventTarget | null): SVGGElement | null {
   return null;
 }
 
+type SvgPanZoomHandle = { destroy(): void };
+
 export function DotSvgCanvas({
   dot,
   graph,
@@ -49,7 +50,7 @@ export function DotSvgCanvas({
   onSelectElement,
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const panZoomRef = useRef<ReturnType<typeof svgPanZoom> | null>(null);
+  const panZoomRef = useRef<SvgPanZoomHandle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [svgReady, setSvgReady] = useState(false);
 
@@ -71,7 +72,10 @@ export function DotSvgCanvas({
     setSvgReady(false);
 
     getVizInstance()
-      .then((viz) => {
+      .then(async (viz) => {
+        if (cancelled) return;
+
+        const { default: svgPanZoom } = await import("svg-pan-zoom");
         if (cancelled) return;
 
         const svg = viz.renderSVGElement(dot, { engine: "dot" });
