@@ -3,11 +3,15 @@ import type { Edge, Node } from "@xyflow/react";
 import type { NodeModel, RootGraphModel, SubgraphModel } from "ts-graphviz";
 import type { ElementType } from "../model/executable-element";
 
+/** Подсветка связей при выборе узла в Flow (см. graph-view). */
+export type LinkHighlightRole = "selected" | "uses" | "usedBy" | "dimmed";
+
 export interface ElementNodeData extends Record<string, unknown> {
   label: string;
   elementType: ElementType;
   color: string;
   reference: string;
+  linkHighlight?: LinkHighlightRole;
 }
 
 export interface GroupNodeData extends Record<string, unknown> {
@@ -52,6 +56,23 @@ function inferElementType(node: NodeModel): ElementType {
     if (color === c) return type as ElementType;
   }
   return "unclassified";
+}
+
+/** Пары узлов рёбер модели графа (совпадают с id в DOT / SVG Graphviz). */
+export function graphModelEdgePairs(
+  graph: RootGraphModel,
+): { source: string; target: string }[] {
+  const pairs: { source: string; target: string }[] = [];
+  for (const edge of graph.edges) {
+    const targets = edge.targets;
+    for (let i = 0; i < targets.length - 1; i++) {
+      const source = "id" in targets[i] ? (targets[i] as NodeModel).id : "";
+      const target =
+        "id" in targets[i + 1] ? (targets[i + 1] as NodeModel).id : "";
+      if (source && target) pairs.push({ source, target });
+    }
+  }
+  return pairs;
 }
 
 export function digraphToFlow(graph: RootGraphModel): FlowGraph {
@@ -119,21 +140,13 @@ export function digraphToFlow(graph: RootGraphModel): FlowGraph {
     } as FlowNode);
   }
 
-  for (const edge of graph.edges) {
-    const targets = edge.targets;
-    for (let i = 0; i < targets.length - 1; i++) {
-      const source = "id" in targets[i] ? (targets[i] as NodeModel).id : "";
-      const target =
-        "id" in targets[i + 1] ? (targets[i + 1] as NodeModel).id : "";
-      if (source && target) {
-        flowEdges.push({
-          id: `e-${source}-${target}`,
-          source,
-          target,
-          type: "smoothstep",
-        });
-      }
-    }
+  for (const { source, target } of graphModelEdgePairs(graph)) {
+    flowEdges.push({
+      id: `e-${source}-${target}`,
+      source,
+      target,
+      type: "smoothstep",
+    });
   }
 
   applyDagreLayout(flowNodes, flowEdges, childToParent, moduleGroupIds);
@@ -305,9 +318,7 @@ function ensureModuleSpacing(
   absolutePositions: Map<string, { x: number; y: number }>,
   groupChildren: Map<string, string[]>,
 ) {
-  const topModules = nodes.filter(
-    (n) => n.type === "group" && !n.parentId,
-  );
+  const topModules = nodes.filter((n) => n.type === "group" && !n.parentId);
   if (topModules.length < 2) return;
 
   topModules.sort((a, b) => {
@@ -377,7 +388,8 @@ function repositionByType(
         ...allModuleElements.map((n) => absolutePositions.get(n.id)!.x),
       );
       const sorted = [...controlling].sort(
-        (a, b) => absolutePositions.get(a.id)!.y - absolutePositions.get(b.id)!.y,
+        (a, b) =>
+          absolutePositions.get(a.id)!.y - absolutePositions.get(b.id)!.y,
       );
       for (const node of sorted) {
         const pos = absolutePositions.get(node.id)!;
@@ -390,7 +402,8 @@ function repositionByType(
         ...allModuleElements.map((n) => absolutePositions.get(n.id)!.y),
       );
       const sorted = [...sideEffect].sort(
-        (a, b) => absolutePositions.get(a.id)!.x - absolutePositions.get(b.id)!.x,
+        (a, b) =>
+          absolutePositions.get(a.id)!.x - absolutePositions.get(b.id)!.x,
       );
       let xOffset = absolutePositions.get(sorted[0].id)!.x;
       for (const node of sorted) {

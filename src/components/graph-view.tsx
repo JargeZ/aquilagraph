@@ -1,7 +1,9 @@
+import type { Edge } from "@xyflow/react";
 import {
   Background,
   BackgroundVariant,
   Controls,
+  MarkerType,
   MiniMap,
   type NodeMouseHandler,
   ReactFlow,
@@ -122,9 +124,11 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
 
 function DotGraphCanvas({
   dot,
+  graph,
   elements,
 }: {
   dot: string;
+  graph: RootGraphModel;
   elements: ExecutableElement[];
 }) {
   const [selectedElement, setSelectedElement] =
@@ -135,7 +139,9 @@ function DotGraphCanvas({
       <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
         <DotSvgCanvas
           dot={dot}
+          graph={graph}
           elements={elements}
+          selectedRef={selectedElement?.reference ?? null}
           onSelectElement={setSelectedElement}
         />
       </div>
@@ -168,6 +174,84 @@ function FlowCanvas({
     return map;
   }, [elements]);
 
+  const selectedRef = selectedElement?.reference ?? null;
+
+  const { flowNodes, flowEdges } = useMemo(() => {
+    if (!selectedRef) {
+      return { flowNodes: nodes, flowEdges: edges };
+    }
+
+    const usesTargets = new Set<string>();
+    const usedBySources = new Set<string>();
+    for (const e of edges) {
+      if (e.source === selectedRef) usesTargets.add(e.target);
+      if (e.target === selectedRef) usedBySources.add(e.source);
+    }
+
+    const flowNodes = nodes.map((n) => {
+      if (n.type !== "element") return n;
+      const data = n.data as ElementNodeData;
+      const r = data.reference;
+      if (r === selectedRef) {
+        return {
+          ...n,
+          selected: true,
+          data: { ...data, linkHighlight: "selected" as const },
+        };
+      }
+      if (usesTargets.has(r)) {
+        return {
+          ...n,
+          selected: false,
+          data: { ...data, linkHighlight: "uses" as const },
+        };
+      }
+      if (usedBySources.has(r)) {
+        return {
+          ...n,
+          selected: false,
+          data: { ...data, linkHighlight: "usedBy" as const },
+        };
+      }
+      return {
+        ...n,
+        selected: false,
+        data: { ...data, linkHighlight: "dimmed" as const },
+        style: { ...n.style, opacity: 0.32 },
+      };
+    });
+
+    const flowEdges: Edge[] = edges.map((e) => {
+      const touches = e.source === selectedRef || e.target === selectedRef;
+      if (!touches) {
+        return {
+          ...e,
+          style: { ...e.style, opacity: 0.12 },
+          interactionWidth: 0,
+        };
+      }
+      const outgoing = e.source === selectedRef;
+      const stroke = outgoing ? "#0ea5e9" : "#f59e0b";
+      return {
+        ...e,
+        style: {
+          ...e.style,
+          strokeWidth: 3.5,
+          stroke,
+        },
+        zIndex: 1000,
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 22,
+          height: 22,
+          color: stroke,
+        },
+      };
+    });
+
+    return { flowNodes, flowEdges };
+  }, [nodes, edges, selectedRef]);
+
   const onNodeClick: NodeMouseHandler<FlowNode> = (_event, node) => {
     if (node.type === "element") {
       const data = node.data as ElementNodeData;
@@ -180,10 +264,11 @@ function FlowCanvas({
     <div className="flex h-full gap-3">
       <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
         <ReactFlow
-          nodes={nodes}
-          edges={edges}
+          nodes={flowNodes}
+          edges={flowEdges}
           nodeTypes={nodeTypes}
           onNodeClick={onNodeClick}
+          onPaneClick={() => setSelectedElement(null)}
           fitView
           minZoom={0.1}
           maxZoom={2}
@@ -233,7 +318,7 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
       </div>
 
       <TabsContent value="graph" className="min-h-0 flex-1">
-        <DotGraphCanvas dot={dot} elements={elements} />
+        <DotGraphCanvas dot={dot} graph={graph} elements={elements} />
       </TabsContent>
 
       <TabsContent value="flow" className="min-h-0 flex-1">

@@ -1,9 +1,19 @@
 import { Button } from "@ui/molecules/button/button";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import svgPanZoom from "svg-pan-zoom";
+import type { RootGraphModel } from "ts-graphviz";
+import { graphModelEdgePairs } from "@/core/graph/digraph-to-flow";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import { getVizInstance } from "@/lib/viz-instance";
+import { applyVizSvgHighlight } from "@/lib/viz-svg-highlight";
 
 type WindowWithSavePicker = Window &
   typeof globalThis & {
@@ -15,7 +25,10 @@ type WindowWithSavePicker = Window &
 
 interface DotSvgCanvasProps {
   dot: string;
+  graph: RootGraphModel;
   elements: ExecutableElement[];
+  /** Текущий выбранный узел (reference), для подсветки связей в SVG. */
+  selectedRef?: string | null;
   onSelectElement?: (element: ExecutableElement | null) => void;
 }
 
@@ -30,13 +43,17 @@ function findNodeGroup(target: EventTarget | null): SVGGElement | null {
 
 export function DotSvgCanvas({
   dot,
+  graph,
   elements,
+  selectedRef = null,
   onSelectElement,
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<ReturnType<typeof svgPanZoom> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [svgReady, setSvgReady] = useState(false);
+
+  const edgePairs = useMemo(() => graphModelEdgePairs(graph), [graph]);
 
   const elementsByRef = useMemo(() => {
     const map = new Map<string, ExecutableElement>();
@@ -91,6 +108,13 @@ export function DotSvgCanvas({
       panZoomRef.current = null;
     };
   }, [dot]);
+
+  useLayoutEffect(() => {
+    if (!svgReady) return;
+    const svg = containerRef.current?.querySelector("svg");
+    if (!svg || !(svg instanceof SVGSVGElement)) return;
+    applyVizSvgHighlight(svg, selectedRef, edgePairs);
+  }, [svgReady, selectedRef, edgePairs]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
