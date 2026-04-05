@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
-import { toDot } from "ts-graphviz";
 import { initParser } from "../../parser/python-parser";
 import { scanProject } from "../../parser/project-scanner";
 import {
@@ -10,7 +9,7 @@ import {
 import { createElementsFromAnalyses } from "../../model/element-factory";
 import { classifyElements } from "../../model/element-classifier";
 import { resolveUses } from "../../model/uses-resolver";
-import { buildGraph, buildDot } from "../graph-builder";
+import { buildGraph, buildDot, graphToDot } from "../graph-builder";
 import type { AnalysisConfig } from "../../config/analysis-config";
 import { DEFAULT_ANALYSIS_CONFIG } from "../../config/analysis-config";
 import { ExecutableElement } from "../../model/executable-element";
@@ -53,7 +52,7 @@ describe("buildGraph", () => {
   it("produces a valid DOT graph with depth=1 (snapshot)", () => {
     const elements = prepareElements(TEST_CONFIG);
     const graph = buildGraph(elements, TEST_CONFIG);
-    const dot = toDot(graph);
+    const dot = graphToDot(graph);
 
     expect(dot).toMatchSnapshot();
   });
@@ -65,7 +64,7 @@ describe("buildGraph", () => {
     };
     const elements = prepareElements(config);
     const graph = buildGraph(elements, config);
-    const dot = toDot(graph);
+    const dot = graphToDot(graph);
 
     expect(dot).toMatchSnapshot();
   });

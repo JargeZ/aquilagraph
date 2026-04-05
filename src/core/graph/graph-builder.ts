@@ -1,5 +1,17 @@
 import { digraph, toDot, attribute } from "ts-graphviz";
 import type { RootGraphModel } from "ts-graphviz";
+
+/** Лимит узлов AST в @ts-graphviz/ast при сериализации (дефолт библиотеки — 100 000). */
+const TO_DOT_MAX_AST_NODES = 1_000_000;
+
+const TO_DOT_OPTIONS = {
+  convert: { maxASTNodes: TO_DOT_MAX_AST_NODES },
+} as const;
+
+/** Сериализация графа в DOT с повышенным лимитом AST для очень больших графов. */
+export function graphToDot(graph: RootGraphModel): string {
+  return toDot(graph, TO_DOT_OPTIONS);
+}
 import type { AnalysisConfig } from "../config/analysis-config";
 import { DEFAULT_ANALYSIS_CONFIG } from "../config/analysis-config";
 import type { ExecutableElement, ElementType } from "../model/executable-element";
@@ -386,5 +398,5 @@ export function buildDot(
   elements: ExecutableElement[],
   config: AnalysisConfig,
 ): string {
-  return toDot(buildGraph(elements, config));
+  return graphToDot(buildGraph(elements, config));
 }

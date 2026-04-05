@@ -1,5 +1,4 @@
 import type { RootGraphModel } from "ts-graphviz";
-import { toDot } from "ts-graphviz";
 import type { AnalysisConfig } from "./config/analysis-config";
 import type { ExecutableElement } from "./model/executable-element";
 import { initParser } from "./parser/python-parser";
@@ -7,7 +6,7 @@ import { scanProject, type FileSystemAdapter } from "./parser/project-scanner";
 import { createElementsFromAnalyses } from "./model/element-factory";
 import { classifyElements } from "./model/element-classifier";
 import { resolveUses } from "./model/uses-resolver";
-import { buildGraph } from "./graph/graph-builder";
+import { buildGraph, graphToDot } from "./graph/graph-builder";
 import {
   filterIsolatedNodes,
   filterUnclassifiedNodes,
@@ -38,7 +37,7 @@ export async function analyzeProject(
       : connected;
 
   const graph = buildGraph(visible, config);
-  const dot = toDot(graph);
+  const dot = graphToDot(graph);
 
   return { elements: visible, graph, dot };
 }
