@@ -188,7 +188,42 @@ describe("buildGraph", () => {
       /subgraph "cluster_mod_bucket_controlling"[\s\S]*style = "dashed"/,
     );
     expect(dot).toMatch(
+      /subgraph "cluster_mod_bucket_controlling"[\s\S]*rank = "source"/,
+    );
+    expect(dot).toMatch(
       /subgraph "cluster_mod_bucket_businessLogic"[\s\S]*color = "#50C878"/,
+    );
+  });
+
+  it("pins side-effect bucket rank to sink", () => {
+    const base = {
+      decorators: [] as string[],
+      parentClasses: [] as string[],
+      sourceFile: "x.py",
+      startLine: 1,
+      endLine: 2,
+    };
+    const elements = [
+      new ExecutableElement({
+        ...base,
+        reference: "mod.run_job",
+        module: "mod",
+        className: null,
+        name: "run_job",
+        type: "sideEffect",
+      }),
+    ];
+    const config: AnalysisConfig = {
+      ...DEFAULT_ANALYSIS_CONFIG,
+      groupInBucket: {
+        controlling: false,
+        businessLogic: false,
+        sideEffects: true,
+      },
+    };
+    const dot = buildDot(elements, config);
+    expect(dot).toMatch(
+      /subgraph "cluster_mod_bucket_sideEffect"[\s\S]*rank = "sink"/,
     );
   });
 });

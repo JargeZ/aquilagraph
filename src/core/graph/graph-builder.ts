@@ -246,6 +246,12 @@ function setBucketClusterAttrs(
   container.set(attribute.color, style.color);
   container.set(attribute.fontcolor, style.color);
   container.set(attribute.style, "dashed");
+  // При rankdir=LR: source — к началу (слева), sink — к концу (справа).
+  if (bucketType === "controlling") {
+    container.set(attribute.rank, "source");
+  } else if (bucketType === "sideEffect") {
+    container.set(attribute.rank, "sink");
+  }
 }
 
 /**
