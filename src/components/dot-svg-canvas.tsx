@@ -18,7 +18,11 @@ import {
   shortClickPointerMove,
   shortClickPointerUpClearDeferred,
 } from "@/lib/short-click-gesture";
-import { attachSvgPanZoomTrackpadWheel } from "@/lib/svg-pan-zoom-trackpad-wheel";
+import { focusSvgNodeInPanZoom } from "@/lib/svg-pan-zoom-focus-node";
+import {
+  attachSvgPanZoomTrackpadWheel,
+  type SvgPanZoomWheelInstance,
+} from "@/lib/svg-pan-zoom-trackpad-wheel";
 import { getVizInstance } from "@/lib/viz-instance";
 import { applyVizSvgHighlight } from "@/lib/viz-svg-highlight";
 
@@ -37,6 +41,8 @@ interface DotSvgCanvasProps {
   /** Текущий выбранный узел (reference), для подсветки связей в SVG. */
   selectedRef?: string | null;
   onSelectElement?: (element: ExecutableElement | null) => void;
+  /** Панорамировать и масштабировать к выбранному узлу (например, пока открыт поиск). */
+  followSelectionInViewport?: boolean;
 }
 
 function findNodeGroup(target: EventTarget | null): SVGGElement | null {
@@ -50,9 +56,12 @@ function findNodeGroup(target: EventTarget | null): SVGGElement | null {
 
 type SvgPanZoomHandle = { destroy(): void };
 
-type SvgPanZoomPublicInstance = SvgPanZoomHandle & {
-  resize(): unknown;
-};
+type SvgPanZoomPublicInstance = SvgPanZoomHandle &
+  SvgPanZoomWheelInstance & {
+    resize(): unknown;
+    getPan(): { x: number; y: number };
+    pan(p: { x: number; y: number }): unknown;
+  };
 
 /**
  * svg-pan-zoom клампит зум к [minZoom, maxZoom] × начальный масштаб после fit.
@@ -66,6 +75,7 @@ export function DotSvgCanvas({
   elements,
   selectedRef = null,
   onSelectElement,
+  followSelectionInViewport = false,
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<SvgPanZoomHandle | null>(null);
@@ -192,6 +202,37 @@ export function DotSvgCanvas({
     applyVizSvgHighlight(svg, selectedRef, edgePairs);
   }, [svgReady, selectedRef, edgePairs]);
 
+  useEffect(() => {
+    if (!followSelectionInViewport || !svgReady || !selectedRef) return;
+    const panZoom = panZoomRef.current as SvgPanZoomPublicInstance | null;
+    if (!panZoom) return;
+    const svg = containerRef.current?.querySelector("svg");
+    if (!(svg instanceof SVGSVGElement)) return;
+
+    let target: SVGGElement | null = null;
+    for (const g of svg.querySelectorAll("g.node")) {
+      if (!(g instanceof SVGGElement)) continue;
+      const t = g.querySelector("title")?.textContent?.trim();
+      if (t === selectedRef) {
+        target = g;
+        break;
+      }
+    }
+    if (!target) return;
+
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        focusSvgNodeInPanZoom(svg, target as SVGGElement, panZoom);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [followSelectionInViewport, svgReady, selectedRef]);
+
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       const group = findNodeGroup(e.target);
@@ -276,6 +317,9 @@ export function DotSvgCanvas({
 
   return (
     <div className="relative h-full w-full">
+      {/* Клик по пустому месту SVG: цель — жест short-click, не отдельная кнопка. */}
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: контейнер под inline-SVG Graphviz */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: навигация по графу — указатель/тач */}
       <div ref={containerRef} className="h-full w-full" onClick={handleClick} />
       <div className="pointer-events-none absolute top-2 right-2 z-10">
         <Button

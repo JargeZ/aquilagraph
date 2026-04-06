@@ -8,6 +8,7 @@ import {
   type NodeMouseHandler,
   ReactFlow,
   ReactFlowProvider,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
@@ -30,6 +31,7 @@ import type { ExecutableElement } from "@/core/model/executable-element";
 import { DotSvgCanvas } from "./dot-svg-canvas";
 import { ElementNode } from "./flow-nodes/element-node";
 import { GroupNode } from "./flow-nodes/group-node";
+import { NodeSearchCommand } from "./node-search-command";
 
 const nodeTypes = {
   element: ElementNode,
@@ -127,14 +129,17 @@ function DotGraphCanvas({
   dot,
   graph,
   elements,
+  selectedElement,
+  onSelectElement,
+  followSelectionInViewport,
 }: {
   dot: string;
   graph: RootGraphModel;
   elements: ExecutableElement[];
+  selectedElement: ExecutableElement | null;
+  onSelectElement: (element: ExecutableElement | null) => void;
+  followSelectionInViewport: boolean;
 }) {
-  const [selectedElement, setSelectedElement] =
-    useState<ExecutableElement | null>(null);
-
   return (
     <div className="flex h-full gap-3">
       <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
@@ -143,7 +148,8 @@ function DotGraphCanvas({
           graph={graph}
           elements={elements}
           selectedRef={selectedElement?.reference ?? null}
-          onSelectElement={setSelectedElement}
+          onSelectElement={onSelectElement}
+          followSelectionInViewport={followSelectionInViewport}
         />
       </div>
       {selectedElement && (
@@ -155,16 +161,45 @@ function DotGraphCanvas({
   );
 }
 
+function FlowViewportFollow({
+  selectedRef,
+  follow,
+}: {
+  selectedRef: string | null;
+  follow: boolean;
+}) {
+  const { getNode, getNodesBounds, getZoom, setCenter } = useReactFlow();
+
+  useEffect(() => {
+    if (!follow || !selectedRef) return;
+    const node = getNode(selectedRef);
+    if (!node) return;
+    let h = 0;
+    h = requestAnimationFrame(() => {
+      const bounds = getNodesBounds([node]);
+      const cx = bounds.x + bounds.width / 2;
+      const cy = bounds.y + bounds.height / 2;
+      void setCenter(cx, cy, { zoom: getZoom(), duration: 240 });
+    });
+    return () => cancelAnimationFrame(h);
+  }, [selectedRef, follow, getNode, getNodesBounds, getZoom, setCenter]);
+
+  return null;
+}
+
 function FlowCanvas({
   graph,
   elements,
+  selectedElement,
+  onSelectElement,
+  followSelectionInViewport,
 }: {
   graph: RootGraphModel;
   elements: ExecutableElement[];
+  selectedElement: ExecutableElement | null;
+  onSelectElement: (element: ExecutableElement | null) => void;
+  followSelectionInViewport: boolean;
 }) {
-  const [selectedElement, setSelectedElement] =
-    useState<ExecutableElement | null>(null);
-
   const { nodes, edges } = useMemo(() => digraphToFlow(graph), [graph]);
 
   const elementsByRef = useMemo(() => {
@@ -211,8 +246,8 @@ function FlowCanvas({
       skipPaneClearAfterViewportChangeRef.current = false;
       return;
     }
-    setSelectedElement(null);
-  }, []);
+    onSelectElement(null);
+  }, [onSelectElement]);
 
   const { flowNodes, flowEdges } = useMemo(() => {
     if (!selectedRef) {
@@ -304,10 +339,10 @@ function FlowCanvas({
       if (node.type === "element") {
         const data = node.data as ElementNodeData;
         const el = elementsByRef.get(data.reference);
-        setSelectedElement(el ?? null);
+        onSelectElement(el ?? null);
       }
     },
-    [elementsByRef],
+    [elementsByRef, onSelectElement],
   );
 
   return (
@@ -327,6 +362,10 @@ function FlowCanvas({
           proOptions={{ hideAttribution: true }}
           nodesDraggable={false}
         >
+          <FlowViewportFollow
+            selectedRef={selectedElement?.reference ?? null}
+            follow={followSelectionInViewport}
+          />
           <Controls showInteractive={false} />
           <MiniMap
             pannable
@@ -352,6 +391,20 @@ function FlowCanvas({
 
 export function GraphView({ elements, graph, dot }: GraphViewProps) {
   const [copied, setCopied] = useState(false);
+  const [selectedElement, setSelectedElement] =
+    useState<ExecutableElement | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        setSearchOpen((open) => !open);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(dot);
@@ -359,8 +412,17 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const followViewport = searchOpen;
+
   return (
     <Tabs defaultValue="graph" className="flex h-full flex-col">
+      <NodeSearchCommand
+        elements={elements}
+        open={searchOpen}
+        onOpenChange={setSearchOpen}
+        onActiveElementChange={setSelectedElement}
+      />
+
       <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1">
         <TabsList>
           <TabsTrigger value="graph">Граф ({elements.length})</TabsTrigger>
@@ -370,12 +432,25 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
       </div>
 
       <TabsContent value="graph" className="min-h-0 flex-1">
-        <DotGraphCanvas dot={dot} graph={graph} elements={elements} />
+        <DotGraphCanvas
+          dot={dot}
+          graph={graph}
+          elements={elements}
+          selectedElement={selectedElement}
+          onSelectElement={setSelectedElement}
+          followSelectionInViewport={followViewport}
+        />
       </TabsContent>
 
       <TabsContent value="flow" className="min-h-0 flex-1">
         <ReactFlowProvider>
-          <FlowCanvas graph={graph} elements={elements} />
+          <FlowCanvas
+            graph={graph}
+            elements={elements}
+            selectedElement={selectedElement}
+            onSelectElement={setSelectedElement}
+            followSelectionInViewport={followViewport}
+          />
         </ReactFlowProvider>
       </TabsContent>
 
