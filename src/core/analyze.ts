@@ -1,16 +1,17 @@
 import type { RootGraphModel } from "ts-graphviz";
 import type { AnalysisConfig } from "./config/analysis-config";
-import type { ExecutableElement } from "./model/executable-element";
-import { initParser } from "./parser/python-parser";
-import { scanProject, type FileSystemAdapter } from "./parser/project-scanner";
-import { createElementsFromAnalyses } from "./model/element-factory";
-import { classifyElements } from "./model/element-classifier";
-import { resolveUses } from "./model/uses-resolver";
 import { buildGraph, graphToDot } from "./graph/graph-builder";
 import {
   filterIsolatedNodes,
   filterUnclassifiedNodes,
 } from "./graph/graph-filter";
+import { classifyElements } from "./model/element-classifier";
+import { createElementsFromAnalyses } from "./model/element-factory";
+import type { ExecutableElement } from "./model/executable-element";
+import { resolveUses } from "./model/uses-resolver";
+import type { ScopeFileAnalysis } from "./parser/codeparsers-types";
+import { type FileSystemAdapter, scanProject } from "./parser/project-scanner";
+import { initParser } from "./parser/python-parser";
 
 export interface AnalysisResult {
   elements: ExecutableElement[];
@@ -18,14 +19,11 @@ export interface AnalysisResult {
   dot: string;
 }
 
-export async function analyzeProject(
-  rootPath: string,
+/** Построение графа из уже прочитанных и распарсенных файлов (без I/O). */
+export function buildAnalysisResultFromAnalyses(
+  analyses: ScopeFileAnalysis[],
   config: AnalysisConfig,
-  fs: FileSystemAdapter,
-): Promise<AnalysisResult> {
-  await initParser();
-
-  const analyses = await scanProject(rootPath, fs);
+): AnalysisResult {
   const rawElements = createElementsFromAnalyses(analyses);
   const classified = classifyElements(rawElements, config);
   resolveUses(classified, analyses);
@@ -40,4 +38,15 @@ export async function analyzeProject(
   const dot = graphToDot(graph);
 
   return { elements: visible, graph, dot };
+}
+
+export async function analyzeProject(
+  rootPath: string,
+  config: AnalysisConfig,
+  fs: FileSystemAdapter,
+): Promise<AnalysisResult> {
+  await initParser();
+
+  const analyses = await scanProject(rootPath, fs);
+  return buildAnalysisResultFromAnalyses(analyses, config);
 }

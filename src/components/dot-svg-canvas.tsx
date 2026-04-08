@@ -41,6 +41,7 @@ interface DotSvgCanvasProps {
   /** Текущий выбранный узел (reference), для подсветки связей в SVG. */
   selectedRef?: string | null;
   onSelectElement?: (element: ExecutableElement | null) => void;
+  onNodeDoubleClick?: (element: ExecutableElement) => void;
   /** Панорамировать и масштабировать к выбранному узлу (например, пока открыт поиск). */
   followSelectionInViewport?: boolean;
 }
@@ -75,6 +76,7 @@ export function DotSvgCanvas({
   elements,
   selectedRef = null,
   onSelectElement,
+  onNodeDoubleClick,
   followSelectionInViewport = false,
 }: DotSvgCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -250,6 +252,24 @@ export function DotSvgCanvas({
     [elementsByRef, onSelectElement],
   );
 
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (!onNodeDoubleClick) return;
+      const group = findNodeGroup(e.target);
+      if (!group) return;
+      const title = group.querySelector("title");
+      if (!title?.textContent) return;
+      const ref = title.textContent.trim();
+      const el = elementsByRef.get(ref);
+      if (el) {
+        e.preventDefault();
+        e.stopPropagation();
+        onNodeDoubleClick(el);
+      }
+    },
+    [elementsByRef, onNodeDoubleClick],
+  );
+
   const handleDownloadSvg = useCallback(async () => {
     const svg = containerRef.current?.querySelector("svg");
     if (!svg) return;
@@ -320,7 +340,12 @@ export function DotSvgCanvas({
       {/* Клик по пустому месту SVG: цель — жест short-click, не отдельная кнопка. */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: контейнер под inline-SVG Graphviz */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: навигация по графу — указатель/тач */}
-      <div ref={containerRef} className="h-full w-full" onClick={handleClick} />
+      <div
+        ref={containerRef}
+        className="h-full w-full"
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+      />
       <div className="pointer-events-none absolute top-2 right-2 z-10">
         <Button
           type="button"

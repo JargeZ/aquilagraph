@@ -22,6 +22,9 @@ interface GraphViewProps {
   elements: ExecutableElement[];
   graph: RootGraphModel;
   dot: string;
+  /** Синхронизировать выбранный узел (например, центр подграфа по роуту). */
+  initialSelectedRef?: string;
+  onNodeDoubleClick?: (element: ExecutableElement) => void;
 }
 
 type FlowRenderable = {
@@ -120,6 +123,7 @@ function DotGraphCanvas({
   elements,
   selectedElement,
   onSelectElement,
+  onNodeDoubleClick,
   followSelectionInViewport,
 }: {
   dot: string;
@@ -127,6 +131,7 @@ function DotGraphCanvas({
   elements: ExecutableElement[];
   selectedElement: ExecutableElement | null;
   onSelectElement: (element: ExecutableElement | null) => void;
+  onNodeDoubleClick?: (element: ExecutableElement) => void;
   followSelectionInViewport: boolean;
 }) {
   return (
@@ -138,6 +143,7 @@ function DotGraphCanvas({
           elements={elements}
           selectedRef={selectedElement?.reference ?? null}
           onSelectElement={onSelectElement}
+          onNodeDoubleClick={onNodeDoubleClick}
           followSelectionInViewport={followSelectionInViewport}
         />
       </div>
@@ -150,11 +156,23 @@ function DotGraphCanvas({
   );
 }
 
-export function GraphView({ elements, graph, dot }: GraphViewProps) {
+export function GraphView({
+  elements,
+  graph,
+  dot,
+  initialSelectedRef,
+  onNodeDoubleClick,
+}: GraphViewProps) {
   const [copied, setCopied] = useState(false);
   const [selectedElement, setSelectedElement] =
     useState<ExecutableElement | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    if (initialSelectedRef === undefined) return;
+    const el = elements.find((e) => e.reference === initialSelectedRef) ?? null;
+    setSelectedElement(el);
+  }, [initialSelectedRef, elements]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -199,6 +217,7 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
           elements={elements}
           selectedElement={selectedElement}
           onSelectElement={setSelectedElement}
+          onNodeDoubleClick={onNodeDoubleClick}
           followSelectionInViewport={followViewport}
         />
       </TabsContent>

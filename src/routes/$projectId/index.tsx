@@ -1,13 +1,15 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import type { ReactNode } from "react";
 import { GraphView } from "@/components/graph-view";
 import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
 import { ProjectGraphToolbar } from "@/components/project/project-graph-toolbar";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
+import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
 
 export function ProjectGraphPage() {
+  const navigate = useNavigate();
   const {
     projectId,
     project,
@@ -26,6 +28,15 @@ export function ProjectGraphPage() {
         elements={analysisResult.elements}
         graph={analysisResult.graph}
         dot={analysisResult.dot}
+        onNodeDoubleClick={(el: ExecutableElement) => {
+          void navigate({
+            to: "/$projectId/node-sub-graph/$nodeRef",
+            params: {
+              projectId,
+              nodeRef: encodeURIComponent(el.reference),
+            },
+          });
+        }}
       />
     );
   } else if (analysisError) {

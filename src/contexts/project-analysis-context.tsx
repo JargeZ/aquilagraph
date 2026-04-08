@@ -2,13 +2,21 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { readDir, readTextFile } from "@tauri-apps/plugin-fs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { analyzeProject } from "@/core/analyze";
+import {
+  type AnalysisResult,
+  buildAnalysisResultFromAnalyses,
+} from "@/core/analyze";
 import {
   type AnalysisConfig,
   DEFAULT_ANALYSIS_CONFIG,
   getAnalysisConfigKey,
 } from "@/core/config/analysis-config";
-import type { FileSystemAdapter } from "@/core/parser/project-scanner";
+import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
+import {
+  type FileSystemAdapter,
+  scanProject,
+} from "@/core/parser/project-scanner";
+import { initParser } from "@/core/parser/python-parser";
 import { countFilesRecursive } from "@/lib/count-project-files";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import {
@@ -60,6 +68,7 @@ export function ProjectAnalysisProvider({
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
     null,
   );
+  const [scanCache, setScanCache] = useState<ScopeFileAnalysis[] | null>(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
 
@@ -132,16 +141,18 @@ export function ProjectAnalysisProvider({
     setAnalysisLoading(true);
     setAnalysisError(null);
     try {
+      await initParser();
       const fs = createTauriFsAdapter(rootPath);
-      const result = await analyzeProject("", analysisConfig, fs);
+      const analyses = await scanProject("", fs);
       if (analysisGenerationRef.current !== generation) return;
-      setAnalysisResult(result);
+      setScanCache(analyses);
     } catch (e) {
       console.error("[runAnalysis] failed:", e);
       if (analysisGenerationRef.current !== generation) return;
       const msg =
         e instanceof Error ? e.message : typeof e === "string" ? e : String(e);
       setAnalysisError(msg || "Неизвестная ошибка анализа");
+      setScanCache(null);
       setAnalysisResult(null);
     } finally {
       analysisInFlightRef.current = false;
@@ -149,7 +160,7 @@ export function ProjectAnalysisProvider({
         setAnalysisLoading(false);
       }
     }
-  }, [rootPath, analysisConfig]);
+  }, [rootPath]);
 
   runAnalysisRef.current = runAnalysis;
 
@@ -157,11 +168,28 @@ export function ProjectAnalysisProvider({
     analysisGenerationRef.current += 1;
     analysisInFlightRef.current = false;
     setAnalysisResult(null);
+    setScanCache(null);
     setAnalysisError(null);
     if (!rootPath) {
       setAnalysisLoading(false);
     }
   }, [rootPath]);
+
+  useEffect(() => {
+    if (scanCache === null || !rootPath || !isTauriRuntime()) return;
+    try {
+      setAnalysisResult(
+        buildAnalysisResultFromAnalyses(scanCache, analysisConfig),
+      );
+      setAnalysisError(null);
+    } catch (e) {
+      console.error("[buildAnalysisResultFromAnalyses] failed:", e);
+      const msg =
+        e instanceof Error ? e.message : typeof e === "string" ? e : String(e);
+      setAnalysisError(msg || "Ошибка построения графа");
+      setAnalysisResult(null);
+    }
+  }, [scanCache, analysisConfig, rootPath]);
 
   useEffect(() => {
     if (!rootPath || !isTauriRuntime()) return;
