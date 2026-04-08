@@ -1,17 +1,3 @@
-import type { Edge, Viewport } from "@xyflow/react";
-import {
-  Background,
-  BackgroundVariant,
-  Controls,
-  MarkerType,
-  MiniMap,
-  type NodeMouseHandler,
-  ReactFlow,
-  ReactFlowProvider,
-  useReactFlow,
-} from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
-
 import { Button } from "@ui/molecules/button/button";
 import {
   Tabs,
@@ -19,24 +5,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@ui/molecules/tabs/tabs";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
-import {
-  digraphToFlow,
-  type ElementNodeData,
-  type FlowNode,
-} from "@/core/graph/digraph-to-flow";
-import { computeLinkReachSets } from "@/core/graph/link-highlight";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { DotSvgCanvas } from "./dot-svg-canvas";
-import { ElementNode } from "./flow-nodes/element-node";
-import { GroupNode } from "./flow-nodes/group-node";
 import { NodeSearchCommand } from "./node-search-command";
-
-const nodeTypes = {
-  element: ElementNode,
-  group: GroupNode,
-} as const;
 
 const TYPE_LABELS: Record<string, string> = {
   controlling: "Controlling",
@@ -49,6 +22,22 @@ interface GraphViewProps {
   elements: ExecutableElement[];
   graph: RootGraphModel;
   dot: string;
+}
+
+type FlowRenderable = {
+  readonly graph: RootGraphModel;
+  readonly elements: readonly ExecutableElement[];
+};
+
+function renderFlow(_renderable: FlowRenderable) {
+  // Важно: раньше тут был рендер через React Flow, но способ рендера должен оставаться сменяемым.
+  // В будущем должен быть возможен другой движок (SVG/Canvas/WebGL/DOM), поэтому держим Flow как
+  // пример «рендер-функции», которая принимает входные данные и возвращает UI.
+  return (
+    <div className="flex h-full items-center justify-center rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
+      Flow renderer placeholder (extensible render pipeline).
+    </div>
+  );
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
@@ -161,234 +150,6 @@ function DotGraphCanvas({
   );
 }
 
-function FlowViewportFollow({
-  selectedRef,
-  follow,
-}: {
-  selectedRef: string | null;
-  follow: boolean;
-}) {
-  const { getNode, getNodesBounds, getZoom, setCenter } = useReactFlow();
-
-  useEffect(() => {
-    if (!follow || !selectedRef) return;
-    const node = getNode(selectedRef);
-    if (!node) return;
-    let h = 0;
-    h = requestAnimationFrame(() => {
-      const bounds = getNodesBounds([node]);
-      const cx = bounds.x + bounds.width / 2;
-      const cy = bounds.y + bounds.height / 2;
-      void setCenter(cx, cy, { zoom: getZoom(), duration: 240 });
-    });
-    return () => cancelAnimationFrame(h);
-  }, [selectedRef, follow, getNode, getNodesBounds, getZoom, setCenter]);
-
-  return null;
-}
-
-function FlowCanvas({
-  graph,
-  elements,
-  selectedElement,
-  onSelectElement,
-  followSelectionInViewport,
-}: {
-  graph: RootGraphModel;
-  elements: ExecutableElement[];
-  selectedElement: ExecutableElement | null;
-  onSelectElement: (element: ExecutableElement | null) => void;
-  followSelectionInViewport: boolean;
-}) {
-  const { nodes, edges } = useMemo(() => digraphToFlow(graph), [graph]);
-
-  const elementsByRef = useMemo(() => {
-    const map = new Map<string, ExecutableElement>();
-    for (const el of elements) {
-      map.set(el.reference, el);
-    }
-    return map;
-  }, [elements]);
-
-  const selectedRef = selectedElement?.reference ?? null;
-
-  const flowWrapRef = useRef<HTMLDivElement>(null);
-  const skipPaneClearAfterViewportChangeRef = useRef(false);
-  const viewportAtMoveStartRef = useRef<Viewport | null>(null);
-
-  /** Новый жест: сбросить «после панорамы», иначе следующий короткий клик по фону ошибочно проигнорируется. */
-  useEffect(() => {
-    const el = flowWrapRef.current;
-    if (!el) return;
-    const reset = () => {
-      skipPaneClearAfterViewportChangeRef.current = false;
-    };
-    el.addEventListener("pointerdown", reset, true);
-    return () => el.removeEventListener("pointerdown", reset, true);
-  }, []);
-
-  const onMoveStart = useCallback((_e: unknown, vp: Viewport) => {
-    viewportAtMoveStartRef.current = { x: vp.x, y: vp.y, zoom: vp.zoom };
-  }, []);
-
-  /** Pointer на обёртке при pan часто не двигается (capture у React Flow) — смотрим сдвиг viewport. */
-  const onMoveEnd = useCallback((_e: unknown, vp: Viewport) => {
-    const start = viewportAtMoveStartRef.current;
-    viewportAtMoveStartRef.current = null;
-    if (!start) return;
-    if (start.x !== vp.x || start.y !== vp.y) {
-      skipPaneClearAfterViewportChangeRef.current = true;
-    }
-  }, []);
-
-  const onPaneClick = useCallback(() => {
-    if (skipPaneClearAfterViewportChangeRef.current) {
-      skipPaneClearAfterViewportChangeRef.current = false;
-      return;
-    }
-    onSelectElement(null);
-  }, [onSelectElement]);
-
-  const { flowNodes, flowEdges } = useMemo(() => {
-    if (!selectedRef) {
-      return { flowNodes: nodes, flowEdges: edges };
-    }
-
-    const edgePairs = edges.map((e) => ({
-      source: e.source,
-      target: e.target,
-    }));
-    const { forward, backward } = computeLinkReachSets(edgePairs, selectedRef);
-
-    const flowNodes = nodes.map((n) => {
-      if (n.type !== "element") return n;
-      const data = n.data as ElementNodeData;
-      const r = data.reference;
-      if (r === selectedRef) {
-        return {
-          ...n,
-          selected: true,
-          data: { ...data, linkHighlight: "selected" as const },
-        };
-      }
-      const inF = forward.has(r);
-      const inB = backward.has(r);
-      if (inF && inB) {
-        return {
-          ...n,
-          selected: false,
-          data: { ...data, linkHighlight: "both" as const },
-        };
-      }
-      if (inF) {
-        return {
-          ...n,
-          selected: false,
-          data: { ...data, linkHighlight: "uses" as const },
-        };
-      }
-      if (inB) {
-        return {
-          ...n,
-          selected: false,
-          data: { ...data, linkHighlight: "usedBy" as const },
-        };
-      }
-      return {
-        ...n,
-        selected: false,
-        data: { ...data, linkHighlight: "dimmed" as const },
-        style: { ...n.style, opacity: 0.32 },
-      };
-    });
-
-    const flowEdges: Edge[] = edges.map((e) => {
-      const inF = forward.has(e.source) && forward.has(e.target);
-      const inB = backward.has(e.source) && backward.has(e.target);
-      if (!inF && !inB) {
-        return {
-          ...e,
-          style: { ...e.style, opacity: 0.12 },
-          interactionWidth: 0,
-        };
-      }
-      const stroke = inF && inB ? "#8b5cf6" : inF ? "#0ea5e9" : "#f59e0b";
-      return {
-        ...e,
-        style: {
-          ...e.style,
-          strokeWidth: 3.5,
-          stroke,
-        },
-        zIndex: 1000,
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          width: 22,
-          height: 22,
-          color: stroke,
-        },
-      };
-    });
-
-    return { flowNodes, flowEdges };
-  }, [nodes, edges, selectedRef]);
-
-  const onNodeClick: NodeMouseHandler<FlowNode> = useCallback(
-    (_event, node) => {
-      skipPaneClearAfterViewportChangeRef.current = false;
-      if (node.type === "element") {
-        const data = node.data as ElementNodeData;
-        const el = elementsByRef.get(data.reference);
-        onSelectElement(el ?? null);
-      }
-    },
-    [elementsByRef, onSelectElement],
-  );
-
-  return (
-    <div className="flex h-full gap-3">
-      <div ref={flowWrapRef} className="min-h-0 min-w-0 flex-1 overflow-hidden">
-        <ReactFlow
-          nodes={flowNodes}
-          edges={flowEdges}
-          nodeTypes={nodeTypes}
-          onNodeClick={onNodeClick}
-          onMoveStart={onMoveStart}
-          onMoveEnd={onMoveEnd}
-          onPaneClick={onPaneClick}
-          fitView
-          minZoom={0.1}
-          maxZoom={2}
-          proOptions={{ hideAttribution: true }}
-          nodesDraggable={false}
-        >
-          <FlowViewportFollow
-            selectedRef={selectedElement?.reference ?? null}
-            follow={followSelectionInViewport}
-          />
-          <Controls showInteractive={false} />
-          <MiniMap
-            pannable
-            zoomable
-            nodeColor={(node) => {
-              if (node.type === "element") {
-                return (node.data as ElementNodeData).color;
-              }
-              return "transparent";
-            }}
-          />
-          <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
-        </ReactFlow>
-      </div>
-      {selectedElement && (
-        <div className="w-64 shrink-0">
-          <NodeDetailsPanel element={selectedElement} />
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function GraphView({ elements, graph, dot }: GraphViewProps) {
   const [copied, setCopied] = useState(false);
   const [selectedElement, setSelectedElement] =
@@ -443,15 +204,16 @@ export function GraphView({ elements, graph, dot }: GraphViewProps) {
       </TabsContent>
 
       <TabsContent value="flow" className="min-h-0 flex-1">
-        <ReactFlowProvider>
-          <FlowCanvas
-            graph={graph}
-            elements={elements}
-            selectedElement={selectedElement}
-            onSelectElement={setSelectedElement}
-            followSelectionInViewport={followViewport}
-          />
-        </ReactFlowProvider>
+        <div className="flex h-full gap-3">
+          <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+            {renderFlow({ graph, elements })}
+          </div>
+          {selectedElement && (
+            <div className="w-64 shrink-0">
+              <NodeDetailsPanel element={selectedElement} />
+            </div>
+          )}
+        </div>
       </TabsContent>
 
       <TabsContent value="dot" className="min-h-0 flex-1 overflow-auto p-4">

@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import type { RootGraphModel } from "ts-graphviz";
-import { graphModelEdgePairs } from "@/core/graph/digraph-to-flow";
+import { graphModelEdgePairs } from "@/core/graph/graph-model-edge-pairs";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import {
