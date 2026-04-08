@@ -1,0 +1,11 @@
+{
+  "name": "test_typescript_project",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Parsing-only TypeScript example project",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
+
