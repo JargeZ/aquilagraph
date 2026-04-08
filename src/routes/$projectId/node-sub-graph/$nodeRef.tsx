@@ -37,6 +37,16 @@ export function NodeSubGraphPage() {
   }, [nodeRefParam]);
 
   const goBack = useCallback(() => {
+    // Prefer browser history (so user can go to previous subgraph).
+    // Fallback to the full project graph if there's nowhere to go back.
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    void navigate({ to: "/$projectId", params: { projectId: ctxProjectId } });
+  }, [navigate, ctxProjectId]);
+
+  const goFullGraph = useCallback(() => {
     void navigate({ to: "/$projectId", params: { projectId: ctxProjectId } });
   }, [navigate, ctxProjectId]);
 
@@ -127,17 +137,27 @@ export function NodeSubGraphPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-2">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="gap-1.5"
-          onClick={goBack}
-        >
-          <ArrowLeft className="size-4" />
-          Назад
-        </Button>
+      <header className="flex shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-2">
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="gap-1.5"
+            onClick={goBack}
+          >
+            <ArrowLeft className="size-4" />
+            Назад
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={goFullGraph}
+          >
+            Фулл граф
+          </Button>
+        </div>
       </header>
       <div className="min-h-0 flex-1">{body}</div>
     </div>
