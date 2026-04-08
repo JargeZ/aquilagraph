@@ -28,6 +28,9 @@
       "@internal/codeparsers-python-scope": [
         "./node_modules/@luciformresearch/codeparsers/dist/esm/scope-extraction/PythonScopeExtractionParser.js"
       ],
+      "@internal/codeparsers-ts-scope": [
+        "./node_modules/@luciformresearch/codeparsers/dist/esm/scope-extraction/ScopeExtractionParser.js"
+      ],
       "@internal/codeparsers-wasm-loader": [
         "./node_modules/@luciformresearch/codeparsers/dist/esm/wasm/WasmLoader.js"
       ]

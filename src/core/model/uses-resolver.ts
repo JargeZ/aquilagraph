@@ -5,6 +5,8 @@ import type {
 import type { ExecutableElement } from "./executable-element";
 import { filePathToModuleRef } from "./reference-builder";
 
+const CODE_EXTENSIONS = /\.(py|pyi|ts|tsx|js|jsx|mts|cts|mjs|cjs)$/;
+
 /**
  * Resolves "uses" relationships between ExecutableElements
  * by analyzing identifier references from parsed scopes.
@@ -26,13 +28,11 @@ export function resolveUses(
 
   for (const el of elements) {
     if (el.className && !el.reference.endsWith(`.${el.className}`)) {
-      // This is a method -- resolve its uses
       const scope = scopeMap.get(makeScopeKey(el.sourceFile, el.name, el.className));
       if (scope) {
         el.uses = resolveElementUses(scope, el, importNameToRef, elementByRef);
       }
     } else if (!el.className) {
-      // Top-level function
       const scope = scopeMap.get(makeScopeKey(el.sourceFile, el.name, undefined));
       if (scope) {
         el.uses = resolveElementUses(scope, el, importNameToRef, elementByRef);
@@ -59,13 +59,11 @@ function resolveElementUses(
     );
     if (!resolvedRef || resolvedRef === element.reference) continue;
 
-    // If we resolved to a class, check if the context suggests a method call
     const target = elementByRef.get(resolvedRef);
     if (!target) continue;
 
-    // Try to find more specific method from context (e.g. GetTasksList().execute)
     const methodMatch = ref.context?.match(
-      new RegExp(`${importedName}\\(\\)\\.([\\w]+)`),
+      new RegExp(`${escapeForRegex(importedName)}\\(\\)\\.([\\w]+)`),
     );
     if (methodMatch) {
       const methodRef = `${resolvedRef}.${methodMatch[1]}`;
@@ -84,6 +82,10 @@ function resolveElementUses(
   }
 
   return uses;
+}
+
+function escapeForRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 /**
@@ -114,23 +116,67 @@ function buildImportMap(
   return map;
 }
 
-function normalizeImportSource(
+/**
+ * Normalize an import source to dot-notation module path.
+ * Handles Python (.foo, ..bar), TypeScript (./foo, ../bar), path aliases (@/), and bare imports.
+ */
+export function normalizeImportSource(
   source: string,
   currentFile: string,
 ): string {
-  if (!source.startsWith(".")) {
-    return source;
+  if (source.startsWith("@/")) {
+    return source
+      .slice(2)
+      .replace(/\//g, ".")
+      .replace(CODE_EXTENSIONS, "");
   }
 
+  if (source.startsWith("./") || source.startsWith("../")) {
+    return resolveTypeScriptRelativeImport(source, currentFile);
+  }
+
+  if (source.startsWith(".")) {
+    return resolvePythonRelativeImport(source, currentFile);
+  }
+
+  return source.replace(/\//g, ".").replace(CODE_EXTENSIONS, "");
+}
+
+function resolveTypeScriptRelativeImport(
+  source: string,
+  currentFile: string,
+): string {
+  const currentModule = filePathToModuleRef(currentFile);
+  const baseParts = currentModule.split(".");
+  baseParts.pop(); // remove filename segment
+
+  const segments = source.replace(CODE_EXTENSIONS, "").split("/");
+  let upCount = 0;
+  let i = 0;
+  for (; i < segments.length; i++) {
+    if (segments[i] === "..") {
+      upCount++;
+    } else if (segments[i] === ".") {
+      continue;
+    } else {
+      break;
+    }
+  }
+
+  const resolved = baseParts.slice(0, baseParts.length - upCount);
+  const tail = segments.slice(i);
+  return [...resolved, ...tail].join(".");
+}
+
+function resolvePythonRelativeImport(
+  source: string,
+  currentFile: string,
+): string {
   const currentModule = filePathToModuleRef(currentFile);
   const currentParts = currentModule.split(".");
-  // Directory of the current file
   const baseParts = currentParts.slice(0, -1);
 
   const sourceParts = source.split(".");
-  // Count leading empty strings = number of dots in the relative prefix
-  // In Python: . = current package, .. = parent, ... = grandparent
-  // n dots = go up (n - 1) levels from current package
   let leadingDots = 0;
   while (leadingDots < sourceParts.length && sourceParts[leadingDots] === "") {
     leadingDots++;

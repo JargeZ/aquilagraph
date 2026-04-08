@@ -1,5 +1,5 @@
 /**
- * Copies tree-sitter runtime + Python grammar WASM into public/wasm so the
+ * Copies tree-sitter runtime + language grammar WASMs into public/wasm so the
  * Tauri webview can fetch them (browser loader). Without this, requests hit
  * the SPA router and return HTML → "doesn't start with \\0asm".
  */
@@ -9,11 +9,12 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = path.join(root, "public/wasm");
-
-const pythonGrammar = path.join(
+const grammarsDir = path.join(
   root,
-  "node_modules/@luciformresearch/codeparsers/dist/esm/wasm/grammars/tree-sitter-python.wasm",
+  "node_modules/@luciformresearch/codeparsers/dist/esm/wasm/grammars",
 );
+
+const grammars = ["tree-sitter-python.wasm", "tree-sitter-typescript.wasm"];
 
 function findTreeSitterRuntimeWasm() {
   const direct = path.join(
@@ -52,4 +53,7 @@ function copyWasm(src, dest) {
 
 const runtime = findTreeSitterRuntimeWasm();
 copyWasm(runtime, path.join(outDir, "tree-sitter.wasm"));
-copyWasm(pythonGrammar, path.join(outDir, "tree-sitter-python.wasm"));
+
+for (const grammar of grammars) {
+  copyWasm(path.join(grammarsDir, grammar), path.join(outDir, grammar));
+}

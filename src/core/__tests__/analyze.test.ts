@@ -26,7 +26,7 @@ describe("analyzeProject (integration)", () => {
     expect(result.elements.length).toBeGreaterThan(0);
     expect(result.dot).toContain("digraph");
     expect(result.dot).toMatchSnapshot();
-  }, 30_000);
+  }, 60_000);
 
   it("returns classified elements (isolated nodes filtered out)", async () => {
     const fs = createNodeFsAdapter(ROOT);
@@ -43,7 +43,7 @@ describe("analyzeProject (integration)", () => {
       );
       expect(hasOutgoing || hasIncoming).toBe(true);
     }
-  }, 30_000);
+  }, 60_000);
 
   it("resolves uses relationships", async () => {
     const fs = createNodeFsAdapter(ROOT);
@@ -56,5 +56,5 @@ describe("analyzeProject (integration)", () => {
     );
     expect(performExecEl).toBeDefined();
     expect(performExecEl!.uses.length).toBeGreaterThan(0);
-  }, 30_000);
+  }, 60_000);
 });

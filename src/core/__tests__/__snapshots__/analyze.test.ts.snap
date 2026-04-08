@@ -47,6 +47,34 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
         fontcolor = "#FFFFFF";
       ];
     }
+    subgraph "cluster_core_module_ReportsViewSet" {
+      label = "ReportsViewSet";
+      style = "rounded";
+      "core_module.views.reports.ReportsViewSet.create" [
+        label = "create";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.views.reports.ReportsViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.views.reports.ReportsViewSet.total_amount" [
+        label = "total_amount";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
   }
   subgraph "cluster_export_module" {
     label = "export_module";
@@ -67,6 +95,18 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
+    subgraph "cluster_export_module_TaskSerializer" {
+      label = "TaskSerializer";
+      style = "rounded";
+      "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
+        label = "get_custom_field";
+        color = "#D3D3D3";
+        fillcolor = "#D3D3D3";
+        shape = "ellipse";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
     subgraph "cluster_export_module_TodoTaskViewSet" {
       label = "TodoTaskViewSet";
       style = "rounded";
@@ -90,9 +130,16 @@ exports[`analyzeProject (integration) > produces a complete analysis with DOT ou
   }
   "core_module.actions.add_task_to_list.AddTaskToList" -> "core_module.actions.get_tasks_list.GetTasksList";
   "core_module.views.core.CoreViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList";
+  "core_module.views.reports.ReportsViewSet.create" -> "core_module.actions.add_task_to_list.AddTaskToList";
+  "core_module.views.reports.ReportsViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "core_module.views.reports.ReportsViewSet.export" -> "export_module.actions.perform_export.PerformExport";
+  "core_module.views.reports.ReportsViewSet.total_amount" -> "core_module.actions.add_task_to_list.AddTaskToList";
+  "core_module.views.reports.ReportsViewSet.total_amount" -> "export_module.actions.perform_export.PerformExport";
+  "core_module.views.reports.ReportsViewSet.total_amount" -> "export_module.tasks.run_exports.task_ExportAllTasks";
   "export_module.actions.perform_export.PerformExport" -> "core_module.actions.get_tasks_list.GetTasksList";
   "export_module.actions.perform_export.PerformExport" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
   "export_module.actions.perform_export.PerformExport" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" -> "core_module.actions.get_tasks_list.GetTasksList";
   "export_module.views.todotask.TodoTaskViewSet.list" -> "core_module.actions.get_tasks_list.GetTasksList";
   "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
   "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";

@@ -5,8 +5,9 @@ import type {
 import { ExecutableElement } from "./executable-element";
 import {
   buildReference,
-  extractParentClasses,
+  extractParentClassesFromScope,
   filePathToModuleRef,
+  normalizeSymbolRef,
 } from "./reference-builder";
 
 const RELEVANT_SCOPE_TYPES = new Set(["class", "function", "method"]);
@@ -18,7 +19,8 @@ export function createElementsFromAnalyses(
 
   for (const analysis of analyses) {
     const fileRef = filePathToModuleRef(analysis.filePath);
-    const classParentMap = buildClassParentMap(analysis.scopes);
+    const classParentMap = buildClassParentMap(analysis);
+    const importRefs = analysis.importReferences;
 
     for (const scope of analysis.scopes) {
       if (!RELEVANT_SCOPE_TYPES.has(scope.type)) continue;
@@ -31,10 +33,15 @@ export function createElementsFromAnalyses(
         parentName,
       );
 
-      const className = resolveClassName(scope, analysis.scopes);
-      const parentClasses = resolveParentClasses(
-        scope,
-        classParentMap,
+      const className = resolveClassName(scope);
+      const rawParentClasses = resolveParentClasses(scope, classParentMap);
+      const parentClasses = rawParentClasses.map((pc) =>
+        normalizeSymbolRef(pc, importRefs, analysis.filePath),
+      );
+
+      const decoratorNames = extractDecoratorNames(scope);
+      const decorators = decoratorNames.map((d) =>
+        normalizeSymbolRef(d, importRefs, analysis.filePath),
       );
 
       elements.push(
@@ -44,7 +51,7 @@ export function createElementsFromAnalyses(
           className,
           name: scope.name,
           type: "unclassified",
-          decorators: scope.decorators ?? [],
+          decorators,
           parentClasses,
           sourceFile: analysis.filePath,
           startLine: scope.startLine,
@@ -57,20 +64,19 @@ export function createElementsFromAnalyses(
   return elements;
 }
 
-function resolveClassName(
-  scope: ScopeInfo,
-  _allScopes: ScopeInfo[],
-): string | null {
+function resolveClassName(scope: ScopeInfo): string | null {
   if (scope.type === "class") return scope.name;
   if (scope.type === "method" && scope.parent) return scope.parent;
   return null;
 }
 
-function buildClassParentMap(scopes: ScopeInfo[]): Map<string, string[]> {
+function buildClassParentMap(
+  analysis: ScopeFileAnalysis,
+): Map<string, string[]> {
   const map = new Map<string, string[]>();
-  for (const scope of scopes) {
+  for (const scope of analysis.scopes) {
     if (scope.type === "class") {
-      map.set(scope.name, extractParentClasses(scope.signature));
+      map.set(scope.name, extractParentClassesFromScope(scope));
     }
   }
   return map;
@@ -78,7 +84,7 @@ function buildClassParentMap(scopes: ScopeInfo[]): Map<string, string[]> {
 
 /**
  * For a method, inherit parent classes from its owning class.
- * For a class, extract from its own signature.
+ * For a class, extract from scope data.
  * For a function, return empty.
  */
 function resolveParentClasses(
@@ -86,10 +92,24 @@ function resolveParentClasses(
   classParentMap: Map<string, string[]>,
 ): string[] {
   if (scope.type === "class") {
-    return extractParentClasses(scope.signature);
+    return extractParentClassesFromScope(scope);
   }
   if (scope.type === "method" && scope.parent) {
     return classParentMap.get(scope.parent) ?? [];
   }
   return [];
+}
+
+/**
+ * Extract clean decorator names, preferring decoratorDetails
+ * (which has structured `name` field) over raw decorator strings.
+ */
+function extractDecoratorNames(scope: ScopeInfo): string[] {
+  if (scope.decoratorDetails?.length) {
+    return scope.decoratorDetails.map((d) => d.name);
+  }
+  if (!scope.decorators?.length) return [];
+  return scope.decorators.map((d) =>
+    d.replace(/^@/, "").replace(/\(.*\)$/, ""),
+  );
 }

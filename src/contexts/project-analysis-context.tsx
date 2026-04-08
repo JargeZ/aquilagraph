@@ -16,7 +16,7 @@ import {
   type FileSystemAdapter,
   scanProject,
 } from "@/core/parser/project-scanner";
-import { initParser } from "@/core/parser/python-parser";
+import { initParsers } from "@/core/parser/universal-parser";
 import { countFilesRecursive } from "@/lib/count-project-files";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import {
@@ -141,7 +141,7 @@ export function ProjectAnalysisProvider({
     setAnalysisLoading(true);
     setAnalysisError(null);
     try {
-      await initParser();
+      await initParsers();
       const fs = createTauriFsAdapter(rootPath);
       const analyses = await scanProject("", fs);
       if (analysisGenerationRef.current !== generation) return;

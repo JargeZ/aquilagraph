@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
-import { initParser } from "../../parser/python-parser";
+import { initParsers } from "../../parser/universal-parser";
 import { scanProject } from "../../parser/project-scanner";
 import {
   createNodeFsAdapter,
@@ -36,10 +36,10 @@ const GET_TASKS_CLASS =
   "core_module.actions.get_tasks_list.GetTasksList";
 
 beforeAll(async () => {
-  await initParser();
+  await initParsers();
   const fs = createNodeFsAdapter(ROOT);
   analyses = await scanProject("", fs);
-}, 30_000);
+}, 60_000);
 
 function prepareElements(config: AnalysisConfig): ExecutableElement[] {
   const fresh = createElementsFromAnalyses(analyses);

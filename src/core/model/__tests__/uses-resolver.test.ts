@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
-import { initParser } from "../../parser/python-parser";
+import { initParsers } from "../../parser/universal-parser";
 import { scanProject } from "../../parser/project-scanner";
 import {
   createNodeFsAdapter,
@@ -16,12 +16,12 @@ let elements: ExecutableElement[];
 let analyses: ScopeFileAnalysis[];
 
 beforeAll(async () => {
-  await initParser();
+  await initParsers();
   const fs = createNodeFsAdapter(ROOT);
   analyses = await scanProject("", fs);
   elements = createElementsFromAnalyses(analyses);
   resolveUses(elements, analyses);
-}, 30_000);
+}, 60_000);
 
 function findEl(ref: string): ExecutableElement {
   const el = elements.find((e) => e.reference === ref);

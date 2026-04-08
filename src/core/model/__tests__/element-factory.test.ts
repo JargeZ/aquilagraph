@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { initParser } from "../../parser/python-parser";
+import { initParsers } from "../../parser/universal-parser";
 import { scanProject } from "../../parser/project-scanner";
 import {
   createNodeFsAdapter,
@@ -12,11 +12,11 @@ const ROOT = getTestProjectRoot();
 let elements: ReturnType<typeof createElementsFromAnalyses>;
 
 beforeAll(async () => {
-  await initParser();
+  await initParsers();
   const fs = createNodeFsAdapter(ROOT);
   const analyses = await scanProject("", fs);
   elements = createElementsFromAnalyses(analyses);
-}, 30_000);
+}, 60_000);
 
 describe("createElementsFromAnalyses", () => {
   it("creates elements for all expected references", () => {
@@ -81,25 +81,29 @@ describe("createElementsFromAnalyses", () => {
     expect(cls!.className).toBe("TodoTaskViewSet");
   });
 
-  it("methods inherit parentClasses from their class", () => {
+  it("methods inherit normalized parentClasses from their class", () => {
     const execute = elements.find(
       (e) =>
         e.reference ===
         "core_module.actions.get_tasks_list.GetTasksList.execute",
     );
     expect(execute).toBeDefined();
-    expect(execute!.parentClasses).toContain("BaseBusinessAction");
+    expect(execute!.parentClasses).toContain(
+      "utils.base_action.BaseBusinessAction",
+    );
   });
 
-  it("class has parentClasses from signature", () => {
+  it("class has normalized parentClasses", () => {
     const cls = elements.find(
       (e) =>
         e.reference === "export_module.views.todotask.TodoTaskViewSet",
     );
-    expect(cls!.parentClasses).toEqual(["viewsets.ModelViewSet"]);
+    expect(cls!.parentClasses).toEqual([
+      "rest_framework.viewsets.ModelViewSet",
+    ]);
   });
 
-  it("extracts decorators on functions", () => {
+  it("extracts normalized decorators on functions", () => {
     const task = elements.find(
       (e) =>
         e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",

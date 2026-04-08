@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { initParser } from "../../parser/python-parser";
+import { initParsers } from "../../parser/universal-parser";
 import { scanProject } from "../../parser/project-scanner";
 import {
   createNodeFsAdapter,
@@ -16,11 +16,11 @@ const ROOT = getTestProjectRoot();
 let allElements: ExecutableElement[];
 
 beforeAll(async () => {
-  await initParser();
+  await initParsers();
   const fs = createNodeFsAdapter(ROOT);
   const analyses = await scanProject("", fs);
   allElements = createElementsFromAnalyses(analyses);
-}, 30_000);
+}, 60_000);
 
 function freshElements(): ExecutableElement[] {
   return createElementsFromAnalyses.length

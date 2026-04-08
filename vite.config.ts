@@ -102,6 +102,10 @@ export default defineConfig(async () => ({
         codeparsersPkgRoot,
         "dist/esm/scope-extraction/PythonScopeExtractionParser.js",
       ),
+      "@internal/codeparsers-ts-scope": path.join(
+        codeparsersPkgRoot,
+        "dist/esm/scope-extraction/ScopeExtractionParser.js",
+      ),
       "@internal/codeparsers-wasm-loader": path.join(
         codeparsersPkgRoot,
         "dist/esm/wasm/WasmLoader.js",

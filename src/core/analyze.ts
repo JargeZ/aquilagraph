@@ -11,7 +11,7 @@ import type { ExecutableElement } from "./model/executable-element";
 import { resolveUses } from "./model/uses-resolver";
 import type { ScopeFileAnalysis } from "./parser/codeparsers-types";
 import { type FileSystemAdapter, scanProject } from "./parser/project-scanner";
-import { initParser } from "./parser/python-parser";
+import { initParsers } from "./parser/universal-parser";
 
 export interface AnalysisResult {
   elements: ExecutableElement[];
@@ -45,7 +45,7 @@ export async function analyzeProject(
   config: AnalysisConfig,
   fs: FileSystemAdapter,
 ): Promise<AnalysisResult> {
-  await initParser();
+  await initParsers();
 
   const analyses = await scanProject(rootPath, fs);
   return buildAnalysisResultFromAnalyses(analyses, config);

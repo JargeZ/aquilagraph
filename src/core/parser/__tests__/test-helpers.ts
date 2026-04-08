@@ -2,17 +2,24 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import type { FileSystemAdapter } from "../project-scanner";
 
-const TEST_PROJECT_ROOT = path.resolve(
+const TEST_PYTHON_PROJECT_ROOT = path.resolve(
   __dirname,
   "../../../../test_python_project/src",
 );
 
 export function getTestProjectRoot(): string {
-  return TEST_PROJECT_ROOT;
+  return TEST_PYTHON_PROJECT_ROOT;
 }
 
 export function readTestFile(relativePath: string): string {
-  return fs.readFileSync(path.join(TEST_PROJECT_ROOT, relativePath), "utf-8");
+  return fs.readFileSync(
+    path.join(TEST_PYTHON_PROJECT_ROOT, relativePath),
+    "utf-8",
+  );
+}
+
+export function getTestTypeScriptProjectRoot(): string {
+  return path.resolve(__dirname, "../../../../test_typescript_project/src");
 }
 
 export function createNodeFsAdapter(basePath: string): FileSystemAdapter {
