@@ -126,6 +126,7 @@ export function DotSvgCanvas({
 
         const panZoom = svgPanZoom(svg, {
           zoomEnabled: true,
+          dblClickZoomEnabled: false,
           controlIconsEnabled: true,
           fit: true,
           center: true,
