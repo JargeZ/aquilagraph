@@ -1,0 +1,93 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot) 1`] = `
+"digraph "G" {
+  rankdir = "LR";
+  fontname = "Helvetica";
+  node [
+    fontname = "Helvetica";
+    fontsize = "10";
+  ];
+  subgraph "cluster_core_module" {
+    label = "core_module";
+    style = "dashed";
+    "core_module.actions.get_tasks_list.GetTasksList" [
+      label = "GetTasksList";
+      color = "#50C878";
+      fillcolor = "#50C878";
+      shape = "ellipse";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    "core_module.tasks.run_todo_sync.task_RunTodoSync" [
+      label = "task_RunTodoSync";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    subgraph "cluster_core_module_ReportsViewSet" {
+      label = "ReportsViewSet";
+      style = "rounded";
+      "core_module.views.reports.ReportsViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+      "core_module.views.reports.ReportsViewSet.total_amount" [
+        label = "total_amount";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  subgraph "cluster_export_module" {
+    label = "export_module";
+    style = "dashed";
+    "export_module.actions.perform_export.PerformExport" [
+      label = "PerformExport";
+      color = "#50C878";
+      fillcolor = "#50C878";
+      shape = "ellipse";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    "export_module.tasks.run_exports.task_ExportAllTasks" [
+      label = "task_ExportAllTasks";
+      color = "#FFB347";
+      fillcolor = "#FFB347";
+      shape = "hexagon";
+      style = "filled";
+      fontcolor = "#FFFFFF";
+    ];
+    subgraph "cluster_export_module_TodoTaskViewSet" {
+      label = "TodoTaskViewSet";
+      style = "rounded";
+      "export_module.views.todotask.TodoTaskViewSet.export" [
+        label = "export";
+        color = "#4A90D9";
+        fillcolor = "#4A90D9";
+        shape = "box";
+        style = "filled";
+        fontcolor = "#FFFFFF";
+      ];
+    }
+  }
+  "core_module.views.reports.ReportsViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "core_module.views.reports.ReportsViewSet.export" -> "export_module.actions.perform_export.PerformExport";
+  "core_module.views.reports.ReportsViewSet.total_amount" -> "export_module.actions.perform_export.PerformExport";
+  "core_module.views.reports.ReportsViewSet.total_amount" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.actions.perform_export.PerformExport" -> "core_module.actions.get_tasks_list.GetTasksList";
+  "export_module.actions.perform_export.PerformExport" -> "core_module.tasks.run_todo_sync.task_RunTodoSync";
+  "export_module.actions.perform_export.PerformExport" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.tasks.run_exports.task_ExportAllTasks";
+  "export_module.views.todotask.TodoTaskViewSet.export" -> "export_module.actions.perform_export.PerformExport";
+}"
+`;
