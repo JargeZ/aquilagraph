@@ -14,6 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectIdIndexRouteImport } from './routes/$projectId/index'
 import { Route as ProjectIdSettingsRouteImport } from './routes/$projectId/settings'
 import { Route as ProjectIdNodeSubGraphNodeRefRouteImport } from './routes/$projectId/node-sub-graph/$nodeRef'
+import { Route as ProjectIdNodeDetailsNodeRefRouteImport } from './routes/$projectId/node-details/$nodeRef'
+import { Route as ProjectIdNodeDebugDetailsNodeRefRouteImport } from './routes/$projectId/node-debug-details/$nodeRef'
 
 const ProjectIdRoute = ProjectIdRouteImport.update({
   id: '/$projectId',
@@ -41,18 +43,34 @@ const ProjectIdNodeSubGraphNodeRefRoute =
     path: '/node-sub-graph/$nodeRef',
     getParentRoute: () => ProjectIdRoute,
   } as any)
+const ProjectIdNodeDetailsNodeRefRoute =
+  ProjectIdNodeDetailsNodeRefRouteImport.update({
+    id: '/node-details/$nodeRef',
+    path: '/node-details/$nodeRef',
+    getParentRoute: () => ProjectIdRoute,
+  } as any)
+const ProjectIdNodeDebugDetailsNodeRefRoute =
+  ProjectIdNodeDebugDetailsNodeRefRouteImport.update({
+    id: '/node-debug-details/$nodeRef',
+    path: '/node-debug-details/$nodeRef',
+    getParentRoute: () => ProjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$projectId': typeof ProjectIdRouteWithChildren
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId/': typeof ProjectIdIndexRoute
+  '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
+  '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId': typeof ProjectIdIndexRoute
+  '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
+  '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
 }
 export interface FileRoutesById {
@@ -61,6 +79,8 @@ export interface FileRoutesById {
   '/$projectId': typeof ProjectIdRouteWithChildren
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId/': typeof ProjectIdIndexRoute
+  '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
+  '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
 }
 export interface FileRouteTypes {
@@ -70,12 +90,16 @@ export interface FileRouteTypes {
     | '/$projectId'
     | '/$projectId/settings'
     | '/$projectId/'
+    | '/$projectId/node-debug-details/$nodeRef'
+    | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$projectId/settings'
     | '/$projectId'
+    | '/$projectId/node-debug-details/$nodeRef'
+    | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
   id:
     | '__root__'
@@ -83,6 +107,8 @@ export interface FileRouteTypes {
     | '/$projectId'
     | '/$projectId/settings'
     | '/$projectId/'
+    | '/$projectId/node-debug-details/$nodeRef'
+    | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
   fileRoutesById: FileRoutesById
 }
@@ -128,18 +154,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectIdNodeSubGraphNodeRefRouteImport
       parentRoute: typeof ProjectIdRoute
     }
+    '/$projectId/node-details/$nodeRef': {
+      id: '/$projectId/node-details/$nodeRef'
+      path: '/node-details/$nodeRef'
+      fullPath: '/$projectId/node-details/$nodeRef'
+      preLoaderRoute: typeof ProjectIdNodeDetailsNodeRefRouteImport
+      parentRoute: typeof ProjectIdRoute
+    }
+    '/$projectId/node-debug-details/$nodeRef': {
+      id: '/$projectId/node-debug-details/$nodeRef'
+      path: '/node-debug-details/$nodeRef'
+      fullPath: '/$projectId/node-debug-details/$nodeRef'
+      preLoaderRoute: typeof ProjectIdNodeDebugDetailsNodeRefRouteImport
+      parentRoute: typeof ProjectIdRoute
+    }
   }
 }
 
 interface ProjectIdRouteChildren {
   ProjectIdSettingsRoute: typeof ProjectIdSettingsRoute
   ProjectIdIndexRoute: typeof ProjectIdIndexRoute
+  ProjectIdNodeDebugDetailsNodeRefRoute: typeof ProjectIdNodeDebugDetailsNodeRefRoute
+  ProjectIdNodeDetailsNodeRefRoute: typeof ProjectIdNodeDetailsNodeRefRoute
   ProjectIdNodeSubGraphNodeRefRoute: typeof ProjectIdNodeSubGraphNodeRefRoute
 }
 
 const ProjectIdRouteChildren: ProjectIdRouteChildren = {
   ProjectIdSettingsRoute: ProjectIdSettingsRoute,
   ProjectIdIndexRoute: ProjectIdIndexRoute,
+  ProjectIdNodeDebugDetailsNodeRefRoute: ProjectIdNodeDebugDetailsNodeRefRoute,
+  ProjectIdNodeDetailsNodeRefRoute: ProjectIdNodeDetailsNodeRefRoute,
   ProjectIdNodeSubGraphNodeRefRoute: ProjectIdNodeSubGraphNodeRefRoute,
 }
 

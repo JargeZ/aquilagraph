@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useMemo } from "react";
 import { GraphView } from "@/components/graph-view";
 import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
+import { useNodeRouteContext } from "@/contexts/use-node-route-context";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import { buildNodeSubgraphResult } from "@/core/graph/build-node-subgraph-result";
 import type { ExecutableElement } from "@/core/model/executable-element";
@@ -28,13 +29,7 @@ export function NodeSubGraphPage() {
     analysisConfig,
   } = useProjectAnalysis();
 
-  const decodedRef = useMemo(() => {
-    try {
-      return decodeURIComponent(nodeRefParam);
-    } catch {
-      return nodeRefParam;
-    }
-  }, [nodeRefParam]);
+  const { decodedRef } = useNodeRouteContext(nodeRefParam);
 
   const goBack = useCallback(() => {
     // Prefer browser history (so user can go to previous subgraph).

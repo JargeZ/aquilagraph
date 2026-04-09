@@ -5,9 +5,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@ui/molecules/tabs/tabs";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
 import type { ExecutableElement } from "@/core/model/executable-element";
+import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import { DotSvgCanvas } from "./dot-svg-canvas";
 import { NodeSearchCommand } from "./node-search-command";
 
@@ -44,6 +46,7 @@ function renderFlow(_renderable: FlowRenderable) {
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
+  const { projectId } = useProjectAnalysis();
   const color =
     element.type === "controlling"
       ? "#4A90D9"
@@ -63,6 +66,31 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
         <span className="font-semibold text-foreground">
           {TYPE_LABELS[element.type] ?? element.type}
         </span>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Button asChild variant="outline" size="sm">
+          <Link
+            to="/$projectId/node-debug-details/$nodeRef"
+            params={{
+              projectId,
+              nodeRef: encodeURIComponent(element.reference),
+            }}
+          >
+            Debug
+          </Link>
+        </Button>
+        <Button asChild variant="outline" size="sm">
+          <Link
+            to="/$projectId/node-details/$nodeRef"
+            params={{
+              projectId,
+              nodeRef: encodeURIComponent(element.reference),
+            }}
+          >
+            Детали
+          </Link>
+        </Button>
       </div>
 
       <div className="space-y-1 text-muted-foreground">
