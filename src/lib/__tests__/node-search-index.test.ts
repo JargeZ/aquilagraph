@@ -15,7 +15,7 @@ function el(
     module: "mod",
     className: overrides.className ?? null,
     name: overrides.name ?? "fn",
-    type: "businessLogic",
+    type: "cat_biz",
     decorators: [],
     parentClasses: [],
     sourceFile: overrides.sourceFile ?? "pkg/foo.py",

@@ -1,23 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { analyzeProject } from "@/core/analyze";
-import {
-  type AnalysisConfig,
-  DEFAULT_ANALYSIS_CONFIG,
-} from "@/core/config/analysis-config";
+import type { AnalysisConfig } from "@/core/config/analysis-config";
+import { TEST_ANALYSIS_CONFIG } from "@/core/config/test-project-analysis-config";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
 } from "@/core/parser/__tests__/test-helpers";
 import { buildNodeSubgraphResult } from "./build-node-subgraph-result";
 
-const TEST_PROJECT_CONFIG: AnalysisConfig = {
-  ...DEFAULT_ANALYSIS_CONFIG,
-  selectors: {
-    controlling: { childsOf: ["ModelViewSet"] },
-    businessLogic: { childsOf: ["BaseBusinessAction"] },
-    sideEffects: { decoratedWith: ["shared_task"] },
-  },
-};
+const TEST_PROJECT_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG;
 
 async function getFullAnalysis() {
   const fs = createNodeFsAdapter(getTestProjectRoot());
@@ -53,8 +44,7 @@ describe("buildNodeSubgraphResult", () => {
 
   it("PerformExport.execute subgraph DOT (snapshot)", async () => {
     const full = await getFullAnalysis();
-    const ref =
-      "export_module.actions.perform_export.PerformExport.execute";
+    const ref = "export_module.actions.perform_export.PerformExport.execute";
     const sub = buildNodeSubgraphResult(full, ref, TEST_PROJECT_CONFIG);
     expect(sub).not.toBeNull();
     if (!sub) return;
@@ -64,8 +54,7 @@ describe("buildNodeSubgraphResult", () => {
 
   it("PerformExport.execute subgraph has no isolated nodes", async () => {
     const full = await getFullAnalysis();
-    const ref =
-      "export_module.actions.perform_export.PerformExport.execute";
+    const ref = "export_module.actions.perform_export.PerformExport.execute";
     const sub = buildNodeSubgraphResult(full, ref, TEST_PROJECT_CONFIG);
     expect(sub).not.toBeNull();
     if (!sub) return;
@@ -82,8 +71,7 @@ describe("buildNodeSubgraphResult", () => {
     }
 
     const nodeDecls = lines.filter(
-      (l) =>
-        l.match(/^\s*"[^"]+"\s*\[/) && !l.includes("->"),
+      (l) => l.match(/^\s*"[^"]+"\s*\[/) && !l.includes("->"),
     );
 
     for (const decl of nodeDecls) {
@@ -97,13 +85,13 @@ describe("buildNodeSubgraphResult", () => {
 
   it("PerformExport.execute subgraph has no empty subgraph clusters", async () => {
     const full = await getFullAnalysis();
-    const ref =
-      "export_module.actions.perform_export.PerformExport.execute";
+    const ref = "export_module.actions.perform_export.PerformExport.execute";
     const sub = buildNodeSubgraphResult(full, ref, TEST_PROJECT_CONFIG);
     expect(sub).not.toBeNull();
     if (!sub) return;
 
-    const emptySubgraphPattern = /subgraph\s+"[^"]+"\s*\{\s*(?:label\s*=\s*"[^"]*";\s*)?(?:style\s*=\s*"[^"]*";\s*)*\}/;
+    const emptySubgraphPattern =
+      /subgraph\s+"[^"]+"\s*\{\s*(?:label\s*=\s*"[^"]*";\s*)?(?:style\s*=\s*"[^"]*";\s*)*\}/;
     expect(sub.dot).not.toMatch(emptySubgraphPattern);
   });
 });

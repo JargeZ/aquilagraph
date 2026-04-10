@@ -1,5 +1,5 @@
-import { digraph, toDot, attribute } from "ts-graphviz";
 import type { RootGraphModel } from "ts-graphviz";
+import { attribute, digraph, toDot } from "ts-graphviz";
 
 /** Лимит узлов AST в @ts-graphviz/ast при сериализации (дефолт библиотеки — 100 000). */
 const TO_DOT_MAX_AST_NODES = 1_000_000;
@@ -12,44 +12,65 @@ const TO_DOT_OPTIONS = {
 export function graphToDot(graph: RootGraphModel): string {
   return toDot(graph, TO_DOT_OPTIONS);
 }
-import type { AnalysisConfig } from "../config/analysis-config";
-import { DEFAULT_ANALYSIS_CONFIG } from "../config/analysis-config";
-import type { ExecutableElement, ElementType } from "../model/executable-element";
+
+import type {
+  AnalysisConfig,
+  ClassificationConfig,
+} from "../config/analysis-config";
+import {
+  classificationById,
+  DEFAULT_ANALYSIS_CONFIG,
+} from "../config/analysis-config";
+import type { ExecutableElement } from "../model/executable-element";
+import { UNCLASSIFIED_TYPE } from "../model/executable-element";
 import { getModuleName } from "../model/reference-builder";
 
-const TYPE_STYLES: Record<
-  ElementType,
-  { color: string; shape: string; style: string }
-> = {
-  controlling: { color: "#4A90D9", shape: "box", style: "filled" },
-  businessLogic: { color: "#50C878", shape: "ellipse", style: "filled" },
-  sideEffect: { color: "#FFB347", shape: "hexagon", style: "filled" },
-  unclassified: { color: "#D3D3D3", shape: "ellipse", style: "filled" },
-};
+const UNCLASSIFIED_STYLE = {
+  color: "#D3D3D3",
+  shape: "ellipse",
+  style: "filled",
+} as const;
 
-/** Подписи кластеров-бакетов на графе (как в панели настроек). */
-const TYPE_CLUSTER_LABEL: Record<
-  "controlling" | "businessLogic" | "sideEffect",
-  string
-> = {
-  controlling: "Controlling",
-  businessLogic: "Business Logic",
-  sideEffect: "Side Effects",
-};
+function safeGraphId(id: string): string {
+  return id.replace(/[^a-zA-Z0-9_]/g, "_");
+}
 
-const BUCKET_ELEMENT_TYPES = [
-  "controlling",
-  "businessLogic",
-  "sideEffect",
-] as const satisfies readonly ElementType[];
+function nodeVisualStyle(
+  el: ExecutableElement,
+  config: AnalysisConfig,
+): { color: string; shape: string; style: string } {
+  if (el.type === UNCLASSIFIED_TYPE) {
+    return { ...UNCLASSIFIED_STYLE };
+  }
+  const c = classificationById(config, el.type);
+  if (!c) {
+    return { ...UNCLASSIFIED_STYLE };
+  }
+  return {
+    color: c.color,
+    shape: "ellipse",
+    style: "filled",
+  };
+}
 
-type BucketElementType = (typeof BUCKET_ELEMENT_TYPES)[number];
+/** Первый включённый бакет — source, последний — sink (при одном — только source). */
+function bucketRankByClassificationId(
+  config: AnalysisConfig,
+): Map<string, "source" | "sink"> {
+  const enabled = config.classifications.filter((c) => c.groupInBucket);
+  const m = new Map<string, "source" | "sink">();
+  if (enabled.length === 0) return m;
+  if (enabled.length === 1) {
+    m.set(enabled[0].id, "source");
+    return m;
+  }
+  m.set(enabled[0].id, "source");
+  m.set(enabled[enabled.length - 1].id, "sink");
+  return m;
+}
 
 type GraphContainer = {
-  subgraph: (
-    id: string,
-    fn: (sg: GraphContainer) => void,
-  ) => unknown;
+  subgraph: (id: string, fn: (sg: GraphContainer) => void) => unknown;
   node: (id: string, attrs: Record<string, unknown>) => void;
   set: (key: unknown, value: unknown) => void;
 };
@@ -120,8 +141,7 @@ function fullClassReference(
 
 function isMethodElement(el: ExecutableElement): boolean {
   return (
-    el.className != null &&
-    el.reference !== `${el.module}.${el.className}`
+    el.className != null && el.reference !== `${el.module}.${el.className}`
   );
 }
 
@@ -175,42 +195,10 @@ function canonicalReference(
   return el.reference;
 }
 
-function mergedGroupInBucket(config: AnalysisConfig) {
-  return {
-    ...DEFAULT_ANALYSIS_CONFIG.groupInBucket,
-    ...config.groupInBucket,
-  };
-}
-
-function elementTypeUsesBucket(
-  type: ElementType,
-  config: AnalysisConfig,
-): boolean {
-  const g = mergedGroupInBucket(config);
-  switch (type) {
-    case "controlling":
-      return g.controlling;
-    case "businessLogic":
-      return g.businessLogic;
-    case "sideEffect":
-      return g.sideEffects;
-    default:
-      return false;
-  }
-}
-
-function bucketFlagForElementType(
-  merged: ReturnType<typeof mergedGroupInBucket>,
-  type: BucketElementType,
-): boolean {
-  switch (type) {
-    case "controlling":
-      return merged.controlling;
-    case "businessLogic":
-      return merged.businessLogic;
-    case "sideEffect":
-      return merged.sideEffects;
-  }
+function elementTypeUsesBucket(type: string, config: AnalysisConfig): boolean {
+  if (type === UNCLASSIFIED_TYPE) return false;
+  const c = classificationById(config, type);
+  return Boolean(c?.groupInBucket);
 }
 
 interface ModuleBucketContents {
@@ -220,22 +208,24 @@ interface ModuleBucketContents {
 
 function collectModuleBucketContents(
   mod: ModuleGroup,
-  bucketType: BucketElementType,
+  classificationId: string,
   collapsedClassFullRefs: Set<string>,
 ): ModuleBucketContents {
-  const standalone = mod.standalone.filter((el) => el.type === bucketType);
+  const standalone = mod.standalone.filter(
+    (el) => el.type === classificationId,
+  );
   const byClass = new Map<string, ExecutableElement[]>();
 
   for (const [className, classElements] of mod.classes) {
     const fullClassRef = fullClassReference(classElements, className);
     if (collapsedClassFullRefs.has(fullClassRef)) {
       const classEl = classElements.find((e) => e.reference === fullClassRef);
-      if (classEl && classEl.type === bucketType) {
+      if (classEl && classEl.type === classificationId) {
         byClass.set(className, [classEl]);
       }
       continue;
     }
-    const ofType = classElements.filter((el) => el.type === bucketType);
+    const ofType = classElements.filter((el) => el.type === classificationId);
     if (ofType.length > 0) {
       byClass.set(className, ofType);
     }
@@ -251,17 +241,16 @@ function isModuleBucketEmpty(contents: ModuleBucketContents): boolean {
 
 function setBucketClusterAttrs(
   container: GraphContainer,
-  bucketType: BucketElementType,
+  classification: ClassificationConfig,
+  rank: "source" | "sink" | undefined,
 ): void {
-  const style = TYPE_STYLES[bucketType];
-  container.set(attribute.label, TYPE_CLUSTER_LABEL[bucketType]);
-  container.set(attribute.color, style.color);
-  container.set(attribute.fontcolor, style.color);
+  container.set(attribute.label, classification.name);
+  container.set(attribute.color, classification.color);
+  container.set(attribute.fontcolor, classification.color);
   container.set(attribute.style, "dashed");
-  // При rankdir=LR: source — к началу (слева), sink — к концу (справа).
-  if (bucketType === "controlling") {
+  if (rank === "source") {
     container.set(attribute.rank, "source");
-  } else if (bucketType === "sideEffect") {
+  } else if (rank === "sink") {
     container.set(attribute.rank, "sink");
   }
 }
@@ -276,33 +265,37 @@ function addModuleClusterContents(
   config: AnalysisConfig,
   collapsedClassFullRefs: Set<string>,
 ): void {
-  const merged = mergedGroupInBucket(config);
+  const ranks = bucketRankByClassificationId(config);
 
-  for (const bucketType of BUCKET_ELEMENT_TYPES) {
-    if (!bucketFlagForElementType(merged, bucketType)) continue;
+  for (const classification of config.classifications) {
+    if (!classification.groupInBucket) continue;
     const contents = collectModuleBucketContents(
       mod,
-      bucketType,
+      classification.id,
       collapsedClassFullRefs,
     );
     if (isModuleBucketEmpty(contents)) continue;
 
-    sg.subgraph(`cluster_${mod.name}_bucket_${bucketType}`, (bg) => {
-      setBucketClusterAttrs(bg, bucketType);
+    const bucketKey = safeGraphId(classification.id);
+    sg.subgraph(`cluster_${mod.name}_bucket_${bucketKey}`, (bg) => {
+      setBucketClusterAttrs(bg, classification, ranks.get(classification.id));
       for (const el of contents.standalone) {
-        addNode(bg, el);
+        addNode(bg, el, config);
       }
       const classEntries = Array.from(contents.byClass.entries()).sort((a, b) =>
         a[0].localeCompare(b[0]),
       );
       for (const [className, els] of classEntries) {
-        bg.subgraph(`cluster_${mod.name}_bucket_${bucketType}_${className}`, (csg) => {
-          csg.set(attribute.label, className);
-          csg.set(attribute.style, "rounded");
-          for (const el of els) {
-            addNode(csg, el);
-          }
-        });
+        bg.subgraph(
+          `cluster_${mod.name}_bucket_${bucketKey}_${className}`,
+          (csg) => {
+            csg.set(attribute.label, className);
+            csg.set(attribute.style, "rounded");
+            for (const el of els) {
+              addNode(csg, el, config);
+            }
+          },
+        );
       }
     });
   }
@@ -318,7 +311,7 @@ function addModuleClusterContents(
       if (elementTypeUsesBucket(classEl.type, config)) {
         continue;
       }
-      addNode(sg, classEl);
+      addNode(sg, classEl, config);
       continue;
     }
     const nonBucket = classElements.filter(
@@ -329,14 +322,14 @@ function addModuleClusterContents(
       csg.set(attribute.label, className);
       csg.set(attribute.style, "rounded");
       for (const el of nonBucket) {
-        addNode(csg, el);
+        addNode(csg, el, config);
       }
     });
   }
 
   for (const el of mod.standalone) {
     if (!elementTypeUsesBucket(el.type, config)) {
-      addNode(sg, el);
+      addNode(sg, el, config);
     }
   }
 }
@@ -344,8 +337,9 @@ function addModuleClusterContents(
 function addNode(
   container: { node: (id: string, attrs: Record<string, unknown>) => void },
   el: ExecutableElement,
+  config: AnalysisConfig,
 ): void {
-  const style = TYPE_STYLES[el.type];
+  const style = nodeVisualStyle(el, config);
   container.node(el.reference, {
     [attribute.label]: el.name,
     [attribute.color]: style.color,

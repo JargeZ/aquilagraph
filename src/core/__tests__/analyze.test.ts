@@ -1,7 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { analyzeProject } from "../analyze";
-import type { AnalysisConfig } from "../config/analysis-config";
-import { DEFAULT_ANALYSIS_CONFIG } from "../config/analysis-config";
+import { TEST_ANALYSIS_CONFIG } from "../config/test-project-analysis-config";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
@@ -9,14 +8,7 @@ import {
 
 const ROOT = getTestProjectRoot();
 
-const TEST_CONFIG: AnalysisConfig = {
-  ...DEFAULT_ANALYSIS_CONFIG,
-  selectors: {
-    controlling: { childsOf: ["ModelViewSet"] },
-    businessLogic: { childsOf: ["BaseBusinessAction"] },
-    sideEffects: { decoratedWith: ["shared_task"] },
-  },
-};
+const TEST_CONFIG = TEST_ANALYSIS_CONFIG;
 
 describe("analyzeProject (integration)", () => {
   it("produces a complete analysis with DOT output (snapshot)", async () => {
@@ -33,8 +25,8 @@ describe("analyzeProject (integration)", () => {
     const result = await analyzeProject("", TEST_CONFIG, fs);
 
     const types = new Set(result.elements.map((e) => e.type));
-    expect(types).toContain("businessLogic");
-    expect(types).toContain("sideEffect");
+    expect(types).toContain("cat_biz");
+    expect(types).toContain("cat_side");
 
     for (const el of result.elements) {
       const hasOutgoing = el.uses.some((t) => result.elements.includes(t));
@@ -55,6 +47,6 @@ describe("analyzeProject (integration)", () => {
         "export_module.actions.perform_export.PerformExport.execute",
     );
     expect(performExecEl).toBeDefined();
-    expect(performExecEl!.uses.length).toBeGreaterThan(0);
+    expect(performExecEl?.uses.length).toBeGreaterThan(0);
   }, 60_000);
 });

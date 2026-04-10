@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  ExecutableElement,
   type ElementType,
+  ExecutableElement,
 } from "../../model/executable-element";
 import { filterIsolatedNodes, filterUnclassifiedNodes } from "../graph-filter";
 
@@ -93,9 +93,9 @@ describe("filterIsolatedNodes", () => {
 
 describe("filterUnclassifiedNodes", () => {
   it("keeps all classified nodes regardless of edges", () => {
-    const a = makeElement("a", "controlling");
-    const b = makeElement("b", "businessLogic");
-    const c = makeElement("c", "sideEffect");
+    const a = makeElement("a", "cat_a");
+    const b = makeElement("b", "cat_b");
+    const c = makeElement("c", "cat_c");
 
     const result = filterUnclassifiedNodes([a, b, c]);
     expect(result).toHaveLength(3);
@@ -112,7 +112,7 @@ describe("filterUnclassifiedNodes", () => {
 
   it("keeps unclassified node that directly uses a classified node", () => {
     const u = makeElement("u");
-    const c = makeElement("c", "controlling");
+    const c = makeElement("c", "cat_c");
     u.uses = [c];
 
     const result = filterUnclassifiedNodes([u, c]);
@@ -124,7 +124,7 @@ describe("filterUnclassifiedNodes", () => {
   it("keeps unclassified node that transitively reaches a classified node", () => {
     const u1 = makeElement("u1");
     const u2 = makeElement("u2");
-    const c = makeElement("c", "businessLogic");
+    const c = makeElement("c", "cat_c");
     u1.uses = [u2];
     u2.uses = [c];
 
@@ -133,7 +133,7 @@ describe("filterUnclassifiedNodes", () => {
   });
 
   it("removes unclassified dead-end even if referenced by classified", () => {
-    const c = makeElement("c", "controlling");
+    const c = makeElement("c", "cat_c");
     const u = makeElement("u");
     c.uses = [u];
 
@@ -155,7 +155,7 @@ describe("filterUnclassifiedNodes", () => {
   it("handles cycles among unclassified nodes that reach a classified node", () => {
     const a = makeElement("a");
     const b = makeElement("b");
-    const c = makeElement("c", "sideEffect");
+    const c = makeElement("c", "cat_c");
     a.uses = [b];
     b.uses = [a, c];
 
@@ -165,7 +165,7 @@ describe("filterUnclassifiedNodes", () => {
 
   it("ignores uses targets outside the element set", () => {
     const u = makeElement("u");
-    const external = makeElement("ext", "controlling");
+    const external = makeElement("ext", "cat_x");
     u.uses = [external];
 
     const result = filterUnclassifiedNodes([u]);

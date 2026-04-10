@@ -2,7 +2,7 @@ import type {
   ScopeFileAnalysis,
   ScopeInfo,
 } from "@/core/parser/codeparsers-types";
-import { ExecutableElement } from "./executable-element";
+import { ExecutableElement, UNCLASSIFIED_TYPE } from "./executable-element";
 import {
   buildReference,
   extractParentClassesFromScope,
@@ -26,7 +26,7 @@ export function createElementsFromAnalyses(
       if (!RELEVANT_SCOPE_TYPES.has(scope.type)) continue;
 
       const parentName =
-        scope.type === "method" ? scope.parent ?? undefined : undefined;
+        scope.type === "method" ? (scope.parent ?? undefined) : undefined;
       const reference = buildReference(
         analysis.filePath,
         scope.name,
@@ -50,7 +50,7 @@ export function createElementsFromAnalyses(
           module: fileRef,
           className,
           name: scope.name,
-          type: "unclassified",
+          type: UNCLASSIFIED_TYPE,
           decorators,
           parentClasses,
           sourceFile: analysis.filePath,

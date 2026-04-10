@@ -1,9 +1,30 @@
-import { useCallback } from "react";
+import { Button } from "@ui/molecules/button/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@ui/molecules/popover/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@ui/molecules/tooltip/tooltip";
+import { Ban, Box, Plus, Trash2, VolumeX } from "lucide-react";
+import { type ReactNode, useCallback, useId, useState } from "react";
 import type {
   AnalysisConfig,
+  ClassificationConfig,
   SelectorConfig,
 } from "@/core/config/analysis-config";
-import { DEFAULT_ANALYSIS_CONFIG } from "@/core/config/analysis-config";
+import {
+  createNewClassification,
+  DEFAULT_ANALYSIS_CONFIG,
+  djangoTemplateClassifications,
+  MAX_CLASSIFICATIONS,
+} from "@/core/config/analysis-config";
+import { CLASSIFICATION_COLOR_PALETTE } from "@/core/config/classification-palette";
+import { cn } from "@/lib/utils";
 
 interface AnalysisConfigPanelProps {
   config: AnalysisConfig;
@@ -14,6 +35,9 @@ export function AnalysisConfigPanel({
   config,
   onChange,
 }: AnalysisConfigPanelProps) {
+  const moduleDepthId = useId();
+  const minMethodsId = useId();
+
   const updateField = useCallback(
     <K extends keyof AnalysisConfig>(key: K, value: AnalysisConfig[K]) => {
       onChange({ ...config, [key]: value });
@@ -21,211 +45,347 @@ export function AnalysisConfigPanel({
     [config, onChange],
   );
 
-  const updateSelector = useCallback(
-    (
-      group: keyof AnalysisConfig["selectors"],
-      field: keyof SelectorConfig,
-      value: string[],
-    ) => {
+  const updateClassification = useCallback(
+    (id: string, patch: Partial<ClassificationConfig>) => {
       onChange({
         ...config,
-        selectors: {
-          ...config.selectors,
-          [group]: { ...config.selectors[group], [field]: value },
-        },
+        classifications: config.classifications.map((c) =>
+          c.id === id ? { ...c, ...patch } : c,
+        ),
       });
     },
     [config, onChange],
   );
 
-  const updateGroupInBucket = useCallback(
-    (group: keyof AnalysisConfig["groupInBucket"], checked: boolean) => {
-      const prev = {
-        ...DEFAULT_ANALYSIS_CONFIG.groupInBucket,
-        ...config.groupInBucket,
-      };
+  const removeClassification = useCallback(
+    (id: string) => {
       onChange({
         ...config,
-        groupInBucket: { ...prev, [group]: checked },
+        classifications: config.classifications.filter((c) => c.id !== id),
       });
     },
     [config, onChange],
   );
+
+  const addClassification = useCallback(() => {
+    if (config.classifications.length >= MAX_CLASSIFICATIONS) return;
+    const next = createNewClassification(config.classifications.length);
+    onChange({
+      ...config,
+      classifications: [...config.classifications, next],
+    });
+  }, [config, onChange]);
+
+  const applyDjangoTemplate = useCallback(() => {
+    onChange({
+      ...config,
+      classifications: djangoTemplateClassifications(),
+    });
+  }, [config, onChange]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-sm font-semibold text-foreground">
-        Настройки анализа
-      </h2>
+    <TooltipProvider>
+      <div className="flex flex-col gap-4">
+        <h2 className="text-sm font-semibold text-foreground">
+          Настройки анализа
+        </h2>
 
-      <div className="grid grid-cols-2 gap-4">
-        <TextAreaField
-          label="Include (regex, по строкам)"
-          value={config.include}
-          onChange={(v) => updateField("include", v)}
-        />
-        <TextAreaField
-          label="Exclude (regex, по строкам)"
-          value={config.exclude}
-          onChange={(v) => updateField("exclude", v)}
-        />
-      </div>
-
-      <div className="flex flex-wrap items-start gap-6">
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">
-            Глубина модуля
-          </label>
-          <input
-            type="number"
-            min={1}
-            max={10}
-            value={config.moduleDepth}
-            onChange={(e) =>
-              updateField("moduleDepth", Math.max(1, Number(e.target.value)))
-            }
-            className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
+        <div className="grid grid-cols-2 gap-4">
+          <TextAreaField
+            label="Include (regex, по строкам)"
+            value={config.include}
+            onChange={(v) => updateField("include", v)}
+          />
+          <TextAreaField
+            label="Exclude (regex, по строкам)"
+            value={config.exclude}
+            onChange={(v) => updateField("exclude", v)}
           />
         </div>
 
-        <div className="max-w-md">
-          <label
-            className="mb-1 block text-xs font-medium text-muted-foreground"
-            title="Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+        <div className="flex flex-wrap items-start gap-6">
+          <div>
+            <label
+              htmlFor={moduleDepthId}
+              className="mb-1 block text-xs font-medium text-muted-foreground"
+            >
+              Глубина модуля
+            </label>
+            <input
+              id={moduleDepthId}
+              type="number"
+              min={1}
+              max={10}
+              value={config.moduleDepth}
+              onChange={(e) =>
+                updateField("moduleDepth", Math.max(1, Number(e.target.value)))
+              }
+              className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
+            />
+          </div>
+
+          <div className="max-w-md">
+            <label
+              htmlFor={minMethodsId}
+              className="mb-1 block text-xs font-medium text-muted-foreground"
+              title="Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+            >
+              Минимально методов для детализации
+            </label>
+            <input
+              id={minMethodsId}
+              type="number"
+              min={1}
+              value={
+                config.minMethodsForClassDetail ??
+                DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail
+              }
+              onChange={(e) =>
+                updateField(
+                  "minMethodsForClassDetail",
+                  Math.max(1, Number(e.target.value)),
+                )
+              }
+              className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Класс будет сгруппирован в субграф, если в классе есть как минимум
+              заданное количество методов, которые ведут к другим нодам
+            </p>
+          </div>
+
+          <label className="flex cursor-pointer items-center gap-2 select-none">
+            <input
+              type="checkbox"
+              checked={config.hideUnclassified !== false}
+              onChange={(e) =>
+                updateField("hideUnclassified", e.target.checked)
+              }
+              className="size-4 rounded border-border accent-primary"
+            />
+            <span className="text-xs font-medium text-muted-foreground">
+              Скрыть неклассифицированные
+            </span>
+          </label>
+        </div>
+
+        <h3 className="text-xs font-semibold text-muted-foreground">
+          Классификации
+        </h3>
+
+        <div className="flex flex-col gap-3">
+          {config.classifications.map((c) => (
+            <ClassificationCard
+              key={c.id}
+              classification={c}
+              onUpdate={(patch) => updateClassification(c.id, patch)}
+              onRemove={() => removeClassification(c.id)}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            aria-label="Добавить классификацию"
+            disabled={config.classifications.length >= MAX_CLASSIFICATIONS}
+            title={
+              config.classifications.length >= MAX_CLASSIFICATIONS
+                ? `Не более ${MAX_CLASSIFICATIONS} классификаций`
+                : "Добавить классификацию"
+            }
+            onClick={addClassification}
           >
-            Минимально методов для детализации
-          </label>
-          <input
-            type="number"
-            min={1}
-            value={
-              config.minMethodsForClassDetail ??
-              DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail
-            }
-            onChange={(e) =>
-              updateField(
-                "minMethodsForClassDetail",
-                Math.max(1, Number(e.target.value)),
-              )
-            }
-            className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
-          />
-          <p className="mt-1 text-xs text-muted-foreground">
-            Класс будет сгруппирован в субграф, если в классе есть как минимум
-            заданное количество методов, которые ведут к другим нодам
-          </p>
+            <Plus className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={applyDjangoTemplate}
+          >
+            Template: Django
+          </Button>
         </div>
+      </div>
+    </TooltipProvider>
+  );
+}
 
-        <label className="flex cursor-pointer items-center gap-2 select-none">
-          <input
-            type="checkbox"
-            checked={config.hideUnclassified !== false}
-            onChange={(e) =>
-              updateField("hideUnclassified", e.target.checked)
-            }
-            className="size-4 rounded border-border accent-primary"
+function ClassificationCard({
+  classification: c,
+  onUpdate,
+  onRemove,
+}: {
+  classification: ClassificationConfig;
+  onUpdate: (patch: Partial<ClassificationConfig>) => void;
+  onRemove: () => void;
+}) {
+  const updateSelector = (field: keyof SelectorConfig, value: string[]) => {
+    onUpdate({
+      selectors: { ...c.selectors, [field]: value },
+    });
+  };
+
+  return (
+    <div className="rounded-lg border border-border p-3">
+      <div className="mb-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <ColorDotPicker
+            color={c.color}
+            onPick={(color) => onUpdate({ color })}
           />
-          <span className="text-xs font-medium text-muted-foreground">
-            Скрыть неклассифицированные
-          </span>
-        </label>
+          <input
+            type="text"
+            value={c.name}
+            onChange={(e) => onUpdate({ name: e.target.value })}
+            className="min-w-0 flex-1 border-0 bg-transparent p-0 text-xs font-semibold text-foreground shadow-none outline-none focus-visible:ring-0"
+            aria-label="Название классификации"
+          />
+        </div>
+        <div className="inline-flex rounded-lg border border-border gap-1 bg-muted/40 p-0.5">
+          <ToggleIconButton
+            pressed={c.exclude}
+            onPressedChange={(exclude) => onUpdate({ exclude })}
+            icon={<Ban className="size-3.5" />}
+            label="Exclude"
+            tooltip="Скрывать ноды этой категории из графа (скоро)"
+          />
+          <ToggleIconButton
+            pressed={c.mute}
+            onPressedChange={(mute) => onUpdate({ mute })}
+            icon={<VolumeX className="size-3.5" />}
+            label="Mute"
+            tooltip="Делать цвет нод полупрозрачным (скоро)"
+          />
+          <ToggleIconButton
+            pressed={c.groupInBucket}
+            onPressedChange={(groupInBucket) => onUpdate({ groupInBucket })}
+            icon={<Box className="size-3.5" />}
+            label="Bucket"
+            tooltip="Объединять ноды класса в субграф на графе"
+          />
+        </div>
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            className="shrink-0 text-muted-foreground hover:text-destructive"
+            aria-label="Удалить классификацию"
+            onClick={onRemove}
+          >
+            <Trash2 className="size-3.5" />
+          </Button>
+        </div>
       </div>
 
-      <SelectorSection
-        title="Controlling"
-        color="#4A90D9"
-        groupInBucket={
-          config.groupInBucket?.controlling ??
-          DEFAULT_ANALYSIS_CONFIG.groupInBucket.controlling
-        }
-        onGroupInBucketChange={(v) => updateGroupInBucket("controlling", v)}
-        selector={config.selectors.controlling}
-        onChange={(s) => updateSelector("controlling", ...s)}
-      />
-      <SelectorSection
-        title="Business Logic"
-        color="#50C878"
-        groupInBucket={
-          config.groupInBucket?.businessLogic ??
-          DEFAULT_ANALYSIS_CONFIG.groupInBucket.businessLogic
-        }
-        onGroupInBucketChange={(v) => updateGroupInBucket("businessLogic", v)}
-        selector={config.selectors.businessLogic}
-        onChange={(s) => updateSelector("businessLogic", ...s)}
-      />
-      <SelectorSection
-        title="Side Effects"
-        color="#FFB347"
-        groupInBucket={
-          config.groupInBucket?.sideEffects ??
-          DEFAULT_ANALYSIS_CONFIG.groupInBucket.sideEffects
-        }
-        onGroupInBucketChange={(v) => updateGroupInBucket("sideEffects", v)}
-        selector={config.selectors.sideEffects}
-        onChange={(s) => updateSelector("sideEffects", ...s)}
-      />
+      <div className="grid grid-cols-3 gap-3">
+        <TextAreaField
+          label="references"
+          value={c.selectors.references ?? []}
+          onChange={(v) => updateSelector("references", v)}
+          rows={5}
+        />
+        <TextAreaField
+          label="childsOf"
+          value={c.selectors.childsOf ?? []}
+          onChange={(v) => updateSelector("childsOf", v)}
+          rows={5}
+        />
+        <TextAreaField
+          label="decoratedWith"
+          value={c.selectors.decoratedWith ?? []}
+          onChange={(v) => updateSelector("decoratedWith", v)}
+          rows={5}
+        />
+      </div>
     </div>
   );
 }
 
-function SelectorSection({
-  title,
+function ColorDotPicker({
   color,
-  groupInBucket,
-  onGroupInBucketChange,
-  selector,
-  onChange,
+  onPick,
 }: {
-  title: string;
   color: string;
-  groupInBucket: boolean;
-  onGroupInBucketChange: (checked: boolean) => void;
-  selector: SelectorConfig;
-  onChange: (update: [keyof SelectorConfig, string[]]) => void;
+  onPick: (color: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="rounded-lg border border-border p-3">
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex size-6 shrink-0 items-center justify-center rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          aria-label="Выбрать цвет категории"
+        >
           <span
-            className="inline-block size-3 rounded-sm"
+            className="inline-block size-3.5 rounded-full ring-1 ring-border"
             style={{ backgroundColor: color }}
           />
-          <span className="text-xs font-semibold text-foreground">{title}</span>
-        </div>
-        <label className="flex cursor-pointer items-center gap-2 select-none">
-          <input
-            type="checkbox"
-            checked={groupInBucket}
-            onChange={(e) => onGroupInBucketChange(e.target.checked)}
-            className="size-4 rounded border-border accent-primary"
-          />
-          <span className="text-xs font-medium text-muted-foreground">
-            Сгруппировать в бакет
-          </span>
-        </label>
-      </div>
-      <div className="grid grid-cols-3 gap-3">
-        <TextAreaField
-          label="references"
-          value={selector.references ?? []}
-          onChange={(v) => onChange(["references", v])}
-          rows={2}
-        />
-        <TextAreaField
-          label="childsOf"
-          value={selector.childsOf ?? []}
-          onChange={(v) => onChange(["childsOf", v])}
-          rows={2}
-        />
-        <TextAreaField
-          label="decoratedWith"
-          value={selector.decoratedWith ?? []}
-          onChange={(v) => onChange(["decoratedWith", v])}
-          rows={2}
-        />
-      </div>
-    </div>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="flex flex-wrap gap-1.5 border-border p-2">
+        {CLASSIFICATION_COLOR_PALETTE.map((hex) => (
+          <button
+            key={hex}
+            type="button"
+            className={cn(
+              "inline-flex size-7 items-center justify-center rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+              hex === color && "ring-2 ring-ring",
+            )}
+            onClick={() => {
+              onPick(hex);
+              setOpen(false);
+            }}
+            aria-label={`Цвет ${hex}`}
+          >
+            <span
+              className="inline-block size-5 rounded-full ring-1 ring-border"
+              style={{ backgroundColor: hex }}
+            />
+          </button>
+        ))}
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function ToggleIconButton({
+  pressed,
+  onPressedChange,
+  icon,
+  label,
+  tooltip,
+}: {
+  pressed: boolean;
+  onPressedChange: (next: boolean) => void;
+  icon: ReactNode;
+  label: string;
+  tooltip: string;
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={pressed}
+          aria-label={label}
+          onClick={() => onPressedChange(!pressed)}
+          className={cn(
+            "inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-background hover:text-foreground",
+            pressed && "bg-background text-foreground shadow-sm",
+          )}
+        >
+          {icon}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top">{tooltip}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -233,19 +393,24 @@ function TextAreaField({
   label,
   value,
   onChange,
-  rows = 3,
+  rows = 5,
 }: {
   label: string;
   value: string[];
   onChange: (v: string[]) => void;
   rows?: number;
 }) {
+  const fieldId = useId();
   return (
     <div>
-      <label className="mb-1 block text-xs font-medium text-muted-foreground">
+      <label
+        htmlFor={fieldId}
+        className="mb-1 block text-xs font-medium text-muted-foreground"
+      >
         {label}
       </label>
       <textarea
+        id={fieldId}
         rows={rows}
         value={value.join("\n")}
         onChange={(e) => onChange(e.target.value.split("\n"))}

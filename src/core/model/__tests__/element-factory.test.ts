@@ -1,11 +1,12 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import { initParsers } from "../../parser/universal-parser";
-import { scanProject } from "../../parser/project-scanner";
+import { beforeAll, describe, expect, it } from "vitest";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
 } from "../../parser/__tests__/test-helpers";
+import { scanProject } from "../../parser/project-scanner";
+import { initParsers } from "../../parser/universal-parser";
 import { createElementsFromAnalyses } from "../element-factory";
+import { UNCLASSIFIED_TYPE } from "../executable-element";
 
 const ROOT = getTestProjectRoot();
 
@@ -23,9 +24,7 @@ describe("createElementsFromAnalyses", () => {
     const refs = elements.map((e) => e.reference);
 
     expect(refs).toContain("utils.base_action.BaseBusinessAction");
-    expect(refs).toContain(
-      "core_module.actions.get_tasks_list.GetTasksList",
-    );
+    expect(refs).toContain("core_module.actions.get_tasks_list.GetTasksList");
     expect(refs).toContain(
       "core_module.actions.get_tasks_list.GetTasksList.execute",
     );
@@ -41,9 +40,7 @@ describe("createElementsFromAnalyses", () => {
     expect(refs).toContain(
       "core_module.actions.add_task_to_list.AddTaskToList._internal_empty",
     );
-    expect(refs).toContain(
-      "core_module.tasks.run_todo_sync.task_RunTodoSync",
-    );
+    expect(refs).toContain("core_module.tasks.run_todo_sync.task_RunTodoSync");
     expect(refs).toContain(
       "export_module.actions.perform_export.PerformExport",
     );
@@ -53,12 +50,8 @@ describe("createElementsFromAnalyses", () => {
     expect(refs).toContain(
       "export_module.tasks.run_exports.task_ExportAllTasks",
     );
-    expect(refs).toContain(
-      "export_module.views.todotask.TodoTaskViewSet",
-    );
-    expect(refs).toContain(
-      "export_module.views.todotask.TodoTaskViewSet.list",
-    );
+    expect(refs).toContain("export_module.views.todotask.TodoTaskViewSet");
+    expect(refs).toContain("export_module.views.todotask.TodoTaskViewSet.list");
     expect(refs).toContain(
       "export_module.views.todotask.TodoTaskViewSet.export",
     );
@@ -66,7 +59,8 @@ describe("createElementsFromAnalyses", () => {
 
   it("assigns correct className for methods", () => {
     const listMethod = elements.find(
-      (e) => e.reference === "export_module.views.todotask.TodoTaskViewSet.list",
+      (e) =>
+        e.reference === "export_module.views.todotask.TodoTaskViewSet.list",
     );
     expect(listMethod).toBeDefined();
     expect(listMethod!.className).toBe("TodoTaskViewSet");
@@ -74,8 +68,7 @@ describe("createElementsFromAnalyses", () => {
 
   it("assigns className to the class itself", () => {
     const cls = elements.find(
-      (e) =>
-        e.reference === "export_module.views.todotask.TodoTaskViewSet",
+      (e) => e.reference === "export_module.views.todotask.TodoTaskViewSet",
     );
     expect(cls).toBeDefined();
     expect(cls!.className).toBe("TodoTaskViewSet");
@@ -95,8 +88,7 @@ describe("createElementsFromAnalyses", () => {
 
   it("class has normalized parentClasses", () => {
     const cls = elements.find(
-      (e) =>
-        e.reference === "export_module.views.todotask.TodoTaskViewSet",
+      (e) => e.reference === "export_module.views.todotask.TodoTaskViewSet",
     );
     expect(cls!.parentClasses).toEqual([
       "rest_framework.viewsets.ModelViewSet",
@@ -105,26 +97,22 @@ describe("createElementsFromAnalyses", () => {
 
   it("extracts normalized decorators on functions", () => {
     const task = elements.find(
-      (e) =>
-        e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
+      (e) => e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
     );
     expect(task).toBeDefined();
-    expect(task!.decorators.some((d) => d.includes("shared_task"))).toBe(
-      true,
-    );
+    expect(task!.decorators.some((d) => d.includes("shared_task"))).toBe(true);
   });
 
   it("top-level functions have null className", () => {
     const task = elements.find(
-      (e) =>
-        e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
+      (e) => e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
     );
     expect(task!.className).toBeNull();
   });
 
   it("all elements start as unclassified", () => {
     for (const el of elements) {
-      expect(el.type).toBe("unclassified");
+      expect(el.type).toBe(UNCLASSIFIED_TYPE);
     }
   });
 });

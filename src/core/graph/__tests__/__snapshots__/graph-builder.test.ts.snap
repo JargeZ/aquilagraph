@@ -15,7 +15,7 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
       label = "task_ExportAllTasks";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -78,7 +78,7 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         label = "TodoTaskViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -86,7 +86,7 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         label = "list";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -94,7 +94,7 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -123,7 +123,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       label = "task_RunTodoSync";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -170,7 +170,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "CoreViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -178,7 +178,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "create";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -210,7 +210,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "ReportsViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -218,7 +218,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "create";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -226,7 +226,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -234,7 +234,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "total_amount";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -247,7 +247,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       label = "task_ExportAllTasks";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -310,7 +310,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "TodoTaskViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -318,7 +318,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "list";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -326,7 +326,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -452,7 +452,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       label = "task_RunTodoSync";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -467,7 +467,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "CoreViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -475,7 +475,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "create";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -487,7 +487,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "ReportsViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -495,7 +495,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "create";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -503,7 +503,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -511,7 +511,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "total_amount";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -584,7 +584,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       label = "task_ExportAllTasks";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -599,7 +599,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "TodoTaskViewSet";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -607,7 +607,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "list";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -615,7 +615,7 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];

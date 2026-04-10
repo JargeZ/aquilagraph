@@ -1,24 +1,15 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { analyzeProject } from "@/core/analyze";
-import {
-  type AnalysisConfig,
-  DEFAULT_ANALYSIS_CONFIG,
-} from "@/core/config/analysis-config";
+import type { AnalysisConfig } from "@/core/config/analysis-config";
+import { TEST_ANALYSIS_CONFIG } from "@/core/config/test-project-analysis-config";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
 } from "@/core/parser/__tests__/test-helpers";
 import { GraphView } from "./graph-view";
 
-const TEST_PROJECT_CONFIG: AnalysisConfig = {
-  ...DEFAULT_ANALYSIS_CONFIG,
-  selectors: {
-    controlling: { childsOf: ["ModelViewSet"] },
-    businessLogic: { childsOf: ["BaseBusinessAction"] },
-    sideEffects: { decoratedWith: ["shared_task"] },
-  },
-};
+const TEST_PROJECT_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG;
 
 afterEach(() => {
   cleanup();

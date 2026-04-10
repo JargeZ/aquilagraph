@@ -1,39 +1,29 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
-import { initParsers } from "../../parser/universal-parser";
-import { scanProject } from "../../parser/project-scanner";
+import type { AnalysisConfig } from "../../config/analysis-config";
+import { DEFAULT_ANALYSIS_CONFIG } from "../../config/analysis-config";
+import { TEST_ANALYSIS_CONFIG_GRAPH } from "../../config/test-project-analysis-config";
+import { classifyElements } from "../../model/element-classifier";
+import { createElementsFromAnalyses } from "../../model/element-factory";
+import { ExecutableElement } from "../../model/executable-element";
+import { resolveUses } from "../../model/uses-resolver";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
 } from "../../parser/__tests__/test-helpers";
-import { createElementsFromAnalyses } from "../../model/element-factory";
-import { classifyElements } from "../../model/element-classifier";
-import { resolveUses } from "../../model/uses-resolver";
-import { buildGraph, buildDot, graphToDot } from "../graph-builder";
-import type { AnalysisConfig } from "../../config/analysis-config";
-import { DEFAULT_ANALYSIS_CONFIG } from "../../config/analysis-config";
-import { ExecutableElement } from "../../model/executable-element";
+import { scanProject } from "../../parser/project-scanner";
+import { initParsers } from "../../parser/universal-parser";
+import { buildDot, buildGraph, graphToDot } from "../graph-builder";
 
 const ROOT = getTestProjectRoot();
 
 let analyses: ScopeFileAnalysis[];
 
-const TEST_CONFIG: AnalysisConfig = {
-  ...DEFAULT_ANALYSIS_CONFIG,
-  /** 0 — всегда субграф по классам (поведение до порога). */
-  minMethodsForClassDetail: 0,
-  selectors: {
-    controlling: { childsOf: ["ModelViewSet"] },
-    businessLogic: { childsOf: ["BaseBusinessAction"] },
-    sideEffects: { decoratedWith: ["shared_task"] },
-  },
-};
+const TEST_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG_GRAPH;
 
-const ADD_TASK_CLASS =
-  "core_module.actions.add_task_to_list.AddTaskToList";
+const ADD_TASK_CLASS = "core_module.actions.add_task_to_list.AddTaskToList";
 const ADD_TASK_EXECUTE = `${ADD_TASK_CLASS}.execute`;
-const GET_TASKS_CLASS =
-  "core_module.actions.get_tasks_list.GetTasksList";
+const GET_TASKS_CLASS = "core_module.actions.get_tasks_list.GetTasksList";
 
 beforeAll(async () => {
   await initParsers();
@@ -124,9 +114,7 @@ describe("buildGraph", () => {
 
     expect(dot).toContain(`"${ADD_TASK_CLASS}"`);
     expect(dot).not.toContain(`"${ADD_TASK_EXECUTE}"`);
-    expect(dot).toContain(
-      `"${ADD_TASK_CLASS}" -> "${GET_TASKS_CLASS}"`,
-    );
+    expect(dot).toContain(`"${ADD_TASK_CLASS}" -> "${GET_TASKS_CLASS}"`);
   });
 
   it("expands AddTaskToList with method nodes when minMethodsForClassDetail is 2", () => {
@@ -155,7 +143,7 @@ describe("buildGraph", () => {
         module: "mod",
         className: "A",
         name: "A",
-        type: "controlling",
+        type: "cat_ctrl",
       }),
       new ExecutableElement({
         ...base,
@@ -163,34 +151,49 @@ describe("buildGraph", () => {
         module: "mod",
         className: "A",
         name: "foo",
-        type: "businessLogic",
+        type: "cat_biz",
       }),
     ];
     const config: AnalysisConfig = {
       ...DEFAULT_ANALYSIS_CONFIG,
       minMethodsForClassDetail: 0,
-      groupInBucket: {
-        controlling: true,
-        businessLogic: true,
-        sideEffects: true,
-      },
+      classifications: [
+        {
+          id: "cat_ctrl",
+          name: "Controlling",
+          color: "#4A90D9",
+          selectors: {},
+          groupInBucket: true,
+          exclude: false,
+          mute: false,
+        },
+        {
+          id: "cat_biz",
+          name: "Business Logic",
+          color: "#50C878",
+          selectors: {},
+          groupInBucket: true,
+          exclude: false,
+          mute: false,
+        },
+      ],
     };
     const dot = buildDot(elements, config);
 
-    expect(dot).toContain('subgraph "cluster_mod_bucket_controlling"');
-    expect(dot).toContain('subgraph "cluster_mod_bucket_controlling_A"');
-    expect(dot).toContain('subgraph "cluster_mod_bucket_businessLogic"');
-    expect(dot).toContain('subgraph "cluster_mod_bucket_businessLogic_A"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_cat_ctrl"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_cat_ctrl_A"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_cat_biz"');
+    expect(dot).toContain('subgraph "cluster_mod_bucket_cat_biz_A"');
     expect(dot).toContain('label = "Controlling"');
     expect(dot).toContain('label = "Business Logic"');
     expect(dot).toMatch(
-      /subgraph "cluster_mod_bucket_controlling"[\s\S]*style = "dashed"/,
+      /subgraph "cluster_mod_bucket_cat_ctrl"[\s\S]*style = "dashed"/,
     );
     expect(dot).toMatch(
-      /subgraph "cluster_mod_bucket_controlling"[\s\S]*rank = "source"/,
+      /subgraph "cluster_mod_bucket_cat_ctrl"[\s\S]*rank = "source"/,
     );
     expect(dot).toMatch(
-      /subgraph "cluster_mod_bucket_businessLogic"[\s\S]*color = "#50C878"/,
+      /subgraph "cluster_mod_bucket_cat_biz"[\s\S]*color = "#50C878"/,
     );
   });
 
@@ -209,20 +212,35 @@ describe("buildGraph", () => {
         module: "mod",
         className: null,
         name: "run_job",
-        type: "sideEffect",
+        type: "cat_side",
       }),
     ];
     const config: AnalysisConfig = {
       ...DEFAULT_ANALYSIS_CONFIG,
-      groupInBucket: {
-        controlling: false,
-        businessLogic: false,
-        sideEffects: true,
-      },
+      classifications: [
+        {
+          id: "cat_ctrl",
+          name: "Controlling",
+          color: "#4A90D9",
+          selectors: {},
+          groupInBucket: true,
+          exclude: false,
+          mute: false,
+        },
+        {
+          id: "cat_side",
+          name: "Side Effects",
+          color: "#FFB347",
+          selectors: {},
+          groupInBucket: true,
+          exclude: false,
+          mute: false,
+        },
+      ],
     };
     const dot = buildDot(elements, config);
     expect(dot).toMatch(
-      /subgraph "cluster_mod_bucket_sideEffect"[\s\S]*rank = "sink"/,
+      /subgraph "cluster_mod_bucket_cat_side"[\s\S]*rank = "sink"/,
     );
   });
 });

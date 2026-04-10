@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import {
   Tabs,
@@ -5,20 +6,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "@ui/molecules/tabs/tabs";
-import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
-import type { ExecutableElement } from "@/core/model/executable-element";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
+import { classificationById } from "@/core/config/analysis-config";
+import type { ExecutableElement } from "@/core/model/executable-element";
+import { UNCLASSIFIED_TYPE } from "@/core/model/executable-element";
 import { DotSvgCanvas } from "./dot-svg-canvas";
 import { NodeSearchCommand } from "./node-search-command";
-
-const TYPE_LABELS: Record<string, string> = {
-  controlling: "Controlling",
-  businessLogic: "Business Logic",
-  sideEffect: "Side Effect",
-  unclassified: "Unclassified",
-};
 
 interface GraphViewProps {
   elements: ExecutableElement[];
@@ -46,15 +41,19 @@ function renderFlow(_renderable: FlowRenderable) {
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
-  const { projectId } = useProjectAnalysis();
+  const { projectId, analysisConfig } = useProjectAnalysis();
+  const classified =
+    element.type !== UNCLASSIFIED_TYPE
+      ? classificationById(analysisConfig, element.type)
+      : undefined;
   const color =
-    element.type === "controlling"
-      ? "#4A90D9"
-      : element.type === "businessLogic"
-        ? "#50C878"
-        : element.type === "sideEffect"
-          ? "#FFB347"
-          : "#D3D3D3";
+    element.type === UNCLASSIFIED_TYPE
+      ? "#D3D3D3"
+      : (classified?.color ?? "#D3D3D3");
+  const typeLabel =
+    element.type === UNCLASSIFIED_TYPE
+      ? "Unclassified"
+      : (classified?.name ?? element.type);
 
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border bg-card p-3 text-xs">
@@ -63,9 +62,7 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
           className="inline-block h-2.5 w-2.5 rounded-full"
           style={{ backgroundColor: color }}
         />
-        <span className="font-semibold text-foreground">
-          {TYPE_LABELS[element.type] ?? element.type}
-        </span>
+        <span className="font-semibold text-foreground">{typeLabel}</span>
       </div>
 
       <div className="flex flex-wrap gap-2">

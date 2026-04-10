@@ -1,5 +1,6 @@
 import type { AnalysisConfig, SelectorConfig } from "../config/analysis-config";
-import type { ExecutableElement, ElementType } from "./executable-element";
+import type { ElementType, ExecutableElement } from "./executable-element";
+import { UNCLASSIFIED_TYPE } from "./executable-element";
 
 export function classifyElements(
   elements: ExecutableElement[],
@@ -8,7 +9,7 @@ export function classifyElements(
   const filtered = applyFilters(elements, config.include, config.exclude);
 
   for (const el of filtered) {
-    el.type = determineType(el, config.selectors);
+    el.type = determineType(el, config.classifications);
   }
 
   return filtered;
@@ -44,12 +45,12 @@ function applyFilters(
 
 function determineType(
   el: ExecutableElement,
-  selectors: AnalysisConfig["selectors"],
+  classifications: AnalysisConfig["classifications"],
 ): ElementType {
-  if (matchesSelector(el, selectors.controlling)) return "controlling";
-  if (matchesSelector(el, selectors.businessLogic)) return "businessLogic";
-  if (matchesSelector(el, selectors.sideEffects)) return "sideEffect";
-  return "unclassified";
+  for (const c of classifications) {
+    if (matchesSelector(el, c.selectors)) return c.id;
+  }
+  return UNCLASSIFIED_TYPE;
 }
 
 function matchesSelector(

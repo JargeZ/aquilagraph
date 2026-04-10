@@ -1,8 +1,7 @@
-export type ElementType =
-  | "controlling"
-  | "businessLogic"
-  | "sideEffect"
-  | "unclassified";
+/** Id записи из `AnalysisConfig.classifications` либо зарезервированное значение. */
+export type ElementType = string;
+
+export const UNCLASSIFIED_TYPE = "unclassified" as const;
 
 export interface ExecutableElementParams {
   reference: string;

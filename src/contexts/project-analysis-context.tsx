@@ -1,6 +1,6 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { readDir, readTextFile } from "@tauri-apps/plugin-fs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import {
   type AnalysisResult,
@@ -10,6 +10,7 @@ import {
   type AnalysisConfig,
   DEFAULT_ANALYSIS_CONFIG,
   getAnalysisConfigKey,
+  normalizeAnalysisConfig,
 } from "@/core/config/analysis-config";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
 import {
@@ -61,9 +62,38 @@ export function ProjectAnalysisProvider({
   const [countError, setCountError] = useState<string | null>(null);
   const [countLoading, setCountLoading] = useState(false);
 
-  const [analysisConfig, setAnalysisConfig] = useLocalStorage<AnalysisConfig>(
-    getAnalysisConfigKey(projectId),
-    DEFAULT_ANALYSIS_CONFIG,
+  const analysisStorageOptions = useMemo(
+    () => ({
+      deserializer: (v: string) => {
+        try {
+          return normalizeAnalysisConfig(JSON.parse(v));
+        } catch {
+          return DEFAULT_ANALYSIS_CONFIG;
+        }
+      },
+    }),
+    [],
+  );
+  const [storedAnalysisConfig, setAnalysisConfigRaw] =
+    useLocalStorage<AnalysisConfig>(
+      getAnalysisConfigKey(projectId),
+      DEFAULT_ANALYSIS_CONFIG,
+      analysisStorageOptions,
+    );
+  /** Без useMemo каждый рендер даёт новый объект → useEffect(analysisConfig) зацикливается. */
+  const analysisConfig = useMemo(
+    () => normalizeAnalysisConfig(storedAnalysisConfig),
+    [storedAnalysisConfig],
+  );
+  const setAnalysisConfig = useCallback(
+    (value: AnalysisConfig | ((prev: AnalysisConfig) => AnalysisConfig)) => {
+      setAnalysisConfigRaw((prev) => {
+        const base = normalizeAnalysisConfig(prev);
+        const next = value instanceof Function ? value(base) : value;
+        return normalizeAnalysisConfig(next);
+      });
+    },
+    [setAnalysisConfigRaw],
   );
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
     null,

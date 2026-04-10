@@ -23,7 +23,7 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       label = "task_RunTodoSync";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -34,7 +34,7 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -42,7 +42,7 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         label = "total_amount";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];
@@ -63,7 +63,7 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       label = "task_ExportAllTasks";
       color = "#FFB347";
       fillcolor = "#FFB347";
-      shape = "hexagon";
+      shape = "ellipse";
       style = "filled";
       fontcolor = "#FFFFFF";
     ];
@@ -74,7 +74,7 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         label = "export";
         color = "#4A90D9";
         fillcolor = "#4A90D9";
-        shape = "box";
+        shape = "ellipse";
         style = "filled";
         fontcolor = "#FFFFFF";
       ];

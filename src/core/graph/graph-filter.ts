@@ -1,4 +1,5 @@
 import type { ExecutableElement } from "../model/executable-element";
+import { UNCLASSIFIED_TYPE } from "../model/executable-element";
 
 /**
  * Removes elements that have no edges at all:
@@ -21,9 +22,7 @@ export function filterIsolatedNodes(
     }
   }
 
-  return elements.filter(
-    (el) => hasOutgoing.has(el) || referenced.has(el),
-  );
+  return elements.filter((el) => hasOutgoing.has(el) || referenced.has(el));
 }
 
 /**
@@ -42,7 +41,7 @@ export function filterUnclassifiedNodes(
     visited: Set<ExecutableElement>,
   ): boolean {
     if (cache.has(el)) return cache.get(el)!;
-    if (el.type !== "unclassified") return true;
+    if (el.type !== UNCLASSIFIED_TYPE) return true;
     if (visited.has(el)) return false;
 
     visited.add(el);
@@ -57,6 +56,6 @@ export function filterUnclassifiedNodes(
   }
 
   return elements.filter(
-    (el) => el.type !== "unclassified" || reachesClassified(el, new Set()),
+    (el) => el.type !== UNCLASSIFIED_TYPE || reachesClassified(el, new Set()),
   );
 }
