@@ -22,11 +22,15 @@ const VIZ_HIGHLIGHT_CSS = `
   g.node.viz-hl-sel polygon,
   g.node.viz-hl-sel ellipse,
   g.node.viz-hl-sel path {
-    stroke: #ffffff !important;
-    stroke-width: 2px !important;
+    paint-order: stroke fill;
+    stroke: var(--primary) !important;
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 4px color-mix(in oklch, var(--primary) 50%, transparent))
+      drop-shadow(0 0 10px color-mix(in oklch, var(--ring) 35%, transparent));
   }
+
   g.node.viz-hl-sel text {
-    fill: #ffffff !important;
+    font-weight: 600;
   }
 
   g.node.viz-hl-uses polygon,
