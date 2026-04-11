@@ -2,9 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import { ArrowLeft } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useMemo } from "react";
+import { AddSelectorFilterAction } from "@/components/classification/add-selector-filter-action";
 import { useNodeRouteContext } from "@/contexts/use-node-route-context";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import type { ExecutableElement } from "@/core/model/executable-element";
+import { cn } from "@/lib/utils";
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -41,6 +43,30 @@ function UsesList({
         </li>
       ))}
     </ul>
+  );
+}
+
+function DebugLineItem({
+  kind,
+  value,
+}: {
+  kind: "reference" | "decorator" | "parentClass";
+  value: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "group flex min-w-0 items-start justify-between gap-2 rounded-md border border-border bg-muted/20 px-2 py-1.5",
+        "hover:bg-muted/30",
+      )}
+    >
+      <code className="min-w-0 flex-1 break-all font-mono text-[11px] text-foreground">
+        {value}
+      </code>
+      <div className="shrink-0 opacity-80 transition-opacity group-hover:opacity-100">
+        <AddSelectorFilterAction kind={kind} value={value} />
+      </div>
+    </div>
   );
 }
 
@@ -126,8 +152,8 @@ export function NodeDebugDetailsPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-sm text-muted-foreground">
-          Сначала выберите каталог проекта и дождитесь анализа на главной вкладке
-          графа.
+          Сначала выберите каталог проекта и дождитесь анализа на главной
+          вкладке графа.
         </p>
         <Button asChild>
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
@@ -186,9 +212,9 @@ export function NodeDebugDetailsPage() {
 
           <section className="rounded-lg border border-border bg-card p-4">
             <div className="text-xs font-medium text-foreground">Reference</div>
-            <pre className="mt-2 overflow-auto rounded-md border border-border bg-muted/30 p-3 font-mono text-[11px] text-foreground">
-              {element.reference}
-            </pre>
+            <div className="mt-2">
+              <DebugLineItem kind="reference" value={element.reference} />
+            </div>
           </section>
 
           <section className="rounded-lg border border-border bg-card p-4">
@@ -200,10 +226,10 @@ export function NodeDebugDetailsPage() {
                 {element.decorators.length === 0 ? (
                   <div className="mt-1 text-xs text-muted-foreground">—</div>
                 ) : (
-                  <ul className="mt-1 list-inside list-disc text-xs text-muted-foreground">
+                  <ul className="mt-2 space-y-1">
                     {element.decorators.map((d) => (
-                      <li key={d} className="wrap-break-word">
-                        {d}
+                      <li key={d}>
+                        <DebugLineItem kind="decorator" value={d} />
                       </li>
                     ))}
                   </ul>
@@ -217,10 +243,10 @@ export function NodeDebugDetailsPage() {
                 {element.parentClasses.length === 0 ? (
                   <div className="mt-1 text-xs text-muted-foreground">—</div>
                 ) : (
-                  <ul className="mt-1 list-inside list-disc text-xs text-muted-foreground">
+                  <ul className="mt-2 space-y-1">
                     {element.parentClasses.map((p) => (
-                      <li key={p} className="wrap-break-word">
-                        {p}
+                      <li key={p}>
+                        <DebugLineItem kind="parentClass" value={p} />
                       </li>
                     ))}
                   </ul>
@@ -273,6 +299,8 @@ export function NodeDebugDetailsPage() {
   );
 }
 
-export const Route = createFileRoute("/$projectId/node-debug-details/$nodeRef")({
-  component: NodeDebugDetailsPage,
-});
+export const Route = createFileRoute("/$projectId/node-debug-details/$nodeRef")(
+  {
+    component: NodeDebugDetailsPage,
+  },
+);
