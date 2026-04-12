@@ -1,11 +1,8 @@
-import {
-  Outlet,
-  useNavigate,
-  useRouterState,
-} from "@tanstack/react-router";
+import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Tabs, TabsList, TabsTrigger } from "@ui/molecules/tabs/tabs";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { PwaRegister } from "@/components/pwa-register";
 import {
   isValidUuid,
   PROJECTS_STORAGE_KEY,
@@ -31,6 +28,7 @@ export const AppShell: React.FC = () => {
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
+      <PwaRegister />
       <header className="shrink-0 border-b border-border bg-card px-4 py-1">
         <Tabs
           value={value}

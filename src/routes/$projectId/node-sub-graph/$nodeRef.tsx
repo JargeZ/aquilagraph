@@ -8,7 +8,6 @@ import { useNodeRouteContext } from "@/contexts/use-node-route-context";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import { buildNodeSubgraphResult } from "@/core/graph/build-node-subgraph-result";
 import type { ExecutableElement } from "@/core/model/executable-element";
-import { isTauriRuntime } from "@/lib/is-tauri";
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -116,14 +115,6 @@ export function NodeSubGraphPage() {
             Настройки
           </Link>
         </Button>
-      </div>
-    );
-  } else if (!isTauriRuntime()) {
-    body = (
-      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-        <p className="max-w-md text-sm text-muted-foreground">
-          Просмотр графа доступен в десктоп-приложении Tauri.
-        </p>
       </div>
     );
   } else {

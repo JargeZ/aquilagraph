@@ -13,6 +13,10 @@ export function ProjectSettingsPage() {
     project,
     rootPath,
     pickDirectory,
+    pickDirectoryLoading,
+    browserDirectoryNeedsUserPermission,
+    grantStoredDirectoryAccess,
+    hasAnalysisRoot,
     fileCount,
     countLoading,
     countError,
@@ -43,6 +47,12 @@ export function ProjectSettingsPage() {
             onPickDirectory={() => void pickDirectory()}
             onRefreshCount={() => void refreshCount()}
             countLoading={countLoading}
+            pickDirectoryLoading={pickDirectoryLoading}
+            browserDirectoryNeedsUserPermission={
+              browserDirectoryNeedsUserPermission
+            }
+            onGrantDirectoryAccess={() => void grantStoredDirectoryAccess()}
+            hasAnalysisRoot={hasAnalysisRoot}
           />
 
           <ProjectFileCountSection
@@ -59,7 +69,7 @@ export function ProjectSettingsPage() {
           </section>
 
           <ProjectAnalysisRunSection
-            disabled={!rootPath || analysisLoading}
+            disabled={!hasAnalysisRoot || analysisLoading}
             loading={analysisLoading}
             error={analysisError}
             onRun={handleAnalyzeAndView}

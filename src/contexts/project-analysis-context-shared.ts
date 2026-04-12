@@ -8,6 +8,13 @@ export interface ProjectAnalysisContextValue {
   project: Project | undefined;
   rootPath: string | null;
   pickDirectory: () => Promise<void>;
+  /** Браузер: true, пока открыт диалог выбора папки (нельзя вызывать showDirectoryPicker повторно). */
+  pickDirectoryLoading: boolean;
+  /** Браузер: в IndexedDB есть папка, но после перезагрузки нет разрешения — нужен клик «Разрешить доступ». */
+  browserDirectoryNeedsUserPermission: boolean;
+  grantStoredDirectoryAccess: () => Promise<void>;
+  /** Есть рабочий корень для чтения файлов (в браузере — после query/grant, не только подпись в UI). */
+  hasAnalysisRoot: boolean;
   fileCount: number | null;
   countLoading: boolean;
   countError: string | null;

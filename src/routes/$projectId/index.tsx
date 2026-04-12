@@ -6,8 +6,6 @@ import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
 import { ProjectGraphToolbar } from "@/components/project/project-graph-toolbar";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import type { ExecutableElement } from "@/core/model/executable-element";
-import { isTauriRuntime } from "@/lib/is-tauri";
-
 export function ProjectGraphPage() {
   const navigate = useNavigate();
   const {
@@ -65,19 +63,6 @@ export function ProjectGraphPage() {
         <Button asChild>
           <Link to="/$projectId/settings" params={{ projectId }}>
             Открыть настройки
-          </Link>
-        </Button>
-      </div>
-    );
-  } else if (!isTauriRuntime()) {
-    body = (
-      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-        <p className="max-w-md text-sm text-muted-foreground">
-          Анализ и просмотр графа доступны в десктоп-приложении Tauri.
-        </p>
-        <Button asChild variant="outline" size="sm">
-          <Link to="/$projectId/settings" params={{ projectId }}>
-            Настройки
           </Link>
         </Button>
       </div>
