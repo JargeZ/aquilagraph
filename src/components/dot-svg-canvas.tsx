@@ -9,9 +9,12 @@ import {
   useState,
 } from "react";
 import type { RootGraphModel } from "ts-graphviz";
+import type { AnalysisConfig } from "@/core/config/analysis-config";
+import { classificationById } from "@/core/config/analysis-config";
 import { graphModelEdgePairs } from "@/core/graph/graph-model-edge-pairs";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
+import { mutedClusterTitlesForMutedElements } from "@/lib/muted-viz-cluster-titles";
 import {
   createShortClickPointerRef,
   isShortClick,
@@ -25,7 +28,10 @@ import {
   type SvgPanZoomWheelInstance,
 } from "@/lib/svg-pan-zoom-trackpad-wheel";
 import { getVizInstance } from "@/lib/viz-instance";
-import { applyVizSvgHighlight } from "@/lib/viz-svg-highlight";
+import {
+  applyVizSvgHighlight,
+  applyVizSvgMuted,
+} from "@/lib/viz-svg-highlight";
 
 type WindowWithSavePicker = Window &
   typeof globalThis & {
@@ -39,6 +45,7 @@ interface DotSvgCanvasProps {
   dot: string;
   graph: RootGraphModel;
   elements: ExecutableElement[];
+  analysisConfig: AnalysisConfig;
   /** Текущий выбранный узел (reference), для подсветки связей в SVG. */
   selectedRef?: string | null;
   onSelectElement?: (element: ExecutableElement | null) => void;
@@ -75,6 +82,7 @@ export function DotSvgCanvas({
   dot,
   graph,
   elements,
+  analysisConfig,
   selectedRef = null,
   onSelectElement,
   onNodeDoubleClick,
@@ -96,6 +104,21 @@ export function DotSvgCanvas({
     }
     return map;
   }, [elements]);
+
+  const mutedNodeRefs = useMemo(() => {
+    const s = new Set<string>();
+    for (const el of elements) {
+      if (classificationById(analysisConfig, el.type)?.mute) {
+        s.add(el.reference);
+      }
+    }
+    return s;
+  }, [elements, analysisConfig]);
+
+  const mutedClusterTitles = useMemo(
+    () => mutedClusterTitlesForMutedElements(elements, analysisConfig),
+    [elements, analysisConfig],
+  );
 
   useEffect(() => {
     const container = containerRef.current;
@@ -204,8 +227,9 @@ export function DotSvgCanvas({
     if (!svgReady) return;
     const svg = containerRef.current?.querySelector("svg");
     if (!svg || !(svg instanceof SVGSVGElement)) return;
+    applyVizSvgMuted(svg, mutedNodeRefs, mutedClusterTitles);
     applyVizSvgHighlight(svg, selectedRef, edgePairs);
-  }, [svgReady, selectedRef, edgePairs]);
+  }, [svgReady, selectedRef, edgePairs, mutedNodeRefs, mutedClusterTitles]);
 
   useEffect(() => {
     if (!followSelectionInViewport || !svgReady || !selectedRef) return;

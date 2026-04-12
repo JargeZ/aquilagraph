@@ -178,8 +178,8 @@ msgid "Граф ({0})"
 msgstr "رسم بياني ({0})"
 
 #: src/components/analysis-config-panel.tsx:267
-msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr "جعل لون العقد شبه شفاف (قريبًا)"
+msgid "Делать цвет нод полупрозрачным"
+msgstr "جعل لون العقد شبه شفاف"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103

@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 import {
   Popover,
@@ -10,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@ui/molecules/tooltip/tooltip";
-import { Trans, useLingui } from "@lingui/react/macro";
 import { Ban, Box, Plus, Trash2, VolumeX } from "lucide-react";
 import { type ReactNode, useCallback, useId, useState } from "react";
 import type {
@@ -264,7 +264,7 @@ function ClassificationCard({
             onPressedChange={(mute) => onUpdate({ mute })}
             icon={<VolumeX className="size-3.5" />}
             label={t`Mute`}
-            tooltip={t`Делать цвет нод полупрозрачным (скоро)`}
+            tooltip={t`Делать цвет нод полупрозрачным`}
           />
           <ToggleIconButton
             pressed={c.groupInBucket}

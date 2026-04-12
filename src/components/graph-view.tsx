@@ -7,10 +7,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "@ui/molecules/tabs/tabs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
+import { ProjectAnalysisContext } from "@/contexts/project-analysis-context-shared";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
-import { classificationById } from "@/core/config/analysis-config";
+import {
+  classificationById,
+  DEFAULT_ANALYSIS_CONFIG,
+} from "@/core/config/analysis-config";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { UNCLASSIFIED_TYPE } from "@/core/model/executable-element";
 import { DotSvgCanvas } from "./dot-svg-canvas";
@@ -177,6 +181,9 @@ function DotGraphCanvas({
   onNodeDoubleClick?: (element: ExecutableElement) => void;
   followSelectionInViewport: boolean;
 }) {
+  const projectCtx = useContext(ProjectAnalysisContext);
+  const analysisConfig =
+    projectCtx?.analysisConfig ?? DEFAULT_ANALYSIS_CONFIG;
   return (
     <div className="flex h-full gap-3">
       <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
@@ -184,6 +191,7 @@ function DotGraphCanvas({
           dot={dot}
           graph={graph}
           elements={elements}
+          analysisConfig={analysisConfig}
           selectedRef={selectedElement?.reference ?? null}
           onSelectElement={onSelectElement}
           onNodeDoubleClick={onNodeDoubleClick}
@@ -289,7 +297,11 @@ export function GraphView({
         <div className="flex flex-col gap-3">
           <div className="flex justify-end">
             <Button variant="outline" size="sm" onClick={handleCopy}>
-              {copied ? <Trans>Скопировано</Trans> : <Trans>Копировать DOT</Trans>}
+              {copied ? (
+                <Trans>Скопировано</Trans>
+              ) : (
+                <Trans>Копировать DOT</Trans>
+              )}
             </Button>
           </div>
           <pre className="overflow-auto rounded-lg border border-border bg-muted/30 p-4 font-mono text-xs text-foreground">

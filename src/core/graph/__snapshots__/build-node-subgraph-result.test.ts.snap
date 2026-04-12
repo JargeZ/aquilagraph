@@ -17,7 +17,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       fillcolor = "#50C878";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     "core_module.tasks.run_todo_sync.task_RunTodoSync" [
       label = "task_RunTodoSync";
@@ -25,7 +24,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     subgraph "cluster_core_module_ReportsViewSet" {
       label = "ReportsViewSet";
@@ -36,7 +34,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.total_amount" [
         label = "total_amount";
@@ -44,7 +41,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -57,7 +53,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       fillcolor = "#50C878";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     "export_module.tasks.run_exports.task_ExportAllTasks" [
       label = "task_ExportAllTasks";
@@ -65,7 +60,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     subgraph "cluster_export_module_TodoTaskViewSet" {
       label = "TodoTaskViewSet";
@@ -76,7 +70,6 @@ exports[`buildNodeSubgraphResult > PerformExport.execute subgraph DOT (snapshot)
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }

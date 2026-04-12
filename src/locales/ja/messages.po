@@ -178,8 +178,8 @@ msgid "Граф ({0})"
 msgstr "グラフ（{0}）"
 
 #: src/components/analysis-config-panel.tsx:267
-msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr "ノードの色を半透明にする（近日対応）"
+msgid "Делать цвет нод полупрозрачным"
+msgstr "ノードの色を半透明にする"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103

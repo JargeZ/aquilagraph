@@ -17,7 +17,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     subgraph "cluster_export_module_Meta" {
       label = "Meta";
@@ -28,7 +27,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_PerformExport" {
@@ -40,7 +38,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.actions.perform_export.PerformExport.execute" [
         label = "execute";
@@ -48,7 +45,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_TaskSerializer" {
@@ -60,7 +56,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
@@ -68,7 +63,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_TodoTaskViewSet" {
@@ -80,7 +74,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.list" [
         label = "list";
@@ -88,7 +81,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.export" [
         label = "export";
@@ -96,7 +88,6 @@ exports[`buildGraph > DOT with include filter only shows matching elements (snap
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -125,7 +116,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     subgraph "cluster_core_module_AddTaskToList" {
       label = "AddTaskToList";
@@ -136,7 +126,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList.execute" [
         label = "execute";
@@ -144,7 +133,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" [
         label = "_internal_preconditions_check";
@@ -152,7 +140,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList._internal_empty" [
         label = "_internal_empty";
@@ -160,7 +147,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_core_module_CoreViewSet" {
@@ -172,7 +158,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.core.CoreViewSet.create" [
         label = "create";
@@ -180,7 +165,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_core_module_GetTasksList" {
@@ -192,7 +176,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.get_tasks_list.GetTasksList.execute" [
         label = "execute";
@@ -200,7 +183,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_core_module_ReportsViewSet" {
@@ -212,7 +194,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.create" [
         label = "create";
@@ -220,7 +201,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.export" [
         label = "export";
@@ -228,7 +208,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.total_amount" [
         label = "total_amount";
@@ -236,7 +215,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -249,7 +227,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
     subgraph "cluster_export_module_Meta" {
       label = "Meta";
@@ -260,7 +237,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_PerformExport" {
@@ -272,7 +248,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.actions.perform_export.PerformExport.execute" [
         label = "execute";
@@ -280,7 +255,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_TaskSerializer" {
@@ -292,7 +266,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
@@ -300,7 +273,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module_TodoTaskViewSet" {
@@ -312,7 +284,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.list" [
         label = "list";
@@ -320,7 +291,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.export" [
         label = "export";
@@ -328,7 +298,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -344,7 +313,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=1 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -397,7 +365,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList.execute" [
         label = "execute";
@@ -405,7 +372,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList._internal_preconditions_check" [
         label = "_internal_preconditions_check";
@@ -413,7 +379,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.add_task_to_list.AddTaskToList._internal_empty" [
         label = "_internal_empty";
@@ -421,7 +386,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_core_module.actions_GetTasksList" {
@@ -433,7 +397,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.actions.get_tasks_list.GetTasksList.execute" [
         label = "execute";
@@ -441,7 +404,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -454,7 +416,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
   }
   subgraph "cluster_core_module.views" {
@@ -469,7 +430,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.core.CoreViewSet.create" [
         label = "create";
@@ -477,7 +437,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_core_module.views_ReportsViewSet" {
@@ -489,7 +448,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.create" [
         label = "create";
@@ -497,7 +455,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.export" [
         label = "export";
@@ -505,7 +462,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "core_module.views.reports.ReportsViewSet.total_amount" [
         label = "total_amount";
@@ -513,7 +469,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -529,7 +484,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.actions.perform_export.PerformExport.execute" [
         label = "execute";
@@ -537,7 +491,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#50C878";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -553,7 +506,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
     subgraph "cluster_export_module.serializers_TaskSerializer" {
@@ -565,7 +517,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.serializers.task_serializer.TaskSerializer.get_custom_field" [
         label = "get_custom_field";
@@ -573,7 +524,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -586,7 +536,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
       fillcolor = "#FFB347";
       shape = "ellipse";
       style = "filled";
-      fontcolor = "#FFFFFF";
     ];
   }
   subgraph "cluster_export_module.views" {
@@ -601,7 +550,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.list" [
         label = "list";
@@ -609,7 +557,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
       "export_module.views.todotask.TodoTaskViewSet.export" [
         label = "export";
@@ -617,7 +564,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#4A90D9";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }
@@ -633,7 +579,6 @@ exports[`buildGraph > produces a valid DOT graph with depth=2 (snapshot) 1`] = `
         fillcolor = "#D3D3D3";
         shape = "ellipse";
         style = "filled";
-        fontcolor = "#FFFFFF";
       ];
     }
   }

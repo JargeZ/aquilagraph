@@ -243,4 +243,5 @@ describe("buildGraph", () => {
       /subgraph "cluster_mod_bucket_cat_side"[\s\S]*rank = "sink"/,
     );
   });
+
 });

@@ -346,7 +346,6 @@ function addNode(
     [attribute.fillcolor]: style.color,
     [attribute.shape]: style.shape,
     [attribute.style]: style.style,
-    [attribute.fontcolor]: "#FFFFFF",
   });
 }
 

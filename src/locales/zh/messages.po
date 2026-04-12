@@ -178,8 +178,8 @@ msgid "Граф ({0})"
 msgstr "图（{0}）"
 
 #: src/components/analysis-config-panel.tsx:267
-msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr "节点颜色半透明（即将推出）"
+msgid "Делать цвет нод полупрозрачным"
+msgstr "将节点颜色设为半透明"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103

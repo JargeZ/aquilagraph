@@ -18,7 +18,18 @@ const HL_CLASSES = [
   "viz-hl-edge-dim",
 ] as const;
 
+/** Непрозрачность для `ClassificationConfig.mute` (нода, подпись и инцидентные рёбра). */
+export const MUTED_GRAPH_VIZ_OPACITY = 0.15;
+
 const VIZ_HIGHLIGHT_CSS = `
+  g.node text {
+    fill: #000000 !important;
+    stroke: #ffffff !important;
+    stroke-width: 0.45px;
+    paint-order: stroke fill;
+    font-weight: 700;
+  }
+
   g.node.viz-hl-sel polygon,
   g.node.viz-hl-sel ellipse,
   g.node.viz-hl-sel path {
@@ -30,7 +41,7 @@ const VIZ_HIGHLIGHT_CSS = `
   }
 
   g.node.viz-hl-sel text {
-    font-weight: 600;
+    font-weight: 700;
   }
 
   g.node.viz-hl-uses polygon,
@@ -87,6 +98,29 @@ const VIZ_HIGHLIGHT_CSS = `
   g.edge.viz-hl-edge-dim polygon {
     opacity: 0.12;
   }
+
+  g.node.viz-class-muted {
+    opacity: ${MUTED_GRAPH_VIZ_OPACITY};
+  }
+
+  g.edge.viz-class-muted-edge {
+    opacity: ${MUTED_GRAPH_VIZ_OPACITY};
+  }
+
+  /* Кластеры в SVG Graphviz — соседи нод, не предки; opacity только на g.cluster. */
+  g.cluster.viz-class-muted-cluster {
+    opacity: ${MUTED_GRAPH_VIZ_OPACITY};
+  }
+
+  g.node.viz-hl-sel {
+    opacity: 1 !important;
+  }
+
+  g.edge.viz-hl-edge-out,
+  g.edge.viz-hl-edge-in,
+  g.edge.viz-hl-edge-both {
+    opacity: 1 !important;
+  }
 `;
 
 function parseVizEdgeTitle(
@@ -114,6 +148,38 @@ export function injectVizHighlightStyles(svg: SVGSVGElement): void {
   style.setAttribute("data-viz-highlight", "1");
   style.textContent = VIZ_HIGHLIGHT_CSS;
   svg.insertBefore(style, svg.firstChild);
+}
+
+export function applyVizSvgMuted(
+  root: SVGSVGElement | null,
+  mutedRefs: ReadonlySet<string>,
+  mutedClusterTitles: ReadonlySet<string>,
+): void {
+  if (!root) return;
+  injectVizHighlightStyles(root);
+
+  for (const g of root.querySelectorAll("g.node")) {
+    g.classList.remove("viz-class-muted");
+    const id = firstTitleText(g);
+    if (id && mutedRefs.has(id)) g.classList.add("viz-class-muted");
+  }
+
+  for (const g of root.querySelectorAll("g.edge")) {
+    g.classList.remove("viz-class-muted-edge");
+    const parsed = parseVizEdgeTitle(firstTitleText(g));
+    if (!parsed) continue;
+    if (mutedRefs.has(parsed.from) || mutedRefs.has(parsed.to)) {
+      g.classList.add("viz-class-muted-edge");
+    }
+  }
+
+  for (const g of root.querySelectorAll("g.cluster")) {
+    g.classList.remove("viz-class-muted-cluster");
+    const title = firstTitleText(g);
+    if (title && mutedClusterTitles.has(title)) {
+      g.classList.add("viz-class-muted-cluster");
+    }
+  }
 }
 
 export function applyVizSvgHighlight(
