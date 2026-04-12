@@ -9,10 +9,14 @@ export const SOURCE_LOCALE = "ru";
 export const SUPPORTED_LOCALES = [
   "ru",
   "en",
-  "ja",
-  "ka",
+  "zh",
+  "es",
+  "ar",
+  "pt",
   "de",
   "fr",
+  "ja",
+  "ka",
   "vi",
   "th",
   "fa",
@@ -52,16 +56,26 @@ export function toHtmlLang(locale: SupportedLocale): string {
   if (locale === "ja") {
     return "ja-JP";
   }
+  if (locale === "zh") {
+    return "zh-CN";
+  }
+  if (locale === "pt") {
+    return "pt-BR";
+  }
   return locale;
 }
 
 export const LOCALE_NATIVE_LABELS: Record<SupportedLocale, string> = {
   ru: "Русский",
   en: "English",
-  ja: "日本語",
-  ka: "ქართული",
+  zh: "中文",
+  es: "Español",
+  ar: "العربية",
+  pt: "Português",
   de: "Deutsch",
   fr: "Français",
+  ja: "日本語",
+  ka: "ქართული",
   vi: "Tiếng Việt",
   th: "ไทย",
   fa: "فارسی",
