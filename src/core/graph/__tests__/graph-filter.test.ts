@@ -1,9 +1,45 @@
 import { describe, expect, it } from "vitest";
+import type {
+  AnalysisConfig,
+  ClassificationConfig,
+} from "../../config/analysis-config";
 import {
   type ElementType,
   ExecutableElement,
 } from "../../model/executable-element";
-import { filterIsolatedNodes, filterUnclassifiedNodes } from "../graph-filter";
+import {
+  filterExcludedClassificationNodes,
+  filterIsolatedNodes,
+  filterUnclassifiedNodes,
+} from "../graph-filter";
+
+function classification(
+  id: string,
+  exclude: boolean,
+): ClassificationConfig {
+  return {
+    id,
+    name: id,
+    color: "#000000",
+    selectors: {},
+    groupInBucket: false,
+    exclude,
+    mute: false,
+  };
+}
+
+function mockAnalysisConfig(
+  classifications: ClassificationConfig[],
+): AnalysisConfig {
+  return {
+    include: [],
+    exclude: [],
+    moduleDepth: 1,
+    minMethodsForClassDetail: 3,
+    hideUnclassified: true,
+    classifications,
+  };
+}
 
 function makeElement(
   name: string,
@@ -174,5 +210,71 @@ describe("filterUnclassifiedNodes", () => {
 
   it("returns empty array for empty input", () => {
     expect(filterUnclassifiedNodes([])).toHaveLength(0);
+  });
+});
+
+describe("filterExcludedClassificationNodes", () => {
+  it("removes excluded nodes even when they reach a kept classification", () => {
+    const cfg = mockAnalysisConfig([
+      classification("exc", true),
+      classification("keep", false),
+    ]);
+    const exc = makeElement("e", "exc");
+    const keep = makeElement("k", "keep");
+    exc.uses = [keep];
+
+    const result = filterExcludedClassificationNodes([exc, keep], cfg);
+    expect(result).toEqual([keep]);
+  });
+
+  it("removes all nodes whose classification has exclude", () => {
+    const cfg = mockAnalysisConfig([
+      classification("a", true),
+      classification("b", true),
+      classification("c", false),
+    ]);
+    const result = filterExcludedClassificationNodes(
+      [
+        makeElement("x", "a"),
+        makeElement("y", "b"),
+        makeElement("z", "c"),
+      ],
+      cfg,
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0]?.type).toBe("c");
+  });
+
+  it("keeps nodes with unknown type (no classification entry)", () => {
+    const cfg = mockAnalysisConfig([classification("known", false)]);
+    const stale = makeElement("s", "removed_from_config");
+    const result = filterExcludedClassificationNodes([stale], cfg);
+    expect(result).toEqual([stale]);
+  });
+
+  it("does not remove unclassified nodes", () => {
+    const cfg = mockAnalysisConfig([classification("cat", true)]);
+    const u = makeElement("u");
+    const result = filterExcludedClassificationNodes([u], cfg);
+    expect(result).toEqual([u]);
+  });
+
+  it("returns same array when no classification has exclude", () => {
+    const cfg = mockAnalysisConfig([
+      classification("a", false),
+      classification("b", false),
+    ]);
+    const elements = [makeElement("x", "a")];
+    const result = filterExcludedClassificationNodes(elements, cfg);
+    expect(result).toBe(elements);
+  });
+
+  it("handles empty classifications list", () => {
+    const elements = [makeElement("x", "anything")];
+    const result = filterExcludedClassificationNodes(
+      elements,
+      mockAnalysisConfig([]),
+    );
+    expect(result).toBe(elements);
   });
 });

@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "Kopiert"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "Knoten dieser Kategorie im Graph ausblenden (demnächst)"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "Knoten dieser Kategorie im Graph ausblenden"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

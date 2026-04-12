@@ -2,6 +2,7 @@ import type { RootGraphModel } from "ts-graphviz";
 import type { AnalysisConfig } from "./config/analysis-config";
 import { buildGraph, graphToDot } from "./graph/graph-builder";
 import {
+  filterExcludedClassificationNodes,
   filterIsolatedNodes,
   filterUnclassifiedNodes,
 } from "./graph/graph-filter";
@@ -29,10 +30,11 @@ export function buildAnalysisResultFromAnalyses(
   resolveUses(classified, analyses);
 
   const connected = filterIsolatedNodes(classified);
+  const withoutExcluded = filterExcludedClassificationNodes(connected, config);
   const visible =
     config.hideUnclassified !== false
-      ? filterUnclassifiedNodes(connected)
-      : connected;
+      ? filterUnclassifiedNodes(withoutExcluded)
+      : withoutExcluded;
 
   const graph = buildGraph(visible, config);
   const dot = graphToDot(graph);

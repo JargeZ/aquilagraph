@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "تم النسخ"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "إخفاء عقد هذه الفئة من الرسم (قريبًا)"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "إخفاء عقد هذه الفئة من الرسم البياني"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "คัดลอกแล้ว"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "ซ่อนโหนดในหมวดนี้จากกราฟ (เร็วๆ นี้)"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "ซ่อนโหนดของหมวดหมู่นี้จากกราฟ"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "رونوشت شد"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "پنهان کردن گره‌های این دسته از گراف (به‌زودی)"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "پنهان‌کردن گره‌های این دسته از نمودار"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

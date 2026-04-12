@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "Đã sao chép"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "Ẩn nút của danh mục này khỏi đồ thị (sắp có)"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "Ẩn các nút của danh mục này khỏi đồ thị"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

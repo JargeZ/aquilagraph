@@ -468,8 +468,8 @@ msgid "Скопировано"
 msgstr "已复制"
 
 #: src/components/analysis-config-panel.tsx:260
-msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr "从图中隐藏此类别节点（即将推出）"
+msgid "Скрывать ноды этой категории из графа"
+msgstr "从图中隐藏此类别的节点"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"

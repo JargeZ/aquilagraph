@@ -257,7 +257,7 @@ function ClassificationCard({
             onPressedChange={(exclude) => onUpdate({ exclude })}
             icon={<Ban className="size-3.5" />}
             label={t`Exclude`}
-            tooltip={t`Скрывать ноды этой категории из графа (скоро)`}
+            tooltip={t`Скрывать ноды этой категории из графа`}
           />
           <ToggleIconButton
             pressed={c.mute}
