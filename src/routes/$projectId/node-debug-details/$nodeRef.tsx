@@ -1,7 +1,8 @@
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import { ArrowLeft } from "lucide-react";
-import { type ReactNode, useCallback, useEffect, useMemo } from "react";
+import { type ReactNode, useCallback, useEffect } from "react";
 import { AddSelectorFilterAction } from "@/components/classification/add-selector-filter-action";
 import { useNodeRouteContext } from "@/contexts/use-node-route-context";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
@@ -70,6 +71,42 @@ function DebugLineItem({
   );
 }
 
+function NodeDebugHeaderActions({
+  projectId,
+  element,
+}: {
+  projectId: string;
+  element: ExecutableElement | null;
+}) {
+  if (!element) return null;
+  return (
+    <div className="flex items-center gap-2">
+      <Button asChild variant="outline" size="sm">
+        <Link
+          to="/$projectId/node-sub-graph/$nodeRef"
+          params={{
+            projectId,
+            nodeRef: encodeURIComponent(element.reference),
+          }}
+        >
+          <Trans>Подграф</Trans>
+        </Link>
+      </Button>
+      <Button asChild variant="outline" size="sm">
+        <Link
+          to="/$projectId/node-details/$nodeRef"
+          params={{
+            projectId,
+            nodeRef: encodeURIComponent(element.reference),
+          }}
+        >
+          <Trans>Детали</Trans>
+        </Link>
+      </Button>
+    </div>
+  );
+}
+
 export function NodeDebugDetailsPage() {
   const { nodeRef: nodeRefParam } = Route.useParams();
   const navigate = useNavigate();
@@ -100,41 +137,13 @@ export function NodeDebugDetailsPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [goBack]);
 
-  const headerRight = useMemo(() => {
-    if (!element) return null;
-    return (
-      <div className="flex items-center gap-2">
-        <Button asChild variant="outline" size="sm">
-          <Link
-            to="/$projectId/node-sub-graph/$nodeRef"
-            params={{
-              projectId: ctxProjectId,
-              nodeRef: encodeURIComponent(element.reference),
-            }}
-          >
-            Подграф
-          </Link>
-        </Button>
-        <Button asChild variant="outline" size="sm">
-          <Link
-            to="/$projectId/node-details/$nodeRef"
-            params={{
-              projectId: ctxProjectId,
-              nodeRef: encodeURIComponent(element.reference),
-            }}
-          >
-            Детали
-          </Link>
-        </Button>
-      </div>
-    );
-  }, [ctxProjectId, element]);
-
   let body: ReactNode;
   if (analysisLoading) {
     body = (
       <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-        <p className="text-sm text-muted-foreground">Загрузка анализа…</p>
+        <p className="text-sm text-muted-foreground">
+          <Trans>Загрузка анализа…</Trans>
+        </p>
       </div>
     );
   } else if (analysisError) {
@@ -143,7 +152,7 @@ export function NodeDebugDetailsPage() {
         <p className="max-w-md text-sm text-destructive">{analysisError}</p>
         <Button asChild variant="outline" size="sm">
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -152,12 +161,14 @@ export function NodeDebugDetailsPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-sm text-muted-foreground">
-          Сначала выберите каталог проекта и дождитесь анализа на главной
-          вкладке графа.
+          <Trans>
+            Сначала выберите каталог проекта и дождитесь анализа на главной
+            вкладке графа.
+          </Trans>
         </p>
         <Button asChild>
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -166,12 +177,14 @@ export function NodeDebugDetailsPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-sm text-muted-foreground">
-          Узел не найден в графе проекта или ссылка некорректна.
+          <Trans>
+            Узел не найден в графе проекта или ссылка некорректна.
+          </Trans>
         </p>
         <div className="flex items-center gap-2">
           <Button asChild variant="outline" size="sm">
             <Link to="/$projectId" params={{ projectId: ctxProjectId }}>
-              К графу
+              <Trans>К графу</Trans>
             </Link>
           </Button>
           <Button asChild variant="outline" size="sm">
@@ -179,12 +192,14 @@ export function NodeDebugDetailsPage() {
               to="/$projectId/node-sub-graph/$nodeRef"
               params={{ projectId: ctxProjectId, nodeRef: nodeRefParam }}
             >
-              Подграф
+              <Trans>Подграф</Trans>
             </Link>
           </Button>
         </div>
         <div className="max-w-xl text-left text-[10px] text-muted-foreground">
-          <div className="font-medium text-foreground">Ref</div>
+          <div className="font-medium text-foreground">
+            <Trans>Ref</Trans>
+          </div>
           <code className="break-all">{decodedRef}</code>
         </div>
       </div>
@@ -211,7 +226,9 @@ export function NodeDebugDetailsPage() {
           </section>
 
           <section className="rounded-lg border border-border bg-card p-4">
-            <div className="text-xs font-medium text-foreground">Reference</div>
+            <div className="text-xs font-medium text-foreground">
+              <Trans>Reference</Trans>
+            </div>
             <div className="mt-2">
               <DebugLineItem kind="reference" value={element.reference} />
             </div>
@@ -221,7 +238,7 @@ export function NodeDebugDetailsPage() {
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <div className="text-xs font-medium text-foreground">
-                  Decorators
+                  <Trans>Decorators</Trans>
                 </div>
                 {element.decorators.length === 0 ? (
                   <div className="mt-1 text-xs text-muted-foreground">—</div>
@@ -238,7 +255,7 @@ export function NodeDebugDetailsPage() {
 
               <div>
                 <div className="text-xs font-medium text-foreground">
-                  Parent classes
+                  <Trans>Parent classes</Trans>
                 </div>
                 {element.parentClasses.length === 0 ? (
                   <div className="mt-1 text-xs text-muted-foreground">—</div>
@@ -256,14 +273,18 @@ export function NodeDebugDetailsPage() {
           </section>
 
           <section className="rounded-lg border border-border bg-card p-4">
-            <div className="text-xs font-medium text-foreground">Source</div>
+            <div className="text-xs font-medium text-foreground">
+              <Trans>Source</Trans>
+            </div>
             <div className="mt-1 text-xs text-muted-foreground">
               {element.sourceFile}:{element.startLine}-{element.endLine}
             </div>
           </section>
 
           <section className="rounded-lg border border-border bg-card p-4">
-            <div className="text-xs font-medium text-foreground">Uses</div>
+            <div className="text-xs font-medium text-foreground">
+              <Trans>Uses</Trans>
+            </div>
             <UsesList projectId={ctxProjectId} items={element.uses} />
             {element.uses.length === 0 && (
               <div className="mt-1 text-xs text-muted-foreground">—</div>
@@ -286,13 +307,13 @@ export function NodeDebugDetailsPage() {
             onClick={goBack}
           >
             <ArrowLeft className="size-4" />
-            Назад
+            <Trans>Назад</Trans>
           </Button>
           <div className="min-w-0 truncate text-xs text-muted-foreground">
             {decodedRef}
           </div>
         </div>
-        {headerRight}
+        <NodeDebugHeaderActions projectId={ctxProjectId} element={element} />
       </header>
       <div className="min-h-0 flex-1">{body}</div>
     </div>

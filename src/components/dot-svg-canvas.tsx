@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 import {
   useCallback,
@@ -79,6 +80,7 @@ export function DotSvgCanvas({
   onNodeDoubleClick,
   followSelectionInViewport = false,
 }: DotSvgCanvasProps) {
+  const { t } = useLingui();
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoomRef = useRef<SvgPanZoomHandle | null>(null);
   const shortClickRef = useRef(createShortClickPointerRef());
@@ -287,7 +289,7 @@ export function DotSvgCanvas({
       const { save } = await import("@tauri-apps/plugin-dialog");
       const { writeTextFile } = await import("@tauri-apps/plugin-fs");
       const path = await save({
-        title: "Сохранить граф как SVG",
+        title: t`Сохранить граф как SVG`,
         defaultPath: "graph.svg",
         filters: [{ name: "SVG", extensions: ["svg"] }],
       });
@@ -326,12 +328,14 @@ export function DotSvgCanvas({
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-  }, []);
+  }, [t]);
 
   if (error) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-destructive">
-        <p>Ошибка рендеринга графа: {error}</p>
+        <p>
+          <Trans>Ошибка рендеринга графа:</Trans> {error}
+        </p>
       </div>
     );
   }
@@ -356,7 +360,7 @@ export function DotSvgCanvas({
           disabled={!svgReady}
           onClick={() => void handleDownloadSvg()}
         >
-          Скачать SVG
+          <Trans>Скачать SVG</Trans>
         </Button>
       </div>
     </div>

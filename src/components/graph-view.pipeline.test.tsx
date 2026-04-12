@@ -1,5 +1,7 @@
+import { I18nProvider } from "@lingui/react";
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { appI18n } from "@/lib/app-i18n";
 import { analyzeProject } from "@/core/analyze";
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import { TEST_ANALYSIS_CONFIG } from "@/core/config/test-project-analysis-config";
@@ -10,6 +12,11 @@ import {
 import { GraphView } from "./graph-view";
 
 const TEST_PROJECT_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG;
+
+beforeAll(async () => {
+  const { messages } = await import("@/locales/ru/messages.po");
+  appI18n.loadAndActivate({ locale: "ru", messages });
+});
 
 afterEach(() => {
   cleanup();
@@ -24,11 +31,13 @@ describe("GraphView + analyze pipeline", () => {
     expect(result.dot).toContain("digraph");
 
     render(
-      <GraphView
-        elements={result.elements}
-        graph={result.graph}
-        dot={result.dot}
-      />,
+      <I18nProvider i18n={appI18n}>
+        <GraphView
+          elements={result.elements}
+          graph={result.graph}
+          dot={result.dot}
+        />
+      </I18nProvider>,
     );
 
     expect(screen.getByRole("tab", { name: /Граф/ })).toBeDefined();

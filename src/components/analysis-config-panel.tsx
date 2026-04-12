@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@ui/molecules/tooltip/tooltip";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Ban, Box, Plus, Trash2, VolumeX } from "lucide-react";
 import { type ReactNode, useCallback, useId, useState } from "react";
 import type {
@@ -35,6 +36,7 @@ export function AnalysisConfigPanel({
   config,
   onChange,
 }: AnalysisConfigPanelProps) {
+  const { t } = useLingui();
   const moduleDepthId = useId();
   const minMethodsId = useId();
 
@@ -87,17 +89,17 @@ export function AnalysisConfigPanel({
     <TooltipProvider>
       <div className="flex flex-col gap-4">
         <h2 className="text-sm font-semibold text-foreground">
-          Настройки анализа
+          <Trans>Настройки анализа</Trans>
         </h2>
 
         <div className="grid grid-cols-2 gap-4">
           <TextAreaField
-            label="Include (regex, по строкам)"
+            label={t`Include (regex, по строкам)`}
             value={config.include}
             onChange={(v) => updateField("include", v)}
           />
           <TextAreaField
-            label="Exclude (regex, по строкам)"
+            label={t`Exclude (regex, по строкам)`}
             value={config.exclude}
             onChange={(v) => updateField("exclude", v)}
           />
@@ -109,7 +111,7 @@ export function AnalysisConfigPanel({
               htmlFor={moduleDepthId}
               className="mb-1 block text-xs font-medium text-muted-foreground"
             >
-              Глубина модуля
+              <Trans>Глубина модуля</Trans>
             </label>
             <input
               id={moduleDepthId}
@@ -128,9 +130,9 @@ export function AnalysisConfigPanel({
             <label
               htmlFor={minMethodsId}
               className="mb-1 block text-xs font-medium text-muted-foreground"
-              title="Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+              title={t`Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам`}
             >
-              Минимально методов для детализации
+              <Trans>Минимально методов для детализации</Trans>
             </label>
             <input
               id={minMethodsId}
@@ -149,8 +151,11 @@ export function AnalysisConfigPanel({
               className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Класс будет сгруппирован в субграф, если в классе есть как минимум
-              заданное количество методов, которые ведут к другим нодам
+              <Trans>
+                Класс будет сгруппирован в субграф, если в классе есть как
+                минимум заданное количество методов, которые ведут к другим
+                нодам
+              </Trans>
             </p>
           </div>
 
@@ -164,13 +169,13 @@ export function AnalysisConfigPanel({
               className="size-4 rounded border-border accent-primary"
             />
             <span className="text-xs font-medium text-muted-foreground">
-              Скрыть неклассифицированные
+              <Trans>Скрыть неклассифицированные</Trans>
             </span>
           </label>
         </div>
 
         <h3 className="text-xs font-semibold text-muted-foreground">
-          Классификации
+          <Trans>Классификации</Trans>
         </h3>
 
         <div className="flex flex-col gap-3">
@@ -189,12 +194,12 @@ export function AnalysisConfigPanel({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label="Добавить классификацию"
+            aria-label={t`Добавить классификацию`}
             disabled={config.classifications.length >= MAX_CLASSIFICATIONS}
             title={
               config.classifications.length >= MAX_CLASSIFICATIONS
-                ? `Не более ${MAX_CLASSIFICATIONS} классификаций`
-                : "Добавить классификацию"
+                ? t`Не более ${MAX_CLASSIFICATIONS} классификаций`
+                : t`Добавить классификацию`
             }
             onClick={addClassification}
           >
@@ -206,7 +211,7 @@ export function AnalysisConfigPanel({
             size="sm"
             onClick={applyDjangoTemplate}
           >
-            Template: Django
+            <Trans>Template: Django</Trans>
           </Button>
         </div>
       </div>
@@ -223,6 +228,7 @@ function ClassificationCard({
   onUpdate: (patch: Partial<ClassificationConfig>) => void;
   onRemove: () => void;
 }) {
+  const { t } = useLingui();
   const updateSelector = (field: keyof SelectorConfig, value: string[]) => {
     onUpdate({
       selectors: { ...c.selectors, [field]: value },
@@ -242,7 +248,7 @@ function ClassificationCard({
             value={c.name}
             onChange={(e) => onUpdate({ name: e.target.value })}
             className="min-w-0 flex-1 border-0 bg-transparent p-0 text-xs font-semibold text-foreground shadow-none outline-none focus-visible:ring-0"
-            aria-label="Название классификации"
+            aria-label={t`Название классификации`}
           />
         </div>
         <div className="inline-flex rounded-lg border border-border gap-1 bg-muted/40 p-0.5">
@@ -250,22 +256,22 @@ function ClassificationCard({
             pressed={c.exclude}
             onPressedChange={(exclude) => onUpdate({ exclude })}
             icon={<Ban className="size-3.5" />}
-            label="Exclude"
-            tooltip="Скрывать ноды этой категории из графа (скоро)"
+            label={t`Exclude`}
+            tooltip={t`Скрывать ноды этой категории из графа (скоро)`}
           />
           <ToggleIconButton
             pressed={c.mute}
             onPressedChange={(mute) => onUpdate({ mute })}
             icon={<VolumeX className="size-3.5" />}
-            label="Mute"
-            tooltip="Делать цвет нод полупрозрачным (скоро)"
+            label={t`Mute`}
+            tooltip={t`Делать цвет нод полупрозрачным (скоро)`}
           />
           <ToggleIconButton
             pressed={c.groupInBucket}
             onPressedChange={(groupInBucket) => onUpdate({ groupInBucket })}
             icon={<Box className="size-3.5" />}
-            label="Bucket"
-            tooltip="Объединять ноды класса в субграф на графе"
+            label={t`Bucket`}
+            tooltip={t`Объединять ноды класса в субграф на графе`}
           />
         </div>
         <div className="flex justify-end">
@@ -274,7 +280,7 @@ function ClassificationCard({
             variant="ghost"
             size="icon-xs"
             className="shrink-0 text-muted-foreground hover:text-destructive"
-            aria-label="Удалить классификацию"
+            aria-label={t`Удалить классификацию`}
             onClick={onRemove}
           >
             <Trash2 className="size-3.5" />
@@ -313,6 +319,7 @@ function ColorDotPicker({
   color: string;
   onPick: (color: string) => void;
 }) {
+  const { t } = useLingui();
   const [open, setOpen] = useState(false);
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -320,7 +327,7 @@ function ColorDotPicker({
         <button
           type="button"
           className="inline-flex size-6 shrink-0 items-center justify-center rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          aria-label="Выбрать цвет категории"
+          aria-label={t`Выбрать цвет категории`}
         >
           <span
             className="inline-block size-3.5 rounded-full ring-1 ring-border"
@@ -341,7 +348,7 @@ function ColorDotPicker({
               onPick(hex);
               setOpen(false);
             }}
-            aria-label={`Цвет ${hex}`}
+            aria-label={t`Цвет ${hex}`}
           >
             <span
               className="inline-block size-5 rounded-full ring-1 ring-border"
@@ -400,6 +407,7 @@ function TextAreaField({
   onChange: (v: string[]) => void;
   rows?: number;
 }) {
+  const { t } = useLingui();
   const fieldId = useId();
   return (
     <div>
@@ -415,7 +423,7 @@ function TextAreaField({
         value={value.join("\n")}
         onChange={(e) => onChange(e.target.value.split("\n"))}
         className="w-full resize-y rounded-lg border border-border bg-background px-2 py-1 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
-        placeholder="regex-паттерн..."
+        placeholder={t`regex-паттерн...`}
       />
     </div>
   );

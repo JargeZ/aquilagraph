@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 import { useState } from "react";
 
@@ -10,6 +11,8 @@ export function ProjectDeleteSection({
   projectName,
   onDelete,
 }: ProjectDeleteSectionProps) {
+  const { t } = useLingui();
+  const projectLabel = projectName ?? t`проект`;
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +23,9 @@ export function ProjectDeleteSection({
     try {
       await onDelete();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Не удалось удалить проект");
+      setError(
+        e instanceof Error ? e.message : t`Не удалось удалить проект`,
+      );
     } finally {
       setBusy(false);
     }
@@ -29,10 +34,14 @@ export function ProjectDeleteSection({
   return (
     <section className="flex flex-col gap-3 border-t border-border pt-4">
       <div>
-        <h2 className="text-sm font-medium text-foreground">Опасная зона</h2>
+        <h2 className="text-sm font-medium text-foreground">
+          <Trans>Опасная зона</Trans>
+        </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Удалить «{projectName ?? "проект"}» из приложения. Папка на диске не
-          затрагивается; восстановить проект в списке будет нельзя.
+          <Trans>
+            Удалить «{projectLabel}» из приложения. Папка на диске не
+            затрагивается; восстановить проект в списке будет нельзя.
+          </Trans>
         </p>
       </div>
       {!confirming ? (
@@ -45,13 +54,13 @@ export function ProjectDeleteSection({
               setError(null);
             }}
           >
-            Удалить проект
+            <Trans>Удалить проект</Trans>
           </Button>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           <p className="text-sm text-foreground">
-            Удалить проект без возможности отмены?
+            <Trans>Удалить проект без возможности отмены?</Trans>
           </p>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -60,7 +69,7 @@ export function ProjectDeleteSection({
               disabled={busy}
               onClick={() => setConfirming(false)}
             >
-              Отмена
+              <Trans>Отмена</Trans>
             </Button>
             <Button
               type="button"
@@ -68,7 +77,11 @@ export function ProjectDeleteSection({
               disabled={busy}
               onClick={() => void handleConfirmDelete()}
             >
-              {busy ? "Удаляем…" : "Удалить навсегда"}
+              {busy ? (
+                <Trans>Удаляем…</Trans>
+              ) : (
+                <Trans>Удалить навсегда</Trans>
+              )}
             </Button>
           </div>
         </div>

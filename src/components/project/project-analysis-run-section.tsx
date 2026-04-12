@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 
 interface ProjectAnalysisRunSectionProps {
@@ -17,7 +18,11 @@ export function ProjectAnalysisRunSection({
     <section className="flex flex-col gap-3 border-t border-border pt-4">
       <div className="flex flex-wrap items-center gap-2">
         <Button type="button" onClick={onRun} disabled={disabled}>
-          {loading ? "Анализируем…" : "Анализировать"}
+          {loading ? (
+            <Trans>Анализируем…</Trans>
+          ) : (
+            <Trans>Анализировать</Trans>
+          )}
         </Button>
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}

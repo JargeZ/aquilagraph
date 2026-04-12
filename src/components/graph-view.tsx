@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import {
@@ -29,18 +30,19 @@ type FlowRenderable = {
   readonly elements: readonly ExecutableElement[];
 };
 
-function renderFlow(_renderable: FlowRenderable) {
+function FlowRendererPlaceholder(_renderable: FlowRenderable) {
   // Важно: раньше тут был рендер через React Flow, но способ рендера должен оставаться сменяемым.
   // В будущем должен быть возможен другой движок (SVG/Canvas/WebGL/DOM), поэтому держим Flow как
   // пример «рендер-функции», которая принимает входные данные и возвращает UI.
   return (
     <div className="flex h-full items-center justify-center rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
-      Flow renderer placeholder (extensible render pipeline).
+      <Trans>Flow renderer placeholder (extensible render pipeline).</Trans>
     </div>
   );
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
+  const { t } = useLingui();
   const { projectId, analysisConfig } = useProjectAnalysis();
   const classified =
     element.type !== UNCLASSIFIED_TYPE
@@ -52,7 +54,7 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
       : (classified?.color ?? "#D3D3D3");
   const typeLabel =
     element.type === UNCLASSIFIED_TYPE
-      ? "Unclassified"
+      ? t`Неклассифицировано`
       : (classified?.name ?? element.type);
 
   return (
@@ -74,7 +76,7 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
               nodeRef: encodeURIComponent(element.reference),
             }}
           >
-            Debug
+            <Trans>Debug</Trans>
           </Link>
         </Button>
         <Button asChild variant="outline" size="sm">
@@ -85,49 +87,65 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
               nodeRef: encodeURIComponent(element.reference),
             }}
           >
-            Детали
+            <Trans>Детали</Trans>
           </Link>
         </Button>
       </div>
 
       <div className="space-y-1 text-muted-foreground">
         <p>
-          <span className="font-medium text-foreground">Name: </span>
+          <span className="font-medium text-foreground">
+            <Trans>Name</Trans>:{" "}
+          </span>
           {element.name}
         </p>
         <p>
-          <span className="font-medium text-foreground">Reference: </span>
+          <span className="font-medium text-foreground">
+            <Trans>Reference</Trans>:{" "}
+          </span>
           <code className="break-all text-[10px]">{element.reference}</code>
         </p>
         <p>
-          <span className="font-medium text-foreground">Module: </span>
+          <span className="font-medium text-foreground">
+            <Trans>Module</Trans>:{" "}
+          </span>
           {element.module}
         </p>
         {element.className && (
           <p>
-            <span className="font-medium text-foreground">Class: </span>
+            <span className="font-medium text-foreground">
+              <Trans>Class</Trans>:{" "}
+            </span>
             {element.className}
           </p>
         )}
         {element.decorators.length > 0 && (
           <p>
-            <span className="font-medium text-foreground">Decorators: </span>
+            <span className="font-medium text-foreground">
+              <Trans>Decorators</Trans>:{" "}
+            </span>
             {element.decorators.join(", ")}
           </p>
         )}
         {element.parentClasses.length > 0 && (
           <p>
-            <span className="font-medium text-foreground">Inherits: </span>
+            <span className="font-medium text-foreground">
+              <Trans>Inherits</Trans>:{" "}
+            </span>
             {element.parentClasses.join(", ")}
           </p>
         )}
         <p>
-          <span className="font-medium text-foreground">Source: </span>
+          <span className="font-medium text-foreground">
+            <Trans>Source</Trans>:{" "}
+          </span>
           {element.sourceFile}:{element.startLine}-{element.endLine}
         </p>
         {element.uses.length > 0 && (
           <div>
-            <span className="font-medium text-foreground">Uses: </span>
+            <span className="font-medium text-foreground">
+              <Trans>Uses</Trans>:{" "}
+            </span>
             <ul className="mt-0.5 list-inside list-disc">
               {element.uses.map((u) => (
                 <li key={u.reference} className="truncate">
@@ -188,6 +206,7 @@ export function GraphView({
   initialSelectedRef,
   onNodeDoubleClick,
 }: GraphViewProps) {
+  const { t } = useLingui();
   const [copied, setCopied] = useState(false);
   const [selectedElement, setSelectedElement] =
     useState<ExecutableElement | null>(null);
@@ -229,9 +248,15 @@ export function GraphView({
 
       <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1">
         <TabsList>
-          <TabsTrigger value="graph">Граф ({elements.length})</TabsTrigger>
-          <TabsTrigger value="flow">Flow</TabsTrigger>
-          <TabsTrigger value="dot">DOT</TabsTrigger>
+          <TabsTrigger value="graph">
+            {t`Граф (${elements.length})`}
+          </TabsTrigger>
+          <TabsTrigger value="flow">
+            <Trans>Flow</Trans>
+          </TabsTrigger>
+          <TabsTrigger value="dot">
+            <Trans>DOT</Trans>
+          </TabsTrigger>
         </TabsList>
       </div>
 
@@ -250,7 +275,7 @@ export function GraphView({
       <TabsContent value="flow" className="min-h-0 flex-1">
         <div className="flex h-full gap-3">
           <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
-            {renderFlow({ graph, elements })}
+            <FlowRendererPlaceholder graph={graph} elements={elements} />
           </div>
           {selectedElement && (
             <div className="w-64 shrink-0">
@@ -264,7 +289,7 @@ export function GraphView({
         <div className="flex flex-col gap-3">
           <div className="flex justify-end">
             <Button variant="outline" size="sm" onClick={handleCopy}>
-              {copied ? "Скопировано" : "Копировать DOT"}
+              {copied ? <Trans>Скопировано</Trans> : <Trans>Копировать DOT</Trans>}
             </Button>
           </div>
           <pre className="overflow-auto rounded-lg border border-border bg-muted/30 p-4 font-mono text-xs text-foreground">

@@ -1,4 +1,7 @@
+import { useLingui } from "@lingui/react/macro";
+
 export function GraphViewSkeleton() {
+  const { t } = useLingui();
   return (
     <output
       className="flex h-full min-h-[280px] w-full items-center justify-center bg-background p-6"
@@ -10,9 +13,9 @@ export function GraphViewSkeleton() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
-        aria-label="Построение графа, ожидание"
+        aria-label={t`Построение графа, ожидание`}
       >
-        <title>Построение графа</title>
+        <title>{t`Построение графа`}</title>
         <path
           d="M72 88 L188 142 L188 210 M188 142 L320 96 M188 210 L312 218 M96 200 L188 210"
           stroke="currentColor"

@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@ui/molecules/tooltip/tooltip";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Plus } from "lucide-react";
 import { useCallback, useId, useMemo, useState } from "react";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
@@ -31,17 +32,6 @@ function selectorKeyForKind(
   }
 }
 
-function titleForKind(kind: AddSelectorFilterKind): string {
-  switch (kind) {
-    case "reference":
-      return "Добавить reference в классификацию";
-    case "decorator":
-      return "Добавить декоратор в классификацию";
-    case "parentClass":
-      return "Добавить родительский класс в классификацию";
-  }
-}
-
 export function AddSelectorFilterAction({
   kind,
   value,
@@ -53,6 +43,7 @@ export function AddSelectorFilterAction({
   className?: string;
   onAdded?: () => void;
 }) {
+  const { t } = useLingui();
   const { projectId, analysisConfig, setAnalysisConfig } = useProjectAnalysis();
   const selectId = useId();
   const inputId = useId();
@@ -63,6 +54,17 @@ export function AddSelectorFilterAction({
 
   const classifications = analysisConfig.classifications;
   const selectorKey = useMemo(() => selectorKeyForKind(kind), [kind]);
+
+  const title = useMemo(() => {
+    switch (kind) {
+      case "reference":
+        return t`Добавить reference в классификацию`;
+      case "decorator":
+        return t`Добавить декоратор в классификацию`;
+      case "parentClass":
+        return t`Добавить родительский класс в классификацию`;
+    }
+  }, [kind, t]);
 
   const canSubmit = useMemo(() => {
     if (!classificationId) return false;
@@ -124,13 +126,13 @@ export function AddSelectorFilterAction({
                 variant="outline"
                 size="icon-sm"
                 className={className}
-                aria-label={titleForKind(kind)}
+                aria-label={title}
               >
                 <Plus className="size-4" />
               </Button>
             </PopoverTrigger>
           </TooltipTrigger>
-          <TooltipContent>{titleForKind(kind)}</TooltipContent>
+          <TooltipContent>{title}</TooltipContent>
         </Tooltip>
 
         <PopoverContent
@@ -141,19 +143,17 @@ export function AddSelectorFilterAction({
           )}
         >
           <div className="flex flex-col gap-3">
-            <div className="text-xs font-medium text-foreground">
-              {titleForKind(kind)}
-            </div>
+            <div className="text-xs font-medium text-foreground">{title}</div>
 
             {emptyState ? (
               <div className="rounded-md border border-border bg-muted/20 p-3">
                 <div className="text-xs text-muted-foreground">
-                  Классификаций пока нет.
+                  <Trans>Классификаций пока нет.</Trans>
                 </div>
                 <div className="mt-2">
                   <Button asChild variant="outline" size="sm">
                     <Link to="/$projectId/settings" params={{ projectId }}>
-                      Создать в настройках
+                      <Trans>Создать в настройках</Trans>
                     </Link>
                   </Button>
                 </div>
@@ -165,7 +165,7 @@ export function AddSelectorFilterAction({
                     htmlFor={selectId}
                     className="text-[11px] font-medium text-muted-foreground"
                   >
-                    Классификация
+                    <Trans>Классификация</Trans>
                   </label>
                   <select
                     id={selectId}
@@ -177,7 +177,7 @@ export function AddSelectorFilterAction({
                     onChange={(e) => setClassificationId(e.target.value)}
                   >
                     <option value="" disabled>
-                      Выберите…
+                      {t`Выберите…`}
                     </option>
                     {classifications.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -192,7 +192,7 @@ export function AddSelectorFilterAction({
                     htmlFor={inputId}
                     className="text-[11px] font-medium text-muted-foreground"
                   >
-                    Значение
+                    <Trans>Значение</Trans>
                   </label>
                   <input
                     id={inputId}
@@ -202,7 +202,7 @@ export function AddSelectorFilterAction({
                     )}
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
-                    placeholder="Введите строку…"
+                    placeholder={t`Введите строку…`}
                     autoComplete="off"
                   />
                 </div>
@@ -214,7 +214,7 @@ export function AddSelectorFilterAction({
                     size="sm"
                     onClick={() => setOpen(false)}
                   >
-                    Отмена
+                    <Trans>Отмена</Trans>
                   </Button>
                   <Button
                     type="button"
@@ -222,7 +222,7 @@ export function AddSelectorFilterAction({
                     disabled={!canSubmit}
                     onClick={add}
                   >
-                    Добавить
+                    <Trans>Добавить</Trans>
                   </Button>
                 </div>
               </>

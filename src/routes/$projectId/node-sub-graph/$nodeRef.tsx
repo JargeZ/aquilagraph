@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import { ArrowLeft } from "lucide-react";
@@ -85,10 +86,12 @@ export function NodeSubGraphPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-sm text-muted-foreground">
-          Узел не найден в графе проекта или ссылка некорректна.
+          <Trans>
+            Узел не найден в графе проекта или ссылка некорректна.
+          </Trans>
         </p>
         <Button type="button" variant="outline" size="sm" onClick={goBack}>
-          Назад к графу
+          <Trans>Назад к графу</Trans>
         </Button>
       </div>
     );
@@ -98,7 +101,7 @@ export function NodeSubGraphPage() {
         <p className="max-w-md text-sm text-destructive">{analysisError}</p>
         <Button asChild variant="outline" size="sm">
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -107,12 +110,14 @@ export function NodeSubGraphPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
         <p className="text-sm text-muted-foreground">
-          Сначала выберите каталог проекта и дождитесь анализа на главной
-          вкладке графа.
+          <Trans>
+            Сначала выберите каталог проекта и дождитесь анализа на главной
+            вкладке графа.
+          </Trans>
         </p>
         <Button asChild>
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -133,7 +138,7 @@ export function NodeSubGraphPage() {
             onClick={goBack}
           >
             <ArrowLeft className="size-4" />
-            Назад
+            <Trans>Назад</Trans>
           </Button>
           <Button
             type="button"
@@ -141,7 +146,7 @@ export function NodeSubGraphPage() {
             size="sm"
             onClick={goFullGraph}
           >
-            Фулл граф
+            <Trans>Фулл граф</Trans>
           </Button>
         </div>
       </header>

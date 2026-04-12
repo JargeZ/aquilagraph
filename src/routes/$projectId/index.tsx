@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import type { ReactNode } from "react";
@@ -43,7 +44,7 @@ export function ProjectGraphPage() {
         <p className="max-w-md text-sm text-destructive">{analysisError}</p>
         <Button asChild variant="outline" size="sm">
           <Link to="/$projectId/settings" params={{ projectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -53,16 +54,18 @@ export function ProjectGraphPage() {
       <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
         <div className="flex flex-col gap-2">
           <p className="text-lg font-medium text-foreground">
-            Каталог не выбран
+            <Trans>Каталог не выбран</Trans>
           </p>
           <p className="text-sm text-muted-foreground">
-            Укажите папку проекта в настройках — анализ запустится
-            автоматически.
+            <Trans>
+              Укажите папку проекта в настройках — анализ запустится
+              автоматически.
+            </Trans>
           </p>
         </div>
         <Button asChild>
           <Link to="/$projectId/settings" params={{ projectId }}>
-            Открыть настройки
+            <Trans>Открыть настройки</Trans>
           </Link>
         </Button>
       </div>

@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 
 interface ProjectDirectorySectionProps {
@@ -23,7 +24,9 @@ export function ProjectDirectorySection({
 }: ProjectDirectorySectionProps) {
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-sm font-medium text-foreground">Каталог</h2>
+      <h2 className="text-sm font-medium text-foreground">
+        <Trans>Каталог</Trans>
+      </h2>
       <div className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
@@ -31,7 +34,11 @@ export function ProjectDirectorySection({
           onClick={onPickDirectory}
           disabled={pickDirectoryLoading}
         >
-          {pickDirectoryLoading ? "Выбор папки…" : "Выбрать папку"}
+          {pickDirectoryLoading ? (
+            <Trans>Выбор папки…</Trans>
+          ) : (
+            <Trans>Выбрать папку</Trans>
+          )}
         </Button>
         {browserDirectoryNeedsUserPermission && onGrantDirectoryAccess ? (
           <Button
@@ -39,7 +46,7 @@ export function ProjectDirectorySection({
             variant="default"
             onClick={() => void onGrantDirectoryAccess()}
           >
-            Разрешить доступ
+            <Trans>Разрешить доступ</Trans>
           </Button>
         ) : null}
         <Button
@@ -48,20 +55,22 @@ export function ProjectDirectorySection({
           onClick={onRefreshCount}
           disabled={!hasAnalysisRoot || countLoading}
         >
-          Обновить счётчик
+          <Trans>Обновить счётчик</Trans>
         </Button>
       </div>
       {rootPath ? (
         <p className="break-all text-sm text-muted-foreground">{rootPath}</p>
       ) : (
         <p className="text-sm text-muted-foreground">
-          Папка не выбрана — нажмите «Выбрать папку».
+          <Trans>Папка не выбрана — нажмите «Выбрать папку».</Trans>
         </p>
       )}
       {browserDirectoryNeedsUserPermission ? (
         <p className="text-sm text-muted-foreground">
-          После перезагрузки страницы браузер требует повторного разрешения на
-          чтение каталога.
+          <Trans>
+            После перезагрузки страницы браузер требует повторного разрешения
+            на чтение каталога.
+          </Trans>
         </p>
       ) : null}
     </section>

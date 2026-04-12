@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import {
   CLASSIFICATION_COLOR_PALETTE,
   defaultColorForIndex,
@@ -76,7 +77,7 @@ function sanitizeClassification(
   const name =
     typeof o.name === "string" && o.name.trim() !== ""
       ? o.name
-      : "Классификация";
+      : t`Классификация`;
   const colorRaw = typeof o.color === "string" ? o.color : "";
   const color = isPaletteColor(colorRaw)
     ? colorRaw
@@ -168,7 +169,7 @@ export function createEmptyClassification(
 ): ClassificationConfig {
   return {
     id,
-    name: "Новая классификация",
+    name: t`Новая классификация`,
     color: defaultColorForIndex(colorIndex),
     selectors: {},
     groupInBucket: false,
@@ -194,7 +195,7 @@ export function djangoTemplateClassifications(): ClassificationConfig[] {
   return [
     {
       id: newClassificationId(),
-      name: "Controlling",
+      name: t`Controlling`,
       color: CLASSIFICATION_COLOR_PALETTE[0],
       groupInBucket: false,
       exclude: false,
@@ -213,7 +214,7 @@ export function djangoTemplateClassifications(): ClassificationConfig[] {
     },
     {
       id: newClassificationId(),
-      name: "BusinessLogic",
+      name: t`BusinessLogic`,
       color: CLASSIFICATION_COLOR_PALETTE[1],
       groupInBucket: false,
       exclude: false,
@@ -224,7 +225,7 @@ export function djangoTemplateClassifications(): ClassificationConfig[] {
     },
     {
       id: newClassificationId(),
-      name: "SideEffects",
+      name: t`SideEffects`,
       color: CLASSIFICATION_COLOR_PALETTE[2],
       groupInBucket: false,
       exclude: false,
@@ -235,7 +236,7 @@ export function djangoTemplateClassifications(): ClassificationConfig[] {
     },
     {
       id: newClassificationId(),
-      name: "Tests",
+      name: t`Tests`,
       color: CLASSIFICATION_COLOR_PALETTE[3],
       groupInBucket: false,
       exclude: false,

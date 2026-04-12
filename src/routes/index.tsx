@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Logo } from "@ui/atoms/logo/logo";
 import { Button } from "@ui/molecules/button/button";
@@ -6,6 +7,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { PROJECTS_STORAGE_KEY, type Project } from "@/types/project";
 
 export const Home: React.FC = () => {
+  const { t } = useLingui();
   const [projects, setProjects] = useLocalStorage<Project[]>(
     PROJECTS_STORAGE_KEY,
     [],
@@ -16,12 +18,12 @@ export const Home: React.FC = () => {
     const id = crypto.randomUUID();
     const next: Project = {
       id,
-      name: `Проект ${projects.length + 1}`,
+      name: t`Проект ${projects.length + 1}`,
       createdAt: Date.now(),
     };
     setProjects([...projects, next]);
     void navigate({ to: "/$projectId", params: { projectId: id } });
-  }, [projects, setProjects, navigate]);
+  }, [projects, setProjects, navigate, t]);
 
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-6 p-6">
@@ -29,11 +31,14 @@ export const Home: React.FC = () => {
         <Logo size="lg" className="mb-3" />
         <h1 className="text-xl font-semibold text-foreground">AquilaGraph</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Создайте проект — он появится во вкладках и получит свой адрес с UUID.
+          <Trans>
+            Создайте проект — он появится во вкладках и получит свой адрес с
+            UUID.
+          </Trans>
         </p>
       </div>
       <Button type="button" onClick={createProject}>
-        Новый проект
+        <Trans>Новый проект</Trans>
       </Button>
       {projects.length > 0 ? (
         <ul className="list-inside list-disc text-sm text-muted-foreground">
@@ -55,7 +60,9 @@ export const Home: React.FC = () => {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-muted-foreground">Пока нет проектов.</p>
+        <p className="text-sm text-muted-foreground">
+          <Trans>Пока нет проектов.</Trans>
+        </p>
       )}
     </div>
   );

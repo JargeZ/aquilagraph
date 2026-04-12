@@ -1,3 +1,4 @@
+import { useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import {
@@ -73,6 +74,7 @@ export function ProjectAnalysisProvider({
   projectId: string;
   children: React.ReactNode;
 }) {
+  const { t } = useLingui();
   const [projects, setProjects] = useLocalStorage<Project[]>(
     PROJECTS_STORAGE_KEY,
     [],
@@ -187,7 +189,7 @@ export function ProjectAnalysisProvider({
           prev[projectId] ? prev : { ...prev, [projectId]: h.name },
         );
         setCountError(
-          "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ».",
+          t`Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ».`,
         );
         return;
       }
@@ -201,7 +203,7 @@ export function ProjectAnalysisProvider({
     return () => {
       cancelled = true;
     };
-  }, [projectId, setWebRootLabels]);
+  }, [projectId, setWebRootLabels, t]);
 
   const grantStoredDirectoryAccess = useCallback(async () => {
     if (isTauriRuntime()) return;
@@ -214,7 +216,7 @@ export function ProjectAnalysisProvider({
       const ok = await ensureDirectoryReadPermission(h);
       if (!ok) {
         setCountError(
-          "Доступ не выдан. Попробуйте снова или выберите папку заново.",
+          t`Доступ не выдан. Попробуйте снова или выберите папку заново.`,
         );
         return;
       }
@@ -226,10 +228,10 @@ export function ProjectAnalysisProvider({
       setCountError(null);
     } catch (e) {
       setCountError(
-        e instanceof Error ? e.message : "Не удалось запросить доступ",
+        e instanceof Error ? e.message : t`Не удалось запросить доступ`,
       );
     }
-  }, [projectId, setWebRootLabels]);
+  }, [projectId, setWebRootLabels, t]);
 
   // --- Подсчёт файлов ---
   const refreshCount = useCallback(async () => {
@@ -259,12 +261,12 @@ export function ProjectAnalysisProvider({
     } catch (e) {
       setFileCount(null);
       setCountError(
-        e instanceof Error ? e.message : "Не удалось прочитать каталог",
+        e instanceof Error ? e.message : t`Не удалось прочитать каталог`,
       );
     } finally {
       setCountLoading(false);
     }
-  }, [hasAnalysisRoot, tauriRootPath, browserRootHandle]);
+  }, [hasAnalysisRoot, tauriRootPath, browserRootHandle, t]);
 
   useEffect(() => {
     void refreshCount();
@@ -282,7 +284,7 @@ export function ProjectAnalysisProvider({
           directory: true,
           recursive: true,
           multiple: false,
-          title: "Каталог проекта",
+          title: t`Каталог проекта`,
         });
         const path =
           selected === null
@@ -297,7 +299,7 @@ export function ProjectAnalysisProvider({
 
       if (typeof window.showDirectoryPicker !== "function") {
         setCountError(
-          "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API.",
+          t`Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API.`,
         );
         return;
       }
@@ -318,19 +320,19 @@ export function ProjectAnalysisProvider({
             e.message.includes("already active"));
         if (isPickerBusy) {
           setCountError(
-            "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения.",
+            t`Диалог выбора папки уже открыт. Закройте его или дождитесь завершения.`,
           );
           return;
         }
         setCountError(
-          e instanceof Error ? e.message : "Не удалось выбрать каталог",
+          e instanceof Error ? e.message : t`Не удалось выбрать каталог`,
         );
       }
     } finally {
       directoryPickerInFlightRef.current = false;
       setPickDirectoryLoading(false);
     }
-  }, [projectId, setPathsByProject, setWebRootLabels]);
+  }, [projectId, setPathsByProject, setWebRootLabels, t]);
 
   // --- Запуск анализа ---
   const runAnalysis = useCallback(async () => {
@@ -360,7 +362,7 @@ export function ProjectAnalysisProvider({
       if (analysisGenerationRef.current !== generation) return;
       const msg =
         e instanceof Error ? e.message : typeof e === "string" ? e : String(e);
-      setAnalysisError(msg || "Неизвестная ошибка анализа");
+      setAnalysisError(msg || t`Неизвестная ошибка анализа`);
       setScanCache(null);
       setAnalysisResult(null);
     } finally {
@@ -370,7 +372,7 @@ export function ProjectAnalysisProvider({
         setAnalysisLoading(false);
       }
     }
-  }, [hasAnalysisRoot, tauriRootPath, browserRootHandle]);
+  }, [hasAnalysisRoot, tauriRootPath, browserRootHandle, t]);
 
   // --- Сброс при смене корня; инкремент generation отменяет предыдущий анализ ---
   // biome-ignore lint/correctness/useExhaustiveDependencies: tauriRootPath и browserRootHandle нужны, чтобы сброс произошёл при смене корня
@@ -398,10 +400,10 @@ export function ProjectAnalysisProvider({
       console.error("[buildAnalysisResultFromAnalyses] failed:", e);
       const msg =
         e instanceof Error ? e.message : typeof e === "string" ? e : String(e);
-      setAnalysisError(msg || "Ошибка построения графа");
+      setAnalysisError(msg || t`Ошибка построения графа`);
       setAnalysisResult(null);
     }
-  }, [scanCache, analysisConfig, hasAnalysisRoot]);
+  }, [scanCache, analysisConfig, hasAnalysisRoot, t]);
 
   // --- Автозапуск анализа при появлении корня ---
   // Единственный эффект для автозапуска; зависит от hasAnalysisRoot.

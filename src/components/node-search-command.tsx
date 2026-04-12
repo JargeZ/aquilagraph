@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Dialog } from "radix-ui";
 import {
   type KeyboardEvent,
@@ -42,6 +43,7 @@ export function NodeSearchCommand({
   onOpenChange,
   onActiveElementChange,
 }: NodeSearchCommandProps) {
+  const { t } = useLingui();
   const reactId = useId().replace(/:/g, "");
   const listDomId = `${reactId}-node-search-list`;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -173,7 +175,9 @@ export function NodeSearchCommand({
           )}
           onCloseAutoFocus={(ev) => ev.preventDefault()}
         >
-          <Dialog.Title className="sr-only">Поиск узлов графа</Dialog.Title>
+          <Dialog.Title className="sr-only">
+            <Trans>Поиск узлов графа</Trans>
+          </Dialog.Title>
           <input
             ref={inputRef}
             type="search"
@@ -185,7 +189,7 @@ export function NodeSearchCommand({
             aria-controls={listDomId}
             aria-activedescendant={activeDescendantId}
             aria-autocomplete="list"
-            placeholder="Класс, метод, путь к файлу…"
+            placeholder={t`Класс, метод, путь к файлу…`}
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             onKeyDown={handleInputKeyDown}
@@ -199,12 +203,16 @@ export function NodeSearchCommand({
             ref={listScrollRef}
             id={listDomId}
             role="listbox"
-            aria-label="Результаты поиска"
+            aria-label={t`Результаты поиска`}
             className="max-h-[min(380px,55vh)] overflow-y-auto p-1"
           >
             {filtered.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
-                {query.trim() ? "Ничего не найдено" : "Нет узлов"}
+                {query.trim() ? (
+                  <Trans>Ничего не найдено</Trans>
+                ) : (
+                  <Trans>Нет узлов</Trans>
+                )}
               </p>
             ) : (
               filtered.map((el, i) => {

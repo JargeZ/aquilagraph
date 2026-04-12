@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
 import { ArrowLeft } from "lucide-react";
@@ -45,7 +46,9 @@ export function NodeDetailsPage() {
   if (analysisLoading) {
     body = (
       <div className="flex h-full items-center justify-center px-6 text-center">
-        <p className="text-sm text-muted-foreground">Загрузка…</p>
+        <p className="text-sm text-muted-foreground">
+          <Trans>Загрузка…</Trans>
+        </p>
       </div>
     );
   } else if (analysisError) {
@@ -54,7 +57,7 @@ export function NodeDetailsPage() {
         <p className="max-w-md text-sm text-destructive">{analysisError}</p>
         <Button asChild variant="outline" size="sm">
           <Link to="/$projectId/settings" params={{ projectId: ctxProjectId }}>
-            Настройки
+            <Trans>Настройки</Trans>
           </Link>
         </Button>
       </div>
@@ -63,15 +66,19 @@ export function NodeDetailsPage() {
     body = (
       <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="max-w-md text-sm text-muted-foreground">
-          Узел не найден в графе проекта или ссылка некорректна.
+          <Trans>
+            Узел не найден в графе проекта или ссылка некорректна.
+          </Trans>
         </p>
         <Button asChild variant="outline" size="sm">
           <Link to="/$projectId" params={{ projectId: ctxProjectId }}>
-            К графу
+            <Trans>К графу</Trans>
           </Link>
         </Button>
         <div className="max-w-xl text-left text-[10px] text-muted-foreground">
-          <div className="font-medium text-foreground">Ref</div>
+          <div className="font-medium text-foreground">
+            <Trans>Ref</Trans>
+          </div>
           <code className="break-all">{decodedRef}</code>
         </div>
       </div>
@@ -81,7 +88,9 @@ export function NodeDetailsPage() {
       <div className="min-h-0 flex-1 overflow-auto px-4 py-6">
         <div className="mx-auto w-full max-w-3xl">
           <div className="rounded-lg border border-border bg-card p-6">
-            <div className="text-xs text-muted-foreground">Заглушка</div>
+            <div className="text-xs text-muted-foreground">
+              <Trans>Заглушка</Trans>
+            </div>
             <div className="mt-2 text-lg font-semibold text-foreground">
               {element.name}
             </div>
@@ -103,7 +112,7 @@ export function NodeDetailsPage() {
             onClick={goBack}
           >
             <ArrowLeft className="size-4" />
-            Назад
+            <Trans>Назад</Trans>
           </Button>
           <div className="min-w-0 truncate text-xs text-muted-foreground">
             {decodedRef}
@@ -114,7 +123,7 @@ export function NodeDetailsPage() {
             to="/$projectId/node-debug-details/$nodeRef"
             params={{ projectId: ctxProjectId, nodeRef: nodeRefParam }}
           >
-            Debug
+            <Trans>Debug</Trans>
           </Link>
         </Button>
       </header>
