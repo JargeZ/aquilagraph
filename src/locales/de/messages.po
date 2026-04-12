@@ -6,12 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: de\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: aquilagraph\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
@@ -118,10 +118,6 @@ msgstr "Vorlage: Django"
 msgid "Tests"
 msgstr "Tests"
 
-#: src/components/graph-view.tsx:57
-#~ msgid "Unclassified"
-#~ msgstr ""
-
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
@@ -136,9 +132,17 @@ msgstr "Analysieren"
 msgid "Анализируем…"
 msgstr "Analyse läuft…"
 
+#: src/routes/index.tsx:106
+msgid "Ваши проекты"
+msgstr "Ihre Projekte"
+
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
 msgstr "Text eingeben…"
+
+#: src/routes/index.tsx:97
+msgid "Весь разбор кода и построение графа выполняются в вашем браузере на этом устройстве. Исходный код на сервер не отправляется."
+msgstr "Die gesamte Codeanalyse und Graph-Erstellung erfolgt in Ihrem Browser auf diesem Gerät. Der Quellcode wird nicht an einen Server gesendet."
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
@@ -160,7 +164,7 @@ msgstr "Ordner wählen"
 msgid "Выбрать цвет категории"
 msgstr "Kategoriefarbe wählen"
 
-#: src/components/AppShell.tsx:63
+#: src/components/AppShell.tsx:74
 msgid "Главная"
 msgstr "Start"
 
@@ -207,6 +211,10 @@ msgstr "Klassifikation hinzufügen"
 msgid "Добавить родительский класс в классификацию"
 msgstr "Basisklasse zur Klassifikation hinzufügen"
 
+#: src/routes/index.tsx:161
+msgid "Добавлен {dateStr}"
+msgstr "Hinzugefügt am {dateStr}"
+
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
 msgstr "Zugriff wurde nicht gewährt. Versuchen Sie es erneut oder wählen Sie den Ordner neu."
@@ -235,6 +243,10 @@ msgstr "Zum Graph"
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
 msgstr "Ordner"
+
+#: src/routes/index.tsx:129
+msgid "Каталог ещё не выбран"
+msgstr "Noch kein Ordner ausgewählt"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
@@ -270,13 +282,25 @@ msgstr "Klassifikation"
 msgid "Копировать DOT"
 msgstr "DOT kopieren"
 
+#: src/routes/index.tsx:96
+msgid "Локальная обработка"
+msgstr "Lokale Verarbeitung"
+
+#: src/routes/index.tsx:128
+msgid "Локальная папка в браузере"
+msgstr "Lokaler Ordner im Browser"
+
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
 msgstr "Mindestanzahl Methoden für Teilgraph"
 
-#: src/components/AppShell.tsx:45
+#: src/components/AppShell.tsx:56
 msgid "На главную"
 msgstr "Zur Startseite"
+
+#: src/routes/index.tsx:190
+msgid "Нажмите «Новый проект», чтобы начать и выбрать папку с кодом в настройках."
+msgstr "Klicken Sie auf „Neues Projekt“, um zu beginnen und in den Einstellungen einen Codeordner auszuwählen."
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
@@ -347,7 +371,7 @@ msgstr "Keine Treffer"
 msgid "Новая классификация"
 msgstr "Neue Klassifikation"
 
-#: src/routes/index.tsx:41
+#: src/routes/index.tsx:92
 msgid "Новый проект"
 msgstr "Neues Projekt"
 
@@ -397,9 +421,9 @@ msgstr "Teilgraph"
 msgid "Поиск узлов графа"
 msgstr "Graphknoten suchen"
 
-#: src/routes/index.tsx:64
-msgid "Пока нет проектов."
-msgstr "Noch keine Projekte."
+#: src/routes/index.tsx:187
+msgid "Пока нет проектов"
+msgstr "Noch keine Projekte"
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
@@ -423,7 +447,7 @@ msgid "Проект"
 msgstr "Projekt"
 
 #. placeholder {0}: projects.length + 1
-#: src/routes/index.tsx:21
+#: src/routes/index.tsx:56
 msgid "Проект {0}"
 msgstr "Projekt {0}"
 
@@ -456,9 +480,9 @@ msgstr "Nicht klassifizierte ausblenden"
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
 msgstr "Wählen Sie zuerst den Projektordner und warten Sie auf die Analyse im Haupt-Graph-Tab."
 
-#: src/routes/index.tsx:34
-msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr "Legen Sie ein Projekt an — es erscheint in den Tabs und erhält eine eigene URL mit UUID."
+#: src/routes/index.tsx:78
+msgid "Создавайте проекты и открывайте каталог с кодом — каждый проект доступен отдельной вкладкой с собственным адресом."
+msgstr "Erstellen Sie Projekte und öffnen Sie einen Codeordner — jedes Projekt hat eine eigene Registerkarte und Adresse."
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"

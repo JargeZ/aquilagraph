@@ -6,12 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: th\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: aquilagraph\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
@@ -118,10 +118,6 @@ msgstr "เทมเพลต: Django"
 msgid "Tests"
 msgstr "การทดสอบ"
 
-#: src/components/graph-view.tsx:57
-#~ msgid "Unclassified"
-#~ msgstr ""
-
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
@@ -136,9 +132,17 @@ msgstr "วิเคราะห์"
 msgid "Анализируем…"
 msgstr "กำลังวิเคราะห์…"
 
+#: src/routes/index.tsx:106
+msgid "Ваши проекты"
+msgstr "โปรเจ็กต์ของคุณ"
+
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
 msgstr "พิมพ์ข้อความ…"
+
+#: src/routes/index.tsx:97
+msgid "Весь разбор кода и построение графа выполняются в вашем браузере на этом устройстве. Исходный код на сервер не отправляется."
+msgstr "การวิเคราะห์โค้ดและการสร้างกราฟทั้งหมดทำงานในเบราว์เซอร์บนอุปกรณ์นี้ โค้ดต้นฉบับจะไม่ถูกส่งไปยังเซิร์ฟเวอร์"
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
@@ -160,7 +164,7 @@ msgstr "เลือกโฟลเดอร์"
 msgid "Выбрать цвет категории"
 msgstr "เลือกสีหมวดหมู่"
 
-#: src/components/AppShell.tsx:63
+#: src/components/AppShell.tsx:74
 msgid "Главная"
 msgstr "หน้าแรก"
 
@@ -207,6 +211,10 @@ msgstr "เพิ่มประเภท"
 msgid "Добавить родительский класс в классификацию"
 msgstr "เพิ่มคลาสแม่ในประเภท"
 
+#: src/routes/index.tsx:161
+msgid "Добавлен {dateStr}"
+msgstr "เพิ่มเมื่อ {dateStr}"
+
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
 msgstr "ยังไม่ได้รับสิทธิ์ ลองอีกครั้งหรือเลือกโฟลเดอร์ใหม่"
@@ -235,6 +243,10 @@ msgstr "ไปที่กราฟ"
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
 msgstr "โฟลเดอร์"
+
+#: src/routes/index.tsx:129
+msgid "Каталог ещё не выбран"
+msgstr "ยังไม่ได้เลือกโฟลเดอร์"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
@@ -270,13 +282,25 @@ msgstr "ประเภท"
 msgid "Копировать DOT"
 msgstr "คัดลอก DOT"
 
+#: src/routes/index.tsx:96
+msgid "Локальная обработка"
+msgstr "ประมวลผลในเครื่อง"
+
+#: src/routes/index.tsx:128
+msgid "Локальная папка в браузере"
+msgstr "โฟลเดอร์ในเบราว์เซอร์"
+
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
 msgstr "จำนวนเมธอดขั้นต่ำสำหรับกราฟย่อย"
 
-#: src/components/AppShell.tsx:45
+#: src/components/AppShell.tsx:56
 msgid "На главную"
 msgstr "ไปหน้าแรก"
+
+#: src/routes/index.tsx:190
+msgid "Нажмите «Новый проект», чтобы начать и выбрать папку с кодом в настройках."
+msgstr "คลิก «โปรเจ็กต์ใหม่» เพื่อเริ่มต้นและเลือกโฟลเดอร์โค้ดในการตั้งค่า"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
@@ -347,7 +371,7 @@ msgstr "ไม่พบผลลัพธ์"
 msgid "Новая классификация"
 msgstr "ประเภทใหม่"
 
-#: src/routes/index.tsx:41
+#: src/routes/index.tsx:92
 msgid "Новый проект"
 msgstr "โปรเจกต์ใหม่"
 
@@ -397,9 +421,9 @@ msgstr "กราฟย่อย"
 msgid "Поиск узлов графа"
 msgstr "ค้นหาโหนดกราฟ"
 
-#: src/routes/index.tsx:64
-msgid "Пока нет проектов."
-msgstr "ยังไม่มีโปรเจกต์"
+#: src/routes/index.tsx:187
+msgid "Пока нет проектов"
+msgstr "ยังไม่มีโปรเจ็กต์"
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
@@ -423,7 +447,7 @@ msgid "Проект"
 msgstr "โปรเจกต์"
 
 #. placeholder {0}: projects.length + 1
-#: src/routes/index.tsx:21
+#: src/routes/index.tsx:56
 msgid "Проект {0}"
 msgstr "โปรเจกต์ {0}"
 
@@ -456,9 +480,9 @@ msgstr "ซ่อนรายการที่ยังไม่จัดปร
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
 msgstr "เลือกโฟลเดอร์โปรเจกต์ก่อน แล้วรอการวิเคราะห์ในแท็บกราฟหลัก"
 
-#: src/routes/index.tsx:34
-msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr "สร้างโปรเจกต์ — จะปรากฏในแท็บและมี URL พร้อม UUID"
+#: src/routes/index.tsx:78
+msgid "Создавайте проекты и открывайте каталог с кодом — каждый проект доступен отдельной вкладкой с собственным адресом."
+msgstr "สร้างโปรเจ็กต์และเปิดโฟลเดอร์โค้ด — แต่ละโปรเจ็กต์มีแท็บและที่อยู่ของตัวเอง"
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"

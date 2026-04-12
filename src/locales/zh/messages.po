@@ -6,12 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: zh\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: aquilagraph\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
@@ -118,10 +118,6 @@ msgstr "模板：Django"
 msgid "Tests"
 msgstr "测试"
 
-#: src/components/graph-view.tsx:57
-#~ msgid "Unclassified"
-#~ msgstr ""
-
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
@@ -136,9 +132,17 @@ msgstr "分析"
 msgid "Анализируем…"
 msgstr "正在分析…"
 
+#: src/routes/index.tsx:106
+msgid "Ваши проекты"
+msgstr "你的项目"
+
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
 msgstr "输入文字…"
+
+#: src/routes/index.tsx:97
+msgid "Весь разбор кода и построение графа выполняются в вашем браузере на этом устройстве. Исходный код на сервер не отправляется."
+msgstr "所有代码解析和图谱构建都在您设备上的浏览器中完成。源代码不会发送到服务器。"
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
@@ -160,7 +164,7 @@ msgstr "选择文件夹"
 msgid "Выбрать цвет категории"
 msgstr "选择类别颜色"
 
-#: src/components/AppShell.tsx:63
+#: src/components/AppShell.tsx:74
 msgid "Главная"
 msgstr "首页"
 
@@ -207,6 +211,10 @@ msgstr "添加分类"
 msgid "Добавить родительский класс в классификацию"
 msgstr "将父类加入分类"
 
+#: src/routes/index.tsx:161
+msgid "Добавлен {dateStr}"
+msgstr "添加于 {dateStr}"
+
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
 msgstr "未授予访问权限。请重试或重新选择文件夹。"
@@ -235,6 +243,10 @@ msgstr "转到图"
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
 msgstr "文件夹"
+
+#: src/routes/index.tsx:129
+msgid "Каталог ещё не выбран"
+msgstr "尚未选择文件夹"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
@@ -270,13 +282,25 @@ msgstr "分类"
 msgid "Копировать DOT"
 msgstr "复制 DOT"
 
+#: src/routes/index.tsx:96
+msgid "Локальная обработка"
+msgstr "本地处理"
+
+#: src/routes/index.tsx:128
+msgid "Локальная папка в браузере"
+msgstr "浏览器中的本地文件夹"
+
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
 msgstr "子图所需最少方法数"
 
-#: src/components/AppShell.tsx:45
+#: src/components/AppShell.tsx:56
 msgid "На главную"
 msgstr "回首页"
+
+#: src/routes/index.tsx:190
+msgid "Нажмите «Новый проект», чтобы начать и выбрать папку с кодом в настройках."
+msgstr "点击「新项目」开始，并在设置中选择代码文件夹。"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
@@ -347,7 +371,7 @@ msgstr "无结果"
 msgid "Новая классификация"
 msgstr "新分类"
 
-#: src/routes/index.tsx:41
+#: src/routes/index.tsx:92
 msgid "Новый проект"
 msgstr "新项目"
 
@@ -397,9 +421,9 @@ msgstr "子图"
 msgid "Поиск узлов графа"
 msgstr "搜索图节点"
 
-#: src/routes/index.tsx:64
-msgid "Пока нет проектов."
-msgstr "尚无项目。"
+#: src/routes/index.tsx:187
+msgid "Пока нет проектов"
+msgstr "暂无项目"
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
@@ -423,7 +447,7 @@ msgid "Проект"
 msgstr "项目"
 
 #. placeholder {0}: projects.length + 1
-#: src/routes/index.tsx:21
+#: src/routes/index.tsx:56
 msgid "Проект {0}"
 msgstr "项目 {0}"
 
@@ -456,9 +480,9 @@ msgstr "隐藏未分类"
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
 msgstr "请先在主图标签页选择项目文件夹并等待分析完成。"
 
-#: src/routes/index.tsx:34
-msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr "创建项目 — 将出现在标签页中并获得带 UUID 的地址。"
+#: src/routes/index.tsx:78
+msgid "Создавайте проекты и открывайте каталог с кодом — каждый проект доступен отдельной вкладкой с собственным адресом."
+msgstr "创建项目并打开代码文件夹——每个项目都有独立的标签页和地址。"
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"

@@ -12,7 +12,10 @@ import { useLocalStorage } from "usehooks-ts";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { PwaRegister } from "@/components/pwa-register";
 import {
+  getProjectDisplayTitle,
   isValidUuid,
+  PROJECT_PATHS_STORAGE_KEY,
+  PROJECT_WEB_ROOT_LABELS_KEY,
   PROJECTS_STORAGE_KEY,
   type Project,
 } from "@/types/project";
@@ -28,6 +31,14 @@ function activeTabValue(pathname: string): string {
 export const AppShell: React.FC = () => {
   const { t } = useLingui();
   const [projects] = useLocalStorage<Project[]>(PROJECTS_STORAGE_KEY, []);
+  const [pathsByProject] = useLocalStorage<Record<string, string>>(
+    PROJECT_PATHS_STORAGE_KEY,
+    {},
+  );
+  const [webRootLabels] = useLocalStorage<Record<string, string>>(
+    PROJECT_WEB_ROOT_LABELS_KEY,
+    {},
+  );
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const value = activeTabValue(pathname);
@@ -65,7 +76,7 @@ export const AppShell: React.FC = () => {
             {hydrated &&
               projects.map((p) => (
                 <TabsTrigger key={p.id} value={p.id}>
-                  {p.name}
+                  {getProjectDisplayTitle(p, pathsByProject, webRootLabels)}
                 </TabsTrigger>
               ))}
           </TabsList>

@@ -6,12 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fa\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: aquilagraph\n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
@@ -118,10 +118,6 @@ msgstr "قالب: Django"
 msgid "Tests"
 msgstr "آزمون‌ها"
 
-#: src/components/graph-view.tsx:57
-#~ msgid "Unclassified"
-#~ msgstr ""
-
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
@@ -136,9 +132,17 @@ msgstr "تحلیل"
 msgid "Анализируем…"
 msgstr "در حال تحلیل…"
 
+#: src/routes/index.tsx:106
+msgid "Ваши проекты"
+msgstr "پروژه‌های شما"
+
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
 msgstr "متن را وارد کنید…"
+
+#: src/routes/index.tsx:97
+msgid "Весь разбор кода и построение графа выполняются в вашем браузере на этом устройстве. Исходный код на сервер не отправляется."
+msgstr "تمام تجزیهٔ کد و ساخت نمودار در مرورگر شما روی این دستگاه انجام می‌شود. کد منبع به هیچ سروری ارسال نمی‌شود."
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
@@ -160,7 +164,7 @@ msgstr "انتخاب پوشه"
 msgid "Выбрать цвет категории"
 msgstr "رنگ دسته را انتخاب کنید"
 
-#: src/components/AppShell.tsx:63
+#: src/components/AppShell.tsx:74
 msgid "Главная"
 msgstr "خانه"
 
@@ -207,6 +211,10 @@ msgstr "افزودن طبقه‌بندی"
 msgid "Добавить родительский класс в классификацию"
 msgstr "افزودن کلاس والد به طبقه‌بندی"
 
+#: src/routes/index.tsx:161
+msgid "Добавлен {dateStr}"
+msgstr "افزوده‌شده در {dateStr}"
+
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
 msgstr "دسترسی داده نشد. دوباره تلاش کنید یا پوشه را دوباره انتخاب کنید."
@@ -235,6 +243,10 @@ msgstr "به گراف"
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
 msgstr "پوشه"
+
+#: src/routes/index.tsx:129
+msgid "Каталог ещё не выбран"
+msgstr "پوشه هنوز انتخاب نشده است"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
@@ -270,13 +282,25 @@ msgstr "طبقه‌بندی"
 msgid "Копировать DOT"
 msgstr "رونوشت DOT"
 
+#: src/routes/index.tsx:96
+msgid "Локальная обработка"
+msgstr "پردازش محلی"
+
+#: src/routes/index.tsx:128
+msgid "Локальная папка в браузере"
+msgstr "پوشهٔ محلی در مرورگر"
+
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
 msgstr "حداقل متد برای زیرگراف"
 
-#: src/components/AppShell.tsx:45
+#: src/components/AppShell.tsx:56
 msgid "На главную"
 msgstr "رفتن به خانه"
+
+#: src/routes/index.tsx:190
+msgid "Нажмите «Новый проект», чтобы начать и выбрать папку с кодом в настройках."
+msgstr "برای شروع روی «پروژهٔ جدید» کلیک کنید و در تنظیمات پوشهٔ کد را انتخاب کنید."
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
@@ -347,7 +371,7 @@ msgstr "نتیجه‌ای نیست"
 msgid "Новая классификация"
 msgstr "طبقه‌بندی جدید"
 
-#: src/routes/index.tsx:41
+#: src/routes/index.tsx:92
 msgid "Новый проект"
 msgstr "پروژه جدید"
 
@@ -397,9 +421,9 @@ msgstr "زیرگراف"
 msgid "Поиск узлов графа"
 msgstr "جستجوی گره‌های گراف"
 
-#: src/routes/index.tsx:64
-msgid "Пока нет проектов."
-msgstr "هنوز پروژه‌ای نیست."
+#: src/routes/index.tsx:187
+msgid "Пока нет проектов"
+msgstr "هنوز پروژه‌ای وجود ندارد"
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
@@ -423,7 +447,7 @@ msgid "Проект"
 msgstr "پروژه"
 
 #. placeholder {0}: projects.length + 1
-#: src/routes/index.tsx:21
+#: src/routes/index.tsx:56
 msgid "Проект {0}"
 msgstr "پروژه {0}"
 
@@ -456,9 +480,9 @@ msgstr "پنهان کردن طبقه‌بندی‌نشده‌ها"
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
 msgstr "ابتدا پوشه پروژه را انتخاب کنید و در تب اصلی گراف منتظر تحلیل بمانید."
 
-#: src/routes/index.tsx:34
-msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr "پروژه بسازید — در تب‌ها ظاهر می‌شود و آدرس با UUID می‌گیرد."
+#: src/routes/index.tsx:78
+msgid "Создавайте проекты и открывайте каталог с кодом — каждый проект доступен отдельной вкладкой с собственным адресом."
+msgstr "پروژه بسازید و پوشهٔ کد را باز کنید — هر پروژه زبانه و آدرس جداگانه دارد."
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"

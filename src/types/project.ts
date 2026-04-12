@@ -4,6 +4,26 @@ export type Project = {
   createdAt: number;
 };
 
+/** Последний сегмент пути (Windows/macOS/Linux). */
+export function basenameFromPath(path: string): string {
+  const normalized = path.replace(/[/\\]+$/, "");
+  const seg = normalized.split(/[/\\]/).filter(Boolean).pop();
+  return seg ?? path;
+}
+
+/** Заголовок проекта: имя каталога из пути, иначе подпись веб-корня, иначе сохранённое имя. */
+export function getProjectDisplayTitle(
+  project: Project,
+  pathsByProject: Record<string, string>,
+  webRootLabels: Record<string, string>,
+): string {
+  const diskPath = pathsByProject[project.id];
+  if (diskPath) return basenameFromPath(diskPath);
+  const web = webRootLabels[project.id];
+  if (web) return web;
+  return project.name;
+}
+
 export const PROJECTS_STORAGE_KEY = "visualizer-projects";
 export const PROJECT_PATHS_STORAGE_KEY = "visualizer-project-paths";
 /** Подписи к корню проекта в браузере (имя каталога); сами хэндлы — в IndexedDB. */
