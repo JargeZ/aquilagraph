@@ -2,6 +2,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import { LocaleProvider } from "@/contexts/locale-context";
 import { router } from "./router";
 import "./styles.css";
 
@@ -12,6 +13,8 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <LocaleProvider>
+      <RouterProvider router={router} />
+    </LocaleProvider>
   </StrictMode>,
 );

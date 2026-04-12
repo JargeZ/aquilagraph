@@ -1,3 +1,4 @@
+import { Trans, useLingui } from "@lingui/react/macro";
 import {
   Link,
   Outlet,
@@ -8,6 +9,7 @@ import { Logo } from "@ui/atoms/logo/logo";
 import { Tabs, TabsList, TabsTrigger } from "@ui/molecules/tabs/tabs";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { PwaRegister } from "@/components/pwa-register";
 import {
   isValidUuid,
@@ -24,6 +26,7 @@ function activeTabValue(pathname: string): string {
 }
 
 export const AppShell: React.FC = () => {
+  const { t } = useLingui();
   const [projects] = useLocalStorage<Project[]>(PROJECTS_STORAGE_KEY, []);
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -39,10 +42,11 @@ export const AppShell: React.FC = () => {
         <Link
           to="/"
           className="rounded-md outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          aria-label="На главную"
+          aria-label={t`На главную`}
         >
           <Logo size="sm" />
         </Link>
+        <LanguageSwitcher className="shrink-0" />
         <Tabs
           className="min-w-0 flex-1"
           value={value}
@@ -55,7 +59,9 @@ export const AppShell: React.FC = () => {
           }}
         >
           <TabsList variant="line" className="flex-wrap gap-1">
-            <TabsTrigger value="home">Главная</TabsTrigger>
+            <TabsTrigger value="home">
+              <Trans>Главная</Trans>
+            </TabsTrigger>
             {hydrated &&
               projects.map((p) => (
                 <TabsTrigger key={p.id} value={p.id}>

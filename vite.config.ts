@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { lingui } from "@lingui/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
@@ -109,7 +110,12 @@ export default defineConfig(({ mode }) => {
         projects: ["./tsconfig.json"],
       }),
       tailwindcss(),
-      viteReact(),
+      viteReact({
+        babel: {
+          plugins: ["@lingui/babel-plugin-lingui-macro"],
+        },
+      }),
+      lingui(),
       VitePWA({
         registerType: "autoUpdate",
         injectRegister: false,

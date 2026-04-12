@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+declare module "*.po" {
+  import type { Messages } from "@lingui/core";
+  export const messages: Messages;
+}
+
 interface ImportMetaEnv {
   readonly VITE_PWA_DISABLED: string;
 }
