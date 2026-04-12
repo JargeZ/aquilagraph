@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.30.1",
   "scripts": {
     "sync:wasm": "node scripts/sync-tree-sitter-wasm.mjs",
+    "icons:generate": "node scripts/generate-icons-from-logo.mjs",
     "prepare": "node scripts/sync-tree-sitter-wasm.mjs",
     "dev:vite": "node scripts/sync-tree-sitter-wasm.mjs && vite --port 3000",
     "build:vite": "node scripts/sync-tree-sitter-wasm.mjs && vite build",
@@ -70,6 +71,7 @@
     "@types/uuid": "^11.0.0",
     "@vitejs/plugin-react": "^5.1.4",
     "jsdom": "^28.1.0",
+    "sharp": "^0.34.5",
     "storybook": "^10.3.3",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

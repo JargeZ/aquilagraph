@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Logo } from "@ui/atoms/logo/logo";
 import { Button } from "@ui/molecules/button/button";
 import { useCallback } from "react";
 import { useLocalStorage } from "usehooks-ts";
@@ -25,6 +26,7 @@ export const Home: React.FC = () => {
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-6 p-6">
       <div>
+        <Logo size="lg" className="mb-3" />
         <h1 className="text-xl font-semibold text-foreground">AquilaGraph</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Создайте проект — он появится во вкладках и получит свой адрес с UUID.

@@ -1,4 +1,10 @@
-import { Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
+import { Logo } from "@ui/atoms/logo/logo";
 import { Tabs, TabsList, TabsTrigger } from "@ui/molecules/tabs/tabs";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
@@ -29,8 +35,16 @@ export const AppShell: React.FC = () => {
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
       <PwaRegister />
-      <header className="shrink-0 border-b border-border bg-card px-4 py-1">
+      <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-1">
+        <Link
+          to="/"
+          className="rounded-md outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="На главную"
+        >
+          <Logo size="sm" />
+        </Link>
         <Tabs
+          className="min-w-0 flex-1"
           value={value}
           onValueChange={(next) => {
             if (next === "home") {

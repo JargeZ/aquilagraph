@@ -123,6 +123,12 @@ export default defineConfig(({ mode }) => {
           display: "standalone",
           icons: [
             {
+              src: "logo.svg",
+              type: "image/svg+xml",
+              sizes: "any",
+              purpose: "any",
+            },
+            {
               src: "favicon.ico",
               sizes: "64x64 32x32 24x24 16x16",
               type: "image/x-icon",
@@ -142,9 +148,11 @@ export default defineConfig(({ mode }) => {
           scope: base,
         },
         includeAssets: [
+          "logo.svg",
           "favicon.ico",
           "logo192.png",
           "logo512.png",
+          "apple-touch-icon.png",
           "wasm/tree-sitter.wasm",
           "wasm/tree-sitter-python.wasm",
           "wasm/tree-sitter-typescript.wasm",
