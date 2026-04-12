@@ -15,108 +15,108 @@ msgstr ""
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
-msgstr ""
+msgstr "← กลับ"
 
 #: src/components/analysis-config-panel.tsx:273
 msgid "Bucket"
-msgstr ""
+msgstr "กลุ่ม"
 
 #: src/core/config/analysis-config.ts:217
 msgid "BusinessLogic"
-msgstr ""
+msgstr "ตรรกะทางธุรกิจ"
 
 #: src/components/graph-view.tsx:117
 msgid "Class"
-msgstr ""
+msgstr "คลาส"
 
 #: src/core/config/analysis-config.ts:198
 msgid "Controlling"
-msgstr ""
+msgstr "การควบคุม"
 
 #: src/components/graph-view.tsx:79
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
-msgstr ""
+msgstr "ดีบัก"
 
 #: src/components/graph-view.tsx:125
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
-msgstr ""
+msgstr "ตัวตกแต่ง"
 
 #: src/components/graph-view.tsx:258
 msgid "DOT"
-msgstr ""
+msgstr "DOT"
 
 #: src/components/analysis-config-panel.tsx:259
 msgid "Exclude"
-msgstr ""
+msgstr "ยกเว้น"
 
 #: src/components/analysis-config-panel.tsx:102
 msgid "Exclude (regex, по строкам)"
-msgstr ""
+msgstr "ยกเว้น (regex ทีละบรรทัด)"
 
 #: src/components/graph-view.tsx:255
 msgid "Flow"
-msgstr ""
+msgstr "โฟลว์"
 
 #: src/components/graph-view.tsx:39
 msgid "Flow renderer placeholder (extensible render pipeline)."
-msgstr ""
+msgstr "ตัวยึดที่สำหรับตัวเรนเดอร์โฟลว์ (สายประมวลผลที่ขยายได้)"
 
 #: src/components/analysis-config-panel.tsx:97
 msgid "Include (regex, по строкам)"
-msgstr ""
+msgstr "รวม (regex ทีละบรรทัด)"
 
 #: src/components/graph-view.tsx:133
 msgid "Inherits"
-msgstr ""
+msgstr "สืบทอด"
 
 #: src/components/graph-view.tsx:110
 msgid "Module"
-msgstr ""
+msgstr "โมดูล"
 
 #: src/components/analysis-config-panel.tsx:266
 msgid "Mute"
-msgstr ""
+msgstr "ปิดเสียง"
 
 #: src/components/graph-view.tsx:98
 msgid "Name"
-msgstr ""
+msgstr "ชื่อ"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
 msgid "Parent classes"
-msgstr ""
+msgstr "คลาสแม่"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
 #: src/routes/$projectId/node-details/$nodeRef.tsx:80
 msgid "Ref"
-msgstr ""
+msgstr "อ้างอิง"
 
 #: src/components/graph-view.tsx:104
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
-msgstr ""
+msgstr "การอ้างอิง"
 
 #: src/components/analysis-config-panel.tsx:426
 msgid "regex-паттерн..."
-msgstr ""
+msgstr "รูปแบบ regex…"
 
 #: src/core/config/analysis-config.ts:228
 msgid "SideEffects"
-msgstr ""
+msgstr "ผลข้างเคียง"
 
 #: src/components/graph-view.tsx:140
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
-msgstr ""
+msgstr "ซอร์ส"
 
 #: src/components/analysis-config-panel.tsx:214
 msgid "Template: Django"
-msgstr ""
+msgstr "เทมเพลต: Django"
 
 #: src/core/config/analysis-config.ts:239
 msgid "Tests"
-msgstr ""
+msgstr "การทดสอบ"
 
 #: src/components/graph-view.tsx:57
 #~ msgid "Unclassified"
@@ -125,172 +125,172 @@ msgstr ""
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
-msgstr ""
+msgstr "ใช้"
 
 #: src/components/project/project-analysis-run-section.tsx:24
 msgid "Анализировать"
-msgstr ""
+msgstr "วิเคราะห์"
 
 #: src/components/project/project-analysis-run-section.tsx:22
 #: src/components/project/project-graph-toolbar.tsx:25
 msgid "Анализируем…"
-msgstr ""
+msgstr "กำลังวิเคราะห์…"
 
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
-msgstr ""
+msgstr "พิมพ์ข้อความ…"
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
-msgstr ""
+msgstr "เลือกโฟลเดอร์เพื่อดูจำนวนไฟล์"
 
 #: src/components/classification/add-selector-filter-action.tsx:180
 msgid "Выберите…"
-msgstr ""
+msgstr "เลือก…"
 
 #: src/components/project/project-directory-section.tsx:38
 msgid "Выбор папки…"
-msgstr ""
+msgstr "กำลังเลือกโฟลเดอร์…"
 
 #: src/components/project/project-directory-section.tsx:40
 msgid "Выбрать папку"
-msgstr ""
+msgstr "เลือกโฟลเดอร์"
 
 #: src/components/analysis-config-panel.tsx:330
 msgid "Выбрать цвет категории"
-msgstr ""
+msgstr "เลือกสีหมวดหมู่"
 
 #: src/components/AppShell.tsx:63
 msgid "Главная"
-msgstr ""
+msgstr "หน้าแรก"
 
 #: src/components/analysis-config-panel.tsx:114
 msgid "Глубина модуля"
-msgstr ""
+msgstr "ความลึกของโมดูล"
 
 #. placeholder {0}: elements.length
 #: src/components/graph-view.tsx:252
 msgid "Граф ({0})"
-msgstr ""
+msgstr "กราฟ ({0})"
 
 #: src/components/analysis-config-panel.tsx:267
 msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr ""
+msgstr "ทำให้สีโหนดโปร่งแสงครึ่งหนึ่ง (เร็วๆ นี้)"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
-msgstr ""
+msgstr "รายละเอียด"
 
 #: src/contexts/project-analysis-context.tsx:323
 msgid "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения."
-msgstr ""
+msgstr "กล่องเลือกโฟลเดอร์เปิดอยู่แล้ว ปิดหรือรอให้เสร็จ"
 
 #: src/components/classification/add-selector-filter-action.tsx:225
 msgid "Добавить"
-msgstr ""
+msgstr "เพิ่ม"
 
 #: src/components/classification/add-selector-filter-action.tsx:61
 msgid "Добавить reference в классификацию"
-msgstr ""
+msgstr "เพิ่มการอ้างอิงในประเภท"
 
 #: src/components/classification/add-selector-filter-action.tsx:63
 msgid "Добавить декоратор в классификацию"
-msgstr ""
+msgstr "เพิ่มตัวตกแต่งในประเภท"
 
 #: src/components/analysis-config-panel.tsx:197
 #: src/components/analysis-config-panel.tsx:202
 msgid "Добавить классификацию"
-msgstr ""
+msgstr "เพิ่มประเภท"
 
 #: src/components/classification/add-selector-filter-action.tsx:65
 msgid "Добавить родительский класс в классификацию"
-msgstr ""
+msgstr "เพิ่มคลาสแม่ในประเภท"
 
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
-msgstr ""
+msgstr "ยังไม่ได้รับสิทธิ์ ลองอีกครั้งหรือเลือกโฟลเดอร์ใหม่"
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:92
 msgid "Заглушка"
-msgstr ""
+msgstr "ตัวยึดที่"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:145
 msgid "Загрузка анализа…"
-msgstr ""
+msgstr "กำลังโหลดการวิเคราะห์…"
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:50
 msgid "Загрузка…"
-msgstr ""
+msgstr "กำลังโหลด…"
 
 #: src/components/classification/add-selector-filter-action.tsx:195
 msgid "Значение"
-msgstr ""
+msgstr "ค่า"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:187
 #: src/routes/$projectId/node-details/$nodeRef.tsx:75
 msgid "К графу"
-msgstr ""
+msgstr "ไปที่กราฟ"
 
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
-msgstr ""
+msgstr "โฟลเดอร์"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
-msgstr ""
+msgstr "ยังไม่ได้เลือกโฟลเดอร์"
 
 #: src/contexts/project-analysis-context.tsx:287
 msgid "Каталог проекта"
-msgstr ""
+msgstr "โฟลเดอร์โปรเจกต์"
 
 #: src/components/analysis-config-panel.tsx:133
 #: src/components/analysis-config-panel.tsx:154
 msgid "Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
-msgstr ""
+msgstr "คลาสจะถูกจัดกลุ่มเป็นกราฟย่อยเมื่อมีเมธอดที่เชื่อมไปยังโหนดอื่นอย่างน้อยตามจำนวนที่ตั้งไว้"
 
 #: src/components/node-search-command.tsx:192
 msgid "Класс, метод, путь к файлу…"
-msgstr ""
+msgstr "คลาส เมธอด พาธไฟล์…"
 
 #: src/components/analysis-config-panel.tsx:178
 msgid "Классификации"
-msgstr ""
+msgstr "ประเภท"
 
 #: src/components/classification/add-selector-filter-action.tsx:151
 msgid "Классификаций пока нет."
-msgstr ""
+msgstr "ยังไม่มีประเภท"
 
 #: src/components/classification/add-selector-filter-action.tsx:168
 #: src/core/config/analysis-config.ts:80
 msgid "Классификация"
-msgstr ""
+msgstr "ประเภท"
 
 #: src/components/graph-view.tsx:292
 msgid "Копировать DOT"
-msgstr ""
+msgstr "คัดลอก DOT"
 
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
-msgstr ""
+msgstr "จำนวนเมธอดขั้นต่ำสำหรับกราฟย่อย"
 
 #: src/components/AppShell.tsx:45
 msgid "На главную"
-msgstr ""
+msgstr "ไปหน้าแรก"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:141
 msgid "Назад"
-msgstr ""
+msgstr "กลับ"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:94
 msgid "Назад к графу"
-msgstr ""
+msgstr "กลับไปกราฟ"
 
 #: src/components/analysis-config-panel.tsx:251
 msgid "Название классификации"
-msgstr ""
+msgstr "ชื่อประเภท"
 
 #: src/components/project/project-graph-toolbar.tsx:30
 #: src/components/project/project-settings-toolbar.tsx:23
@@ -301,227 +301,227 @@ msgstr ""
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:104
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:120
 msgid "Настройки"
-msgstr ""
+msgstr "การตั้งค่า"
 
 #: src/components/analysis-config-panel.tsx:92
 msgid "Настройки анализа"
-msgstr ""
+msgstr "การตั้งค่าการวิเคราะห์"
 
 #: src/components/analysis-config-panel.tsx:201
 msgid "Не более {MAX_CLASSIFICATIONS} классификаций"
-msgstr ""
+msgstr "ประเภทได้ไม่เกิน {MAX_CLASSIFICATIONS}"
 
 #: src/contexts/project-analysis-context.tsx:328
 msgid "Не удалось выбрать каталог"
-msgstr ""
+msgstr "เลือกโฟลเดอร์ไม่สำเร็จ"
 
 #: src/contexts/project-analysis-context.tsx:231
 msgid "Не удалось запросить доступ"
-msgstr ""
+msgstr "ขอสิทธิ์ไม่สำเร็จ"
 
 #: src/contexts/project-analysis-context.tsx:264
 msgid "Не удалось прочитать каталог"
-msgstr ""
+msgstr "อ่านโฟลเดอร์ไม่สำเร็จ"
 
 #: src/components/project/project-delete-section.tsx:27
 msgid "Не удалось удалить проект"
-msgstr ""
+msgstr "ลบโปรเจกต์ไม่สำเร็จ"
 
 #: src/contexts/project-analysis-context.tsx:365
 msgid "Неизвестная ошибка анализа"
-msgstr ""
+msgstr "ข้อผิดพลาดการวิเคราะห์ที่ไม่รู้จัก"
 
 #: src/components/graph-view.tsx:57
 msgid "Неклассифицировано"
-msgstr ""
+msgstr "ยังไม่จัดประเภท"
 
 #: src/components/node-search-command.tsx:214
 msgid "Нет узлов"
-msgstr ""
+msgstr "ไม่มีโหนด"
 
 #: src/components/node-search-command.tsx:212
 msgid "Ничего не найдено"
-msgstr ""
+msgstr "ไม่พบผลลัพธ์"
 
 #: src/core/config/analysis-config.ts:172
 msgid "Новая классификация"
-msgstr ""
+msgstr "ประเภทใหม่"
 
 #: src/routes/index.tsx:41
 msgid "Новый проект"
-msgstr ""
+msgstr "โปรเจกต์ใหม่"
 
 #: src/contexts/project-analysis-context.tsx:192
 msgid "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ»."
-msgstr ""
+msgstr "ต้องอนุญาตการเข้าถึงโฟลเดอร์ที่บันทึกไว้อีกครั้ง แตะอนุญาตการเข้าถึง"
 
 #: src/components/project/project-directory-section.tsx:58
 msgid "Обновить счётчик"
-msgstr ""
+msgstr "รีเฟรชตัวนับ"
 
 #: src/components/analysis-config-panel.tsx:274
 msgid "Объединять ноды класса в субграф на графе"
-msgstr ""
+msgstr "รวมโหนดของคลาสเป็นกราฟย่อยบนกราฟ"
 
 #: src/components/project/project-delete-section.tsx:38
 msgid "Опасная зона"
-msgstr ""
+msgstr "โซนอันตราย"
 
 #: src/routes/$projectId/index.tsx:68
 msgid "Открыть настройки"
-msgstr ""
+msgstr "เปิดการตั้งค่า"
 
 #: src/components/classification/add-selector-filter-action.tsx:217
 #: src/components/project/project-delete-section.tsx:72
 msgid "Отмена"
-msgstr ""
+msgstr "ยกเลิก"
 
 #: src/contexts/project-analysis-context.tsx:403
 msgid "Ошибка построения графа"
-msgstr ""
+msgstr "ข้อผิดพลาดในการสร้างกราฟ"
 
 #: src/components/dot-svg-canvas.tsx:337
 msgid "Ошибка рендеринга графа:"
-msgstr ""
+msgstr "ข้อผิดพลาดในการเรนเดอร์กราฟ:"
 
 #: src/components/project/project-directory-section.tsx:65
 msgid "Папка не выбрана — нажмите «Выбрать папку»."
-msgstr ""
+msgstr "ยังไม่ได้เลือกโฟลเดอร์ — แตะเลือกโฟลเดอร์"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:92
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:195
 msgid "Подграф"
-msgstr ""
+msgstr "กราฟย่อย"
 
 #: src/components/node-search-command.tsx:179
 msgid "Поиск узлов графа"
-msgstr ""
+msgstr "ค้นหาโหนดกราฟ"
 
 #: src/routes/index.tsx:64
 msgid "Пока нет проектов."
-msgstr ""
+msgstr "ยังไม่มีโปรเจกต์"
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
-msgstr ""
+msgstr "หลังรีโหลดหน้า เบราว์เซอร์ต้องการสิทธิ์อ่านโฟลเดอร์อีกครั้ง"
 
 #: src/components/graph-view-skeleton.tsx:18
 msgid "Построение графа"
-msgstr ""
+msgstr "กำลังสร้างกราฟ"
 
 #: src/components/graph-view-skeleton.tsx:16
 msgid "Построение графа, ожидание"
-msgstr ""
+msgstr "กำลังสร้างกราฟ โปรดรอ"
 
 #: src/components/project/project-delete-section.tsx:15
 msgid "проект"
-msgstr ""
+msgstr "โปรเจกต์"
 
 #: src/components/project/project-graph-toolbar.tsx:20
 #: src/components/project/project-settings-toolbar.tsx:23
 msgid "Проект"
-msgstr ""
+msgstr "โปรเจกต์"
 
 #. placeholder {0}: projects.length + 1
 #: src/routes/index.tsx:21
 msgid "Проект {0}"
-msgstr ""
+msgstr "โปรเจกต์ {0}"
 
 #: src/components/project/project-directory-section.tsx:49
 msgid "Разрешить доступ"
-msgstr ""
+msgstr "อนุญาตการเข้าถึง"
 
 #: src/components/node-search-command.tsx:206
 msgid "Результаты поиска"
-msgstr ""
+msgstr "ผลการค้นหา"
 
 #: src/components/dot-svg-canvas.tsx:363
 msgid "Скачать SVG"
-msgstr ""
+msgstr "ดาวน์โหลด SVG"
 
 #: src/components/graph-view.tsx:292
 msgid "Скопировано"
-msgstr ""
+msgstr "คัดลอกแล้ว"
 
 #: src/components/analysis-config-panel.tsx:260
 msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr ""
+msgstr "ซ่อนโหนดในหมวดนี้จากกราฟ (เร็วๆ นี้)"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"
-msgstr ""
+msgstr "ซ่อนรายการที่ยังไม่จัดประเภท"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:164
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:113
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
-msgstr ""
+msgstr "เลือกโฟลเดอร์โปรเจกต์ก่อน แล้วรอการวิเคราะห์ในแท็บกราฟหลัก"
 
 #: src/routes/index.tsx:34
 msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr ""
+msgstr "สร้างโปรเจกต์ — จะปรากฏในแท็บและมี URL พร้อม UUID"
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"
-msgstr ""
+msgstr "สร้างในการตั้งค่า"
 
 #: src/components/dot-svg-canvas.tsx:292
 msgid "Сохранить граф как SVG"
-msgstr ""
+msgstr "บันทึกกราฟเป็น SVG"
 
 #: src/components/project/project-file-count-section.tsx:21
 msgid "Считаем…"
-msgstr ""
+msgstr "กำลังนับ…"
 
 #: src/components/project/project-delete-section.tsx:41
 msgid "Удалить «{projectLabel}» из приложения. Папка на диске не затрагивается; восстановить проект в списке будет нельзя."
-msgstr ""
+msgstr "ลบ «{projectLabel}» ออกจากแอป โฟลเดอร์บนดิสก์ไม่เปลี่ยนแปลง ไม่สามารถกู้โปรเจกต์กลับรายการได้"
 
 #: src/components/analysis-config-panel.tsx:283
 msgid "Удалить классификацию"
-msgstr ""
+msgstr "ลบประเภท"
 
 #: src/components/project/project-delete-section.tsx:83
 msgid "Удалить навсегда"
-msgstr ""
+msgstr "ลบถาวร"
 
 #: src/components/project/project-delete-section.tsx:57
 msgid "Удалить проект"
-msgstr ""
+msgstr "ลบโปรเจกต์"
 
 #: src/components/project/project-delete-section.tsx:63
 msgid "Удалить проект без возможности отмены?"
-msgstr ""
+msgstr "ลบโปรเจกต์โดยไม่สามารถยกเลิก?"
 
 #: src/components/project/project-delete-section.tsx:81
 msgid "Удаляем…"
-msgstr ""
+msgstr "กำลังลบ…"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:180
 #: src/routes/$projectId/node-details/$nodeRef.tsx:69
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:89
 msgid "Узел не найден в графе проекта или ссылка некорректна."
-msgstr ""
+msgstr "ไม่พบโหนดในกราฟโปรเจกต์หรือลิงก์ไม่ถูกต้อง"
 
 #: src/routes/$projectId/index.tsx:60
 msgid "Укажите папку проекта в настройках — анализ запустится автоматически."
-msgstr ""
+msgstr "ระบุโฟลเดอร์โปรเจกต์ในการตั้งค่า — การวิเคราะห์จะเริ่มอัตโนมัติ"
 
 #: src/components/project/project-file-count-section.tsx:17
 msgid "Файлы"
-msgstr ""
+msgstr "ไฟล์"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
 msgid "Фулл граф"
-msgstr ""
+msgstr "กราฟเต็ม"
 
 #: src/components/analysis-config-panel.tsx:351
 msgid "Цвет {hex}"
-msgstr ""
+msgstr "สี {hex}"
 
 #: src/contexts/project-analysis-context.tsx:302
 msgid "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API."
-msgstr ""
+msgstr "เบราว์เซอร์นี้ไม่รองรับการเลือกโฟลเดอร์ ใช้ Chrome Edge หรือเบราว์เซอร์ที่มี File System Access API"
 
 #: src/components/language-switcher.tsx:29
 msgid "Язык интерфейса"
-msgstr ""
+msgstr "ภาษาของอินเทอร์เฟซ"

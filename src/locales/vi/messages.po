@@ -15,108 +15,108 @@ msgstr ""
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
-msgstr ""
+msgstr "← Quay lại"
 
 #: src/components/analysis-config-panel.tsx:273
 msgid "Bucket"
-msgstr ""
+msgstr "Nhóm"
 
 #: src/core/config/analysis-config.ts:217
 msgid "BusinessLogic"
-msgstr ""
+msgstr "Logic nghiệp vụ"
 
 #: src/components/graph-view.tsx:117
 msgid "Class"
-msgstr ""
+msgstr "Lớp"
 
 #: src/core/config/analysis-config.ts:198
 msgid "Controlling"
-msgstr ""
+msgstr "Điều khiển"
 
 #: src/components/graph-view.tsx:79
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
-msgstr ""
+msgstr "Gỡ lỗi"
 
 #: src/components/graph-view.tsx:125
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
-msgstr ""
+msgstr "Trình trang trí"
 
 #: src/components/graph-view.tsx:258
 msgid "DOT"
-msgstr ""
+msgstr "DOT"
 
 #: src/components/analysis-config-panel.tsx:259
 msgid "Exclude"
-msgstr ""
+msgstr "Loại trừ"
 
 #: src/components/analysis-config-panel.tsx:102
 msgid "Exclude (regex, по строкам)"
-msgstr ""
+msgstr "Loại trừ (regex, theo dòng)"
 
 #: src/components/graph-view.tsx:255
 msgid "Flow"
-msgstr ""
+msgstr "Luồng"
 
 #: src/components/graph-view.tsx:39
 msgid "Flow renderer placeholder (extensible render pipeline)."
-msgstr ""
+msgstr "Giữ chỗ bộ kết xuất luồng (pipeline kết xuất mở rộng được)."
 
 #: src/components/analysis-config-panel.tsx:97
 msgid "Include (regex, по строкам)"
-msgstr ""
+msgstr "Bao gồm (regex, theo dòng)"
 
 #: src/components/graph-view.tsx:133
 msgid "Inherits"
-msgstr ""
+msgstr "Kế thừa"
 
 #: src/components/graph-view.tsx:110
 msgid "Module"
-msgstr ""
+msgstr "Mô-đun"
 
 #: src/components/analysis-config-panel.tsx:266
 msgid "Mute"
-msgstr ""
+msgstr "Tắt tiếng"
 
 #: src/components/graph-view.tsx:98
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
 msgid "Parent classes"
-msgstr ""
+msgstr "Lớp cha"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
 #: src/routes/$projectId/node-details/$nodeRef.tsx:80
 msgid "Ref"
-msgstr ""
+msgstr "Tham chiếu"
 
 #: src/components/graph-view.tsx:104
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
-msgstr ""
+msgstr "Tham chiếu"
 
 #: src/components/analysis-config-panel.tsx:426
 msgid "regex-паттерн..."
-msgstr ""
+msgstr "mẫu regex…"
 
 #: src/core/config/analysis-config.ts:228
 msgid "SideEffects"
-msgstr ""
+msgstr "Tác dụng phụ"
 
 #: src/components/graph-view.tsx:140
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
-msgstr ""
+msgstr "Nguồn"
 
 #: src/components/analysis-config-panel.tsx:214
 msgid "Template: Django"
-msgstr ""
+msgstr "Mẫu: Django"
 
 #: src/core/config/analysis-config.ts:239
 msgid "Tests"
-msgstr ""
+msgstr "Kiểm thử"
 
 #: src/components/graph-view.tsx:57
 #~ msgid "Unclassified"
@@ -125,172 +125,172 @@ msgstr ""
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
-msgstr ""
+msgstr "Sử dụng"
 
 #: src/components/project/project-analysis-run-section.tsx:24
 msgid "Анализировать"
-msgstr ""
+msgstr "Phân tích"
 
 #: src/components/project/project-analysis-run-section.tsx:22
 #: src/components/project/project-graph-toolbar.tsx:25
 msgid "Анализируем…"
-msgstr ""
+msgstr "Đang phân tích…"
 
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
-msgstr ""
+msgstr "Nhập chữ…"
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
-msgstr ""
+msgstr "Chọn thư mục để xem số tệp."
 
 #: src/components/classification/add-selector-filter-action.tsx:180
 msgid "Выберите…"
-msgstr ""
+msgstr "Chọn…"
 
 #: src/components/project/project-directory-section.tsx:38
 msgid "Выбор папки…"
-msgstr ""
+msgstr "Đang chọn thư mục…"
 
 #: src/components/project/project-directory-section.tsx:40
 msgid "Выбрать папку"
-msgstr ""
+msgstr "Chọn thư mục"
 
 #: src/components/analysis-config-panel.tsx:330
 msgid "Выбрать цвет категории"
-msgstr ""
+msgstr "Chọn màu danh mục"
 
 #: src/components/AppShell.tsx:63
 msgid "Главная"
-msgstr ""
+msgstr "Trang chủ"
 
 #: src/components/analysis-config-panel.tsx:114
 msgid "Глубина модуля"
-msgstr ""
+msgstr "Độ sâu mô-đun"
 
 #. placeholder {0}: elements.length
 #: src/components/graph-view.tsx:252
 msgid "Граф ({0})"
-msgstr ""
+msgstr "Đồ thị ({0})"
 
 #: src/components/analysis-config-panel.tsx:267
 msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr ""
+msgstr "Làm màu nút bán trong suốt (sắp có)"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
-msgstr ""
+msgstr "Chi tiết"
 
 #: src/contexts/project-analysis-context.tsx:323
 msgid "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения."
-msgstr ""
+msgstr "Hộp thoại chọn thư mục đã mở. Đóng lại hoặc đợi hoàn tất."
 
 #: src/components/classification/add-selector-filter-action.tsx:225
 msgid "Добавить"
-msgstr ""
+msgstr "Thêm"
 
 #: src/components/classification/add-selector-filter-action.tsx:61
 msgid "Добавить reference в классификацию"
-msgstr ""
+msgstr "Thêm tham chiếu vào phân loại"
 
 #: src/components/classification/add-selector-filter-action.tsx:63
 msgid "Добавить декоратор в классификацию"
-msgstr ""
+msgstr "Thêm decorator vào phân loại"
 
 #: src/components/analysis-config-panel.tsx:197
 #: src/components/analysis-config-panel.tsx:202
 msgid "Добавить классификацию"
-msgstr ""
+msgstr "Thêm phân loại"
 
 #: src/components/classification/add-selector-filter-action.tsx:65
 msgid "Добавить родительский класс в классификацию"
-msgstr ""
+msgstr "Thêm lớp cha vào phân loại"
 
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
-msgstr ""
+msgstr "Chưa được cấp quyền. Thử lại hoặc chọn thư mục khác."
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:92
 msgid "Заглушка"
-msgstr ""
+msgstr "Giữ chỗ"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:145
 msgid "Загрузка анализа…"
-msgstr ""
+msgstr "Đang tải phân tích…"
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:50
 msgid "Загрузка…"
-msgstr ""
+msgstr "Đang tải…"
 
 #: src/components/classification/add-selector-filter-action.tsx:195
 msgid "Значение"
-msgstr ""
+msgstr "Giá trị"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:187
 #: src/routes/$projectId/node-details/$nodeRef.tsx:75
 msgid "К графу"
-msgstr ""
+msgstr "Tới đồ thị"
 
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
-msgstr ""
+msgstr "Thư mục"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
-msgstr ""
+msgstr "Chưa chọn thư mục"
 
 #: src/contexts/project-analysis-context.tsx:287
 msgid "Каталог проекта"
-msgstr ""
+msgstr "Thư mục dự án"
 
 #: src/components/analysis-config-panel.tsx:133
 #: src/components/analysis-config-panel.tsx:154
 msgid "Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
-msgstr ""
+msgstr "Một lớp được gom vào đồ thị con khi có ít nhất số phương thức đã cấu hình nối tới các nút khác."
 
 #: src/components/node-search-command.tsx:192
 msgid "Класс, метод, путь к файлу…"
-msgstr ""
+msgstr "Lớp, phương thức, đường dẫn tệp…"
 
 #: src/components/analysis-config-panel.tsx:178
 msgid "Классификации"
-msgstr ""
+msgstr "Phân loại"
 
 #: src/components/classification/add-selector-filter-action.tsx:151
 msgid "Классификаций пока нет."
-msgstr ""
+msgstr "Chưa có phân loại nào."
 
 #: src/components/classification/add-selector-filter-action.tsx:168
 #: src/core/config/analysis-config.ts:80
 msgid "Классификация"
-msgstr ""
+msgstr "Phân loại"
 
 #: src/components/graph-view.tsx:292
 msgid "Копировать DOT"
-msgstr ""
+msgstr "Sao chép DOT"
 
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
-msgstr ""
+msgstr "Số phương thức tối thiểu cho đồ thị con"
 
 #: src/components/AppShell.tsx:45
 msgid "На главную"
-msgstr ""
+msgstr "Về trang chủ"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:141
 msgid "Назад"
-msgstr ""
+msgstr "Quay lại"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:94
 msgid "Назад к графу"
-msgstr ""
+msgstr "Quay lại đồ thị"
 
 #: src/components/analysis-config-panel.tsx:251
 msgid "Название классификации"
-msgstr ""
+msgstr "Tên phân loại"
 
 #: src/components/project/project-graph-toolbar.tsx:30
 #: src/components/project/project-settings-toolbar.tsx:23
@@ -301,227 +301,227 @@ msgstr ""
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:104
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:120
 msgid "Настройки"
-msgstr ""
+msgstr "Cài đặt"
 
 #: src/components/analysis-config-panel.tsx:92
 msgid "Настройки анализа"
-msgstr ""
+msgstr "Cài đặt phân tích"
 
 #: src/components/analysis-config-panel.tsx:201
 msgid "Не более {MAX_CLASSIFICATIONS} классификаций"
-msgstr ""
+msgstr "Tối đa {MAX_CLASSIFICATIONS} phân loại"
 
 #: src/contexts/project-analysis-context.tsx:328
 msgid "Не удалось выбрать каталог"
-msgstr ""
+msgstr "Không chọn được thư mục"
 
 #: src/contexts/project-analysis-context.tsx:231
 msgid "Не удалось запросить доступ"
-msgstr ""
+msgstr "Không yêu cầu được quyền truy cập"
 
 #: src/contexts/project-analysis-context.tsx:264
 msgid "Не удалось прочитать каталог"
-msgstr ""
+msgstr "Không đọc được thư mục"
 
 #: src/components/project/project-delete-section.tsx:27
 msgid "Не удалось удалить проект"
-msgstr ""
+msgstr "Không xóa được dự án"
 
 #: src/contexts/project-analysis-context.tsx:365
 msgid "Неизвестная ошибка анализа"
-msgstr ""
+msgstr "Lỗi phân tích không xác định"
 
 #: src/components/graph-view.tsx:57
 msgid "Неклассифицировано"
-msgstr ""
+msgstr "Chưa phân loại"
 
 #: src/components/node-search-command.tsx:214
 msgid "Нет узлов"
-msgstr ""
+msgstr "Không có nút"
 
 #: src/components/node-search-command.tsx:212
 msgid "Ничего не найдено"
-msgstr ""
+msgstr "Không có kết quả"
 
 #: src/core/config/analysis-config.ts:172
 msgid "Новая классификация"
-msgstr ""
+msgstr "Phân loại mới"
 
 #: src/routes/index.tsx:41
 msgid "Новый проект"
-msgstr ""
+msgstr "Dự án mới"
 
 #: src/contexts/project-analysis-context.tsx:192
 msgid "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ»."
-msgstr ""
+msgstr "Cần cấp lại quyền cho thư mục đã lưu. Nhấn Cấp quyền truy cập."
 
 #: src/components/project/project-directory-section.tsx:58
 msgid "Обновить счётчик"
-msgstr ""
+msgstr "Làm mới bộ đếm"
 
 #: src/components/analysis-config-panel.tsx:274
 msgid "Объединять ноды класса в субграф на графе"
-msgstr ""
+msgstr "Gom các nút của lớp thành đồ thị con trên đồ thị"
 
 #: src/components/project/project-delete-section.tsx:38
 msgid "Опасная зона"
-msgstr ""
+msgstr "Vùng nguy hiểm"
 
 #: src/routes/$projectId/index.tsx:68
 msgid "Открыть настройки"
-msgstr ""
+msgstr "Mở cài đặt"
 
 #: src/components/classification/add-selector-filter-action.tsx:217
 #: src/components/project/project-delete-section.tsx:72
 msgid "Отмена"
-msgstr ""
+msgstr "Hủy"
 
 #: src/contexts/project-analysis-context.tsx:403
 msgid "Ошибка построения графа"
-msgstr ""
+msgstr "Lỗi dựng đồ thị"
 
 #: src/components/dot-svg-canvas.tsx:337
 msgid "Ошибка рендеринга графа:"
-msgstr ""
+msgstr "Lỗi kết xuất đồ thị:"
 
 #: src/components/project/project-directory-section.tsx:65
 msgid "Папка не выбрана — нажмите «Выбрать папку»."
-msgstr ""
+msgstr "Chưa chọn thư mục — nhấn Chọn thư mục."
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:92
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:195
 msgid "Подграф"
-msgstr ""
+msgstr "Đồ thị con"
 
 #: src/components/node-search-command.tsx:179
 msgid "Поиск узлов графа"
-msgstr ""
+msgstr "Tìm nút đồ thị"
 
 #: src/routes/index.tsx:64
 msgid "Пока нет проектов."
-msgstr ""
+msgstr "Chưa có dự án nào."
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
-msgstr ""
+msgstr "Sau khi tải lại trang, trình duyệt cần quyền đọc thư mục lần nữa."
 
 #: src/components/graph-view-skeleton.tsx:18
 msgid "Построение графа"
-msgstr ""
+msgstr "Đang dựng đồ thị"
 
 #: src/components/graph-view-skeleton.tsx:16
 msgid "Построение графа, ожидание"
-msgstr ""
+msgstr "Đang dựng đồ thị, vui lòng đợi"
 
 #: src/components/project/project-delete-section.tsx:15
 msgid "проект"
-msgstr ""
+msgstr "dự án"
 
 #: src/components/project/project-graph-toolbar.tsx:20
 #: src/components/project/project-settings-toolbar.tsx:23
 msgid "Проект"
-msgstr ""
+msgstr "Dự án"
 
 #. placeholder {0}: projects.length + 1
 #: src/routes/index.tsx:21
 msgid "Проект {0}"
-msgstr ""
+msgstr "Dự án {0}"
 
 #: src/components/project/project-directory-section.tsx:49
 msgid "Разрешить доступ"
-msgstr ""
+msgstr "Cấp quyền truy cập"
 
 #: src/components/node-search-command.tsx:206
 msgid "Результаты поиска"
-msgstr ""
+msgstr "Kết quả tìm kiếm"
 
 #: src/components/dot-svg-canvas.tsx:363
 msgid "Скачать SVG"
-msgstr ""
+msgstr "Tải SVG"
 
 #: src/components/graph-view.tsx:292
 msgid "Скопировано"
-msgstr ""
+msgstr "Đã sao chép"
 
 #: src/components/analysis-config-panel.tsx:260
 msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr ""
+msgstr "Ẩn nút của danh mục này khỏi đồ thị (sắp có)"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"
-msgstr ""
+msgstr "Ẩn mục chưa phân loại"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:164
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:113
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
-msgstr ""
+msgstr "Trước tiên chọn thư mục dự án và đợi phân tích trên tab đồ thị chính."
 
 #: src/routes/index.tsx:34
 msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr ""
+msgstr "Tạo dự án — nó sẽ xuất hiện trong tab và có URL riêng kèm UUID."
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"
-msgstr ""
+msgstr "Tạo trong cài đặt"
 
 #: src/components/dot-svg-canvas.tsx:292
 msgid "Сохранить граф как SVG"
-msgstr ""
+msgstr "Lưu đồ thị dạng SVG"
 
 #: src/components/project/project-file-count-section.tsx:21
 msgid "Считаем…"
-msgstr ""
+msgstr "Đang đếm…"
 
 #: src/components/project/project-delete-section.tsx:41
 msgid "Удалить «{projectLabel}» из приложения. Папка на диске не затрагивается; восстановить проект в списке будет нельзя."
-msgstr ""
+msgstr "Xóa «{projectLabel}» khỏi ứng dụng. Thư mục trên đĩa không bị đổi; không thể khôi phục dự án vào danh sách."
 
 #: src/components/analysis-config-panel.tsx:283
 msgid "Удалить классификацию"
-msgstr ""
+msgstr "Xóa phân loại"
 
 #: src/components/project/project-delete-section.tsx:83
 msgid "Удалить навсегда"
-msgstr ""
+msgstr "Xóa vĩnh viễn"
 
 #: src/components/project/project-delete-section.tsx:57
 msgid "Удалить проект"
-msgstr ""
+msgstr "Xóa dự án"
 
 #: src/components/project/project-delete-section.tsx:63
 msgid "Удалить проект без возможности отмены?"
-msgstr ""
+msgstr "Xóa dự án và không thể hoàn tác?"
 
 #: src/components/project/project-delete-section.tsx:81
 msgid "Удаляем…"
-msgstr ""
+msgstr "Đang xóa…"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:180
 #: src/routes/$projectId/node-details/$nodeRef.tsx:69
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:89
 msgid "Узел не найден в графе проекта или ссылка некорректна."
-msgstr ""
+msgstr "Không tìm thấy nút trong đồ thị dự án hoặc liên kết không hợp lệ."
 
 #: src/routes/$projectId/index.tsx:60
 msgid "Укажите папку проекта в настройках — анализ запустится автоматически."
-msgstr ""
+msgstr "Chỉ định thư mục dự án trong cài đặt — phân tích sẽ tự chạy."
 
 #: src/components/project/project-file-count-section.tsx:17
 msgid "Файлы"
-msgstr ""
+msgstr "Tệp"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
 msgid "Фулл граф"
-msgstr ""
+msgstr "Đồ thị đầy đủ"
 
 #: src/components/analysis-config-panel.tsx:351
 msgid "Цвет {hex}"
-msgstr ""
+msgstr "Màu {hex}"
 
 #: src/contexts/project-analysis-context.tsx:302
 msgid "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API."
-msgstr ""
+msgstr "Trình duyệt này không hỗ trợ chọn thư mục. Dùng Chrome, Edge hoặc trình duyệt có File System Access API."
 
 #: src/components/language-switcher.tsx:29
 msgid "Язык интерфейса"
-msgstr ""
+msgstr "Ngôn ngữ giao diện"

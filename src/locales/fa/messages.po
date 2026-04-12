@@ -15,108 +15,108 @@ msgstr ""
 
 #: src/components/project/project-settings-toolbar.tsx:19
 msgid "← Назад"
-msgstr ""
+msgstr "← بازگشت"
 
 #: src/components/analysis-config-panel.tsx:273
 msgid "Bucket"
-msgstr ""
+msgstr "سطل/گروه"
 
 #: src/core/config/analysis-config.ts:217
 msgid "BusinessLogic"
-msgstr ""
+msgstr "منطق کسب‌وکار"
 
 #: src/components/graph-view.tsx:117
 msgid "Class"
-msgstr ""
+msgstr "کلاس"
 
 #: src/core/config/analysis-config.ts:198
 msgid "Controlling"
-msgstr ""
+msgstr "کنترل"
 
 #: src/components/graph-view.tsx:79
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
-msgstr ""
+msgstr "اشکال‌زدایی"
 
 #: src/components/graph-view.tsx:125
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
-msgstr ""
+msgstr "دکوراتورها"
 
 #: src/components/graph-view.tsx:258
 msgid "DOT"
-msgstr ""
+msgstr "DOT"
 
 #: src/components/analysis-config-panel.tsx:259
 msgid "Exclude"
-msgstr ""
+msgstr "حذف از بررسی"
 
 #: src/components/analysis-config-panel.tsx:102
 msgid "Exclude (regex, по строкам)"
-msgstr ""
+msgstr "حذف (regex، خط‌به‌خط)"
 
 #: src/components/graph-view.tsx:255
 msgid "Flow"
-msgstr ""
+msgstr "جریان"
 
 #: src/components/graph-view.tsx:39
 msgid "Flow renderer placeholder (extensible render pipeline)."
-msgstr ""
+msgstr "جای‌نگهدار رندر جریان (خط لوله رندر قابل گسترش)."
 
 #: src/components/analysis-config-panel.tsx:97
 msgid "Include (regex, по строкам)"
-msgstr ""
+msgstr "شامل (regex، خط‌به‌خط)"
 
 #: src/components/graph-view.tsx:133
 msgid "Inherits"
-msgstr ""
+msgstr "ارث می‌برد"
 
 #: src/components/graph-view.tsx:110
 msgid "Module"
-msgstr ""
+msgstr "ماژول"
 
 #: src/components/analysis-config-panel.tsx:266
 msgid "Mute"
-msgstr ""
+msgstr "بی‌صدا"
 
 #: src/components/graph-view.tsx:98
 msgid "Name"
-msgstr ""
+msgstr "نام"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
 msgid "Parent classes"
-msgstr ""
+msgstr "کلاس‌های والد"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
 #: src/routes/$projectId/node-details/$nodeRef.tsx:80
 msgid "Ref"
-msgstr ""
+msgstr "ارجاع"
 
 #: src/components/graph-view.tsx:104
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
-msgstr ""
+msgstr "ارجاع"
 
 #: src/components/analysis-config-panel.tsx:426
 msgid "regex-паттерн..."
-msgstr ""
+msgstr "الگوی regex…"
 
 #: src/core/config/analysis-config.ts:228
 msgid "SideEffects"
-msgstr ""
+msgstr "اثر جانبی"
 
 #: src/components/graph-view.tsx:140
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
-msgstr ""
+msgstr "منبع"
 
 #: src/components/analysis-config-panel.tsx:214
 msgid "Template: Django"
-msgstr ""
+msgstr "قالب: Django"
 
 #: src/core/config/analysis-config.ts:239
 msgid "Tests"
-msgstr ""
+msgstr "آزمون‌ها"
 
 #: src/components/graph-view.tsx:57
 #~ msgid "Unclassified"
@@ -125,172 +125,172 @@ msgstr ""
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
-msgstr ""
+msgstr "استفاده می‌کند"
 
 #: src/components/project/project-analysis-run-section.tsx:24
 msgid "Анализировать"
-msgstr ""
+msgstr "تحلیل"
 
 #: src/components/project/project-analysis-run-section.tsx:22
 #: src/components/project/project-graph-toolbar.tsx:25
 msgid "Анализируем…"
-msgstr ""
+msgstr "در حال تحلیل…"
 
 #: src/components/classification/add-selector-filter-action.tsx:205
 msgid "Введите строку…"
-msgstr ""
+msgstr "متن را وارد کنید…"
 
 #: src/components/project/project-file-count-section.tsx:31
 msgid "Выберите каталог, чтобы увидеть число файлов."
-msgstr ""
+msgstr "پوشه را انتخاب کنید تا تعداد فایل‌ها را ببینید."
 
 #: src/components/classification/add-selector-filter-action.tsx:180
 msgid "Выберите…"
-msgstr ""
+msgstr "انتخاب…"
 
 #: src/components/project/project-directory-section.tsx:38
 msgid "Выбор папки…"
-msgstr ""
+msgstr "در حال انتخاب پوشه…"
 
 #: src/components/project/project-directory-section.tsx:40
 msgid "Выбрать папку"
-msgstr ""
+msgstr "انتخاب پوشه"
 
 #: src/components/analysis-config-panel.tsx:330
 msgid "Выбрать цвет категории"
-msgstr ""
+msgstr "رنگ دسته را انتخاب کنید"
 
 #: src/components/AppShell.tsx:63
 msgid "Главная"
-msgstr ""
+msgstr "خانه"
 
 #: src/components/analysis-config-panel.tsx:114
 msgid "Глубина модуля"
-msgstr ""
+msgstr "عمق ماژول"
 
 #. placeholder {0}: elements.length
 #: src/components/graph-view.tsx:252
 msgid "Граф ({0})"
-msgstr ""
+msgstr "گراف ({0})"
 
 #: src/components/analysis-config-panel.tsx:267
 msgid "Делать цвет нод полупрозрачным (скоро)"
-msgstr ""
+msgstr "نیمه‌شفاف کردن رنگ گره‌ها (به‌زودی)"
 
 #: src/components/graph-view.tsx:90
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
-msgstr ""
+msgstr "جزئیات"
 
 #: src/contexts/project-analysis-context.tsx:323
 msgid "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения."
-msgstr ""
+msgstr "پنجره انتخاب پوشه از قبل باز است. آن را ببندید یا تا پایان صبر کنید."
 
 #: src/components/classification/add-selector-filter-action.tsx:225
 msgid "Добавить"
-msgstr ""
+msgstr "افزودن"
 
 #: src/components/classification/add-selector-filter-action.tsx:61
 msgid "Добавить reference в классификацию"
-msgstr ""
+msgstr "افزودن ارجاع به طبقه‌بندی"
 
 #: src/components/classification/add-selector-filter-action.tsx:63
 msgid "Добавить декоратор в классификацию"
-msgstr ""
+msgstr "افزودن دکوراتور به طبقه‌بندی"
 
 #: src/components/analysis-config-panel.tsx:197
 #: src/components/analysis-config-panel.tsx:202
 msgid "Добавить классификацию"
-msgstr ""
+msgstr "افزودن طبقه‌بندی"
 
 #: src/components/classification/add-selector-filter-action.tsx:65
 msgid "Добавить родительский класс в классификацию"
-msgstr ""
+msgstr "افزودن کلاس والد به طبقه‌بندی"
 
 #: src/contexts/project-analysis-context.tsx:219
 msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
-msgstr ""
+msgstr "دسترسی داده نشد. دوباره تلاش کنید یا پوشه را دوباره انتخاب کنید."
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:92
 msgid "Заглушка"
-msgstr ""
+msgstr "جای‌نگهدار"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:145
 msgid "Загрузка анализа…"
-msgstr ""
+msgstr "بارگذاری تحلیل…"
 
 #: src/routes/$projectId/node-details/$nodeRef.tsx:50
 msgid "Загрузка…"
-msgstr ""
+msgstr "بارگذاری…"
 
 #: src/components/classification/add-selector-filter-action.tsx:195
 msgid "Значение"
-msgstr ""
+msgstr "مقدار"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:187
 #: src/routes/$projectId/node-details/$nodeRef.tsx:75
 msgid "К графу"
-msgstr ""
+msgstr "به گراف"
 
 #: src/components/project/project-directory-section.tsx:28
 msgid "Каталог"
-msgstr ""
+msgstr "پوشه"
 
 #: src/routes/$projectId/index.tsx:57
 msgid "Каталог не выбран"
-msgstr ""
+msgstr "پوشه‌ای انتخاب نشده"
 
 #: src/contexts/project-analysis-context.tsx:287
 msgid "Каталог проекта"
-msgstr ""
+msgstr "پوشه پروژه"
 
 #: src/components/analysis-config-panel.tsx:133
 #: src/components/analysis-config-panel.tsx:154
 msgid "Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
-msgstr ""
+msgstr "وقتی کلاس حداقل به تعداد تنظیم‌شده متدی دارد که به گره‌های دیگر وصل می‌شود، در زیرگراف گروه‌بندی می‌شود."
 
 #: src/components/node-search-command.tsx:192
 msgid "Класс, метод, путь к файлу…"
-msgstr ""
+msgstr "کلاس، متد، مسیر فایل…"
 
 #: src/components/analysis-config-panel.tsx:178
 msgid "Классификации"
-msgstr ""
+msgstr "طبقه‌بندی‌ها"
 
 #: src/components/classification/add-selector-filter-action.tsx:151
 msgid "Классификаций пока нет."
-msgstr ""
+msgstr "هنوز طبقه‌بندی‌ای نیست."
 
 #: src/components/classification/add-selector-filter-action.tsx:168
 #: src/core/config/analysis-config.ts:80
 msgid "Классификация"
-msgstr ""
+msgstr "طبقه‌بندی"
 
 #: src/components/graph-view.tsx:292
 msgid "Копировать DOT"
-msgstr ""
+msgstr "رونوشت DOT"
 
 #: src/components/analysis-config-panel.tsx:135
 msgid "Минимально методов для детализации"
-msgstr ""
+msgstr "حداقل متد برای زیرگراف"
 
 #: src/components/AppShell.tsx:45
 msgid "На главную"
-msgstr ""
+msgstr "رفتن به خانه"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
 #: src/routes/$projectId/node-details/$nodeRef.tsx:115
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:141
 msgid "Назад"
-msgstr ""
+msgstr "بازگشت"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:94
 msgid "Назад к графу"
-msgstr ""
+msgstr "بازگشت به گراف"
 
 #: src/components/analysis-config-panel.tsx:251
 msgid "Название классификации"
-msgstr ""
+msgstr "نام طبقه‌بندی"
 
 #: src/components/project/project-graph-toolbar.tsx:30
 #: src/components/project/project-settings-toolbar.tsx:23
@@ -301,227 +301,227 @@ msgstr ""
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:104
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:120
 msgid "Настройки"
-msgstr ""
+msgstr "تنظیمات"
 
 #: src/components/analysis-config-panel.tsx:92
 msgid "Настройки анализа"
-msgstr ""
+msgstr "تنظیمات تحلیل"
 
 #: src/components/analysis-config-panel.tsx:201
 msgid "Не более {MAX_CLASSIFICATIONS} классификаций"
-msgstr ""
+msgstr "حداکثر {MAX_CLASSIFICATIONS} طبقه‌بندی"
 
 #: src/contexts/project-analysis-context.tsx:328
 msgid "Не удалось выбрать каталог"
-msgstr ""
+msgstr "انتخاب پوشه ممکن نشد"
 
 #: src/contexts/project-analysis-context.tsx:231
 msgid "Не удалось запросить доступ"
-msgstr ""
+msgstr "درخواست دسترسی ممکن نشد"
 
 #: src/contexts/project-analysis-context.tsx:264
 msgid "Не удалось прочитать каталог"
-msgstr ""
+msgstr "خواندن پوشه ممکن نشد"
 
 #: src/components/project/project-delete-section.tsx:27
 msgid "Не удалось удалить проект"
-msgstr ""
+msgstr "حذف پروژه ممکن نشد"
 
 #: src/contexts/project-analysis-context.tsx:365
 msgid "Неизвестная ошибка анализа"
-msgstr ""
+msgstr "خطای ناشناخته تحلیل"
 
 #: src/components/graph-view.tsx:57
 msgid "Неклассифицировано"
-msgstr ""
+msgstr "طبقه‌بندی‌نشده"
 
 #: src/components/node-search-command.tsx:214
 msgid "Нет узлов"
-msgstr ""
+msgstr "گره‌ای نیست"
 
 #: src/components/node-search-command.tsx:212
 msgid "Ничего не найдено"
-msgstr ""
+msgstr "نتیجه‌ای نیست"
 
 #: src/core/config/analysis-config.ts:172
 msgid "Новая классификация"
-msgstr ""
+msgstr "طبقه‌بندی جدید"
 
 #: src/routes/index.tsx:41
 msgid "Новый проект"
-msgstr ""
+msgstr "پروژه جدید"
 
 #: src/contexts/project-analysis-context.tsx:192
 msgid "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ»."
-msgstr ""
+msgstr "باید دوباره به پوشه ذخیره‌شده دسترسی بدهید. روی اعطای دسترسی بزنید."
 
 #: src/components/project/project-directory-section.tsx:58
 msgid "Обновить счётчик"
-msgstr ""
+msgstr "به‌روزرسانی شمارنده"
 
 #: src/components/analysis-config-panel.tsx:274
 msgid "Объединять ноды класса в субграф на графе"
-msgstr ""
+msgstr "ادغام گره‌های کلاس در زیرگراف روی گراف"
 
 #: src/components/project/project-delete-section.tsx:38
 msgid "Опасная зона"
-msgstr ""
+msgstr "منطقه خطر"
 
 #: src/routes/$projectId/index.tsx:68
 msgid "Открыть настройки"
-msgstr ""
+msgstr "باز کردن تنظیمات"
 
 #: src/components/classification/add-selector-filter-action.tsx:217
 #: src/components/project/project-delete-section.tsx:72
 msgid "Отмена"
-msgstr ""
+msgstr "لغو"
 
 #: src/contexts/project-analysis-context.tsx:403
 msgid "Ошибка построения графа"
-msgstr ""
+msgstr "خطا در ساخت گراف"
 
 #: src/components/dot-svg-canvas.tsx:337
 msgid "Ошибка рендеринга графа:"
-msgstr ""
+msgstr "خطا در رندر گراف:"
 
 #: src/components/project/project-directory-section.tsx:65
 msgid "Папка не выбрана — нажмите «Выбрать папку»."
-msgstr ""
+msgstr "پوشه‌ای انتخاب نشده — روی انتخاب پوشه بزنید."
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:92
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:195
 msgid "Подграф"
-msgstr ""
+msgstr "زیرگراف"
 
 #: src/components/node-search-command.tsx:179
 msgid "Поиск узлов графа"
-msgstr ""
+msgstr "جستجوی گره‌های گراف"
 
 #: src/routes/index.tsx:64
 msgid "Пока нет проектов."
-msgstr ""
+msgstr "هنوز پروژه‌ای نیست."
 
 #: src/components/project/project-directory-section.tsx:70
 msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
-msgstr ""
+msgstr "پس از بارگذاری مجدد صفحه، مرورگر دوباره اجازه خواندن پوشه را می‌خواهد."
 
 #: src/components/graph-view-skeleton.tsx:18
 msgid "Построение графа"
-msgstr ""
+msgstr "در حال ساخت گراف"
 
 #: src/components/graph-view-skeleton.tsx:16
 msgid "Построение графа, ожидание"
-msgstr ""
+msgstr "در حال ساخت گراف، لطفاً صبر کنید"
 
 #: src/components/project/project-delete-section.tsx:15
 msgid "проект"
-msgstr ""
+msgstr "پروژه"
 
 #: src/components/project/project-graph-toolbar.tsx:20
 #: src/components/project/project-settings-toolbar.tsx:23
 msgid "Проект"
-msgstr ""
+msgstr "پروژه"
 
 #. placeholder {0}: projects.length + 1
 #: src/routes/index.tsx:21
 msgid "Проект {0}"
-msgstr ""
+msgstr "پروژه {0}"
 
 #: src/components/project/project-directory-section.tsx:49
 msgid "Разрешить доступ"
-msgstr ""
+msgstr "اعطای دسترسی"
 
 #: src/components/node-search-command.tsx:206
 msgid "Результаты поиска"
-msgstr ""
+msgstr "نتایج جستجو"
 
 #: src/components/dot-svg-canvas.tsx:363
 msgid "Скачать SVG"
-msgstr ""
+msgstr "بارگیری SVG"
 
 #: src/components/graph-view.tsx:292
 msgid "Скопировано"
-msgstr ""
+msgstr "رونوشت شد"
 
 #: src/components/analysis-config-panel.tsx:260
 msgid "Скрывать ноды этой категории из графа (скоро)"
-msgstr ""
+msgstr "پنهان کردن گره‌های این دسته از گراف (به‌زودی)"
 
 #: src/components/analysis-config-panel.tsx:172
 msgid "Скрыть неклассифицированные"
-msgstr ""
+msgstr "پنهان کردن طبقه‌بندی‌نشده‌ها"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:164
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:113
 msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
-msgstr ""
+msgstr "ابتدا پوشه پروژه را انتخاب کنید و در تب اصلی گراف منتظر تحلیل بمانید."
 
 #: src/routes/index.tsx:34
 msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
-msgstr ""
+msgstr "پروژه بسازید — در تب‌ها ظاهر می‌شود و آدرس با UUID می‌گیرد."
 
 #: src/components/classification/add-selector-filter-action.tsx:156
 msgid "Создать в настройках"
-msgstr ""
+msgstr "ایجاد در تنظیمات"
 
 #: src/components/dot-svg-canvas.tsx:292
 msgid "Сохранить граф как SVG"
-msgstr ""
+msgstr "ذخیره گراف به‌صورت SVG"
 
 #: src/components/project/project-file-count-section.tsx:21
 msgid "Считаем…"
-msgstr ""
+msgstr "در حال شمارش…"
 
 #: src/components/project/project-delete-section.tsx:41
 msgid "Удалить «{projectLabel}» из приложения. Папка на диске не затрагивается; восстановить проект в списке будет нельзя."
-msgstr ""
+msgstr "«{projectLabel}» از برنامه حذف شود. پوشه روی دیسک تغییر نمی‌کند؛ بازگرداندن به فهرست ممکن نیست."
 
 #: src/components/analysis-config-panel.tsx:283
 msgid "Удалить классификацию"
-msgstr ""
+msgstr "حذف طبقه‌بندی"
 
 #: src/components/project/project-delete-section.tsx:83
 msgid "Удалить навсегда"
-msgstr ""
+msgstr "حذف دائمی"
 
 #: src/components/project/project-delete-section.tsx:57
 msgid "Удалить проект"
-msgstr ""
+msgstr "حذف پروژه"
 
 #: src/components/project/project-delete-section.tsx:63
 msgid "Удалить проект без возможности отмены?"
-msgstr ""
+msgstr "پروژه بدون امکان بازگشت حذف شود؟"
 
 #: src/components/project/project-delete-section.tsx:81
 msgid "Удаляем…"
-msgstr ""
+msgstr "در حال حذف…"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:180
 #: src/routes/$projectId/node-details/$nodeRef.tsx:69
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:89
 msgid "Узел не найден в графе проекта или ссылка некорректна."
-msgstr ""
+msgstr "گره در گراف پروژه نیست یا پیوند نامعتبر است."
 
 #: src/routes/$projectId/index.tsx:60
 msgid "Укажите папку проекта в настройках — анализ запустится автоматически."
-msgstr ""
+msgstr "پوشه پروژه را در تنظیمات مشخص کنید — تحلیل خودکار شروع می‌شود."
 
 #: src/components/project/project-file-count-section.tsx:17
 msgid "Файлы"
-msgstr ""
+msgstr "فایل‌ها"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
 msgid "Фулл граф"
-msgstr ""
+msgstr "گراف کامل"
 
 #: src/components/analysis-config-panel.tsx:351
 msgid "Цвет {hex}"
-msgstr ""
+msgstr "رنگ {hex}"
 
 #: src/contexts/project-analysis-context.tsx:302
 msgid "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API."
-msgstr ""
+msgstr "این مرورگر انتخاب پوشه را پشتیبانی نمی‌کند. از Chrome، Edge یا مرورگر با File System Access API استفاده کنید."
 
 #: src/components/language-switcher.tsx:29
 msgid "Язык интерфейса"
-msgstr ""
+msgstr "زبان رابط"

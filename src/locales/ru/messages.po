@@ -19,29 +19,29 @@ msgstr "← Назад"
 
 #: src/components/analysis-config-panel.tsx:273
 msgid "Bucket"
-msgstr "Bucket"
+msgstr "Группа"
 
 #: src/core/config/analysis-config.ts:217
 msgid "BusinessLogic"
-msgstr "BusinessLogic"
+msgstr "Бизнес-логика"
 
 #: src/components/graph-view.tsx:117
 msgid "Class"
-msgstr "Class"
+msgstr "Класс"
 
 #: src/core/config/analysis-config.ts:198
 msgid "Controlling"
-msgstr "Controlling"
+msgstr "Управление"
 
 #: src/components/graph-view.tsx:79
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
-msgstr "Debug"
+msgstr "Отладка"
 
 #: src/components/graph-view.tsx:125
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
-msgstr "Decorators"
+msgstr "Декораторы"
 
 #: src/components/graph-view.tsx:258
 msgid "DOT"
@@ -49,83 +49,83 @@ msgstr "DOT"
 
 #: src/components/analysis-config-panel.tsx:259
 msgid "Exclude"
-msgstr "Exclude"
+msgstr "Исключить"
 
 #: src/components/analysis-config-panel.tsx:102
 msgid "Exclude (regex, по строкам)"
-msgstr "Exclude (regex, по строкам)"
+msgstr "Исключить (regex, построчно)"
 
 #: src/components/graph-view.tsx:255
 msgid "Flow"
-msgstr "Flow"
+msgstr "Поток"
 
 #: src/components/graph-view.tsx:39
 msgid "Flow renderer placeholder (extensible render pipeline)."
-msgstr "Flow renderer placeholder (extensible render pipeline)."
+msgstr "Заглушка рендерера потока (расширяемый конвейер отрисовки)."
 
 #: src/components/analysis-config-panel.tsx:97
 msgid "Include (regex, по строкам)"
-msgstr "Include (regex, по строкам)"
+msgstr "Включить (regex, построчно)"
 
 #: src/components/graph-view.tsx:133
 msgid "Inherits"
-msgstr "Inherits"
+msgstr "Наследует"
 
 #: src/components/graph-view.tsx:110
 msgid "Module"
-msgstr "Module"
+msgstr "Модуль"
 
 #: src/components/analysis-config-panel.tsx:266
 msgid "Mute"
-msgstr "Mute"
+msgstr "Приглушить"
 
 #: src/components/graph-view.tsx:98
 msgid "Name"
-msgstr "Name"
+msgstr "Имя"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
 msgid "Parent classes"
-msgstr "Parent classes"
+msgstr "Родительские классы"
 
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
 #: src/routes/$projectId/node-details/$nodeRef.tsx:80
 msgid "Ref"
-msgstr "Ref"
+msgstr "Ссылка"
 
 #: src/components/graph-view.tsx:104
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
-msgstr "Reference"
+msgstr "Зависимость"
 
 #: src/components/analysis-config-panel.tsx:426
 msgid "regex-паттерн..."
-msgstr "regex-паттерн..."
+msgstr "шаблон regex…"
 
 #: src/core/config/analysis-config.ts:228
 msgid "SideEffects"
-msgstr "SideEffects"
+msgstr "Побочные эффекты"
 
 #: src/components/graph-view.tsx:140
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
-msgstr "Source"
+msgstr "Источник"
 
 #: src/components/analysis-config-panel.tsx:214
 msgid "Template: Django"
-msgstr "Template: Django"
+msgstr "Шаблон: Django"
 
 #: src/core/config/analysis-config.ts:239
 msgid "Tests"
-msgstr "Tests"
+msgstr "Тесты"
 
 #: src/components/graph-view.tsx:57
 #~ msgid "Unclassified"
-#~ msgstr "Unclassified"
+#~ msgstr ""
 
 #: src/components/graph-view.tsx:147
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
-msgstr "Uses"
+msgstr "Использует"
 
 #: src/components/project/project-analysis-run-section.tsx:24
 msgid "Анализировать"
@@ -192,7 +192,7 @@ msgstr "Добавить"
 
 #: src/components/classification/add-selector-filter-action.tsx:61
 msgid "Добавить reference в классификацию"
-msgstr "Добавить reference в классификацию"
+msgstr "Добавить ссылку в классификацию"
 
 #: src/components/classification/add-selector-filter-action.tsx:63
 msgid "Добавить декоратор в классификацию"
@@ -512,7 +512,7 @@ msgstr "Файлы"
 
 #: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
 msgid "Фулл граф"
-msgstr "Фулл граф"
+msgstr "Полный граф"
 
 #: src/components/analysis-config-panel.tsx:351
 msgid "Цвет {hex}"
