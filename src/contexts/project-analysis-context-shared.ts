@@ -25,6 +25,8 @@ export interface ProjectAnalysisContextValue {
   analysisLoading: boolean;
   analysisError: string | null;
   runAnalysis: () => Promise<void>;
+  /** Удаляет проект из списка и очищает связанные данные (пути, конфиг анализа, хэндл папки в браузере). */
+  deleteProject: () => Promise<void>;
 }
 
 export const ProjectAnalysisContext =

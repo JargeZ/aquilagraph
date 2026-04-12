@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnalysisConfigPanel } from "@/components/analysis-config-panel";
 import { ProjectAnalysisRunSection } from "@/components/project/project-analysis-run-section";
+import { ProjectDeleteSection } from "@/components/project/project-delete-section";
 import { ProjectDirectorySection } from "@/components/project/project-directory-section";
 import { ProjectFileCountSection } from "@/components/project/project-file-count-section";
 import { ProjectSettingsToolbar } from "@/components/project/project-settings-toolbar";
@@ -26,11 +27,17 @@ export function ProjectSettingsPage() {
     analysisLoading,
     analysisError,
     runAnalysis,
+    deleteProject,
   } = useProjectAnalysis();
 
   const handleAnalyzeAndView = () => {
     void runAnalysis();
     void navigate({ to: "/$projectId", params: { projectId } });
+  };
+
+  const handleDeleteProject = async () => {
+    await deleteProject();
+    void navigate({ to: "/" });
   };
 
   return (
@@ -73,6 +80,11 @@ export function ProjectSettingsPage() {
             loading={analysisLoading}
             error={analysisError}
             onRun={handleAnalyzeAndView}
+          />
+
+          <ProjectDeleteSection
+            projectName={project?.name}
+            onDelete={handleDeleteProject}
           />
         </div>
       </div>

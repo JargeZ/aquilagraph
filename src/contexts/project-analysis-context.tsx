@@ -17,6 +17,7 @@ import {
 } from "@/core/parser/project-scanner";
 import { initParsers } from "@/core/parser/universal-parser";
 import {
+  deleteProjectRootHandle,
   ensureDirectoryReadPermission,
   hasDirectoryReadPermission,
   loadProjectRootHandle,
@@ -66,7 +67,10 @@ export function ProjectAnalysisProvider({
   projectId: string;
   children: React.ReactNode;
 }) {
-  const [projects] = useLocalStorage<Project[]>(PROJECTS_STORAGE_KEY, []);
+  const [projects, setProjects] = useLocalStorage<Project[]>(
+    PROJECTS_STORAGE_KEY,
+    [],
+  );
   const [pathsByProject, setPathsByProject] = useLocalStorage<
     Record<string, string>
   >(PROJECT_PATHS_STORAGE_KEY, {});
@@ -395,6 +399,36 @@ export function ProjectAnalysisProvider({
     void runAnalysis();
   }, [hasAnalysisRoot, runAnalysis]);
 
+  const deleteProject = useCallback(async () => {
+    if (!isTauriRuntime()) {
+      try {
+        await deleteProjectRootHandle(projectId);
+      } catch {
+        /* игнорируем сбой IDB — проект всё равно убираем из списка */
+      }
+    }
+    try {
+      localStorage.removeItem(getAnalysisConfigKey(projectId));
+    } catch {
+      /* ignore */
+    }
+    setPathsByProject((prev) => {
+      if (!(projectId in prev)) return prev;
+      const next = { ...prev };
+      delete next[projectId];
+      return next;
+    });
+    setWebRootLabels((prev) => {
+      if (!(projectId in prev)) return prev;
+      const next = { ...prev };
+      delete next[projectId];
+      return next;
+    });
+    setBrowserRootHandle(null);
+    setBrowserDirectoryNeedsUserPermission(false);
+    setProjects((prev) => prev.filter((p) => p.id !== projectId));
+  }, [projectId, setPathsByProject, setWebRootLabels, setProjects]);
+
   return (
     <ProjectAnalysisContext.Provider
       value={{
@@ -420,6 +454,7 @@ export function ProjectAnalysisProvider({
         analysisLoading,
         analysisError,
         runAnalysis,
+        deleteProject,
       }}
     >
       {children}
