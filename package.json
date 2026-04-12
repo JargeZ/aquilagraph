@@ -8,6 +8,7 @@
     "prepare": "node scripts/sync-tree-sitter-wasm.mjs",
     "dev:vite": "node scripts/sync-tree-sitter-wasm.mjs && vite --port 3000",
     "build:vite": "node scripts/sync-tree-sitter-wasm.mjs && vite build",
+    "build:vite:pwa": "node scripts/sync-tree-sitter-wasm.mjs && vite build --mode pwa",
     "preview": "vite preview",
     "test": "vitest run",
     "tauri": "tauri",

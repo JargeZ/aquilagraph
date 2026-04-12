@@ -44,3 +44,8 @@ jobs:
 
       - name: Production Vite build
         run: pnpm build:vite
+
+      - name: Production Vite build (PWA mode)
+        run: pnpm build:vite:pwa
+        env:
+          BASE_PATH: /
