@@ -55,18 +55,31 @@ export async function discoverCodeFiles(
 /** @deprecated Use discoverCodeFiles instead */
 export const discoverPythonFiles = discoverCodeFiles;
 
+export type ScanProjectOptions = {
+  /** Вызывается при обходе файлов: current — обработано файлов, total — всего к парсингу. */
+  onParseProgress?: (current: number, total: number) => void;
+};
+
 export async function scanProject(
   rootPath: string,
   fs: FileSystemAdapter,
+  options?: ScanProjectOptions,
 ): Promise<ScopeFileAnalysis[]> {
   const files = await discoverCodeFiles(rootPath, fs);
   const results: ScopeFileAnalysis[] = [];
+  const report = options?.onParseProgress;
 
-  for (const filePath of files) {
+  if (files.length > 0) {
+    report?.(0, files.length);
+  }
+
+  for (let i = 0; i < files.length; i++) {
+    const filePath = files[i] as string;
     const absolutePath = rootPath === "" ? filePath : `${rootPath}/${filePath}`;
     const content = await fs.readFile(absolutePath);
     const analysis = await parseFile(filePath, content);
     results.push(analysis);
+    report?.(i + 1, files.length);
   }
 
   return results;

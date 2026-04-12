@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { AnalysisScanProgressBar } from "@/components/project/analysis-scan-progress-bar";
 import { ProjectAnalysisProvider } from "@/contexts/project-analysis-context";
 import {
   isValidUuid,
@@ -27,6 +28,7 @@ export function ProjectLayout() {
 
   return (
     <ProjectAnalysisProvider key={projectId} projectId={projectId}>
+      <AnalysisScanProgressBar />
       <Outlet />
     </ProjectAnalysisProvider>
   );

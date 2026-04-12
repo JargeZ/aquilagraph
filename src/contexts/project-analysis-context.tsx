@@ -17,6 +17,12 @@ import {
 } from "@/core/parser/project-scanner";
 import { initParsers } from "@/core/parser/universal-parser";
 import {
+  beginAnalysisProgressTracking,
+  finishAnalysisProgressTracking,
+  invalidateAnalysisProgressTracking,
+  reportAnalysisScanProgress,
+} from "@/lib/analysis-scan-progress";
+import {
   deleteProjectRootHandle,
   ensureDirectoryReadPermission,
   hasDirectoryReadPermission,
@@ -335,6 +341,7 @@ export function ProjectAnalysisProvider({
     analysisInFlightRef.current = true;
     setAnalysisLoading(true);
     setAnalysisError(null);
+    beginAnalysisProgressTracking(generation);
     try {
       await initParsers();
       const fs: FileSystemAdapter = isTauriRuntime()
@@ -342,7 +349,10 @@ export function ProjectAnalysisProvider({
         : createDirectoryHandleFsAdapter(
             browserRootHandle as FileSystemDirectoryHandle,
           );
-      const analyses = await scanProject("", fs);
+      const analyses = await scanProject("", fs, {
+        onParseProgress: (current, total) =>
+          reportAnalysisScanProgress(generation, { current, total }),
+      });
       if (analysisGenerationRef.current !== generation) return;
       setScanCache(analyses);
     } catch (e) {
@@ -354,6 +364,7 @@ export function ProjectAnalysisProvider({
       setScanCache(null);
       setAnalysisResult(null);
     } finally {
+      finishAnalysisProgressTracking(generation);
       analysisInFlightRef.current = false;
       if (analysisGenerationRef.current === generation) {
         setAnalysisLoading(false);
@@ -365,6 +376,7 @@ export function ProjectAnalysisProvider({
   // biome-ignore lint/correctness/useExhaustiveDependencies: tauriRootPath и browserRootHandle нужны, чтобы сброс произошёл при смене корня
   useEffect(() => {
     analysisGenerationRef.current += 1;
+    invalidateAnalysisProgressTracking(analysisGenerationRef.current);
     analysisInFlightRef.current = false;
     setAnalysisResult(null);
     setScanCache(null);
