@@ -2,9 +2,9 @@
 
 **AquilaGraph** helps you understand a codebase from a bird’s-eye view. Instead of reading files one by one, you explore structure and relationships in an **interactive graph**—so onboarding, refactors, and architecture reviews start with a clear visual map of how the code fits together.
 
-|                 | |
-|-----------------| --- |
-| **Web app PWA** | [Open in browser](YOUR_WEB_APP_URL) — *add your hosted URL* |
+|                 |                                                                                                                                              |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| **Web app PWA** | [Open in browser](https://jargez.github.io/aquilagraph)                                                                                      |
 | **Desktop**     | [macOS](YOUR_DOWNLOAD_MACOS_URL) · [Windows](YOUR_DOWNLOAD_WINDOWS_URL) · [Linux](YOUR_DOWNLOAD_LINUX_URL) — *add release or download links* |
 
 You can **tune how code is grouped into layers**: define your own classifications (with priorities, colors, and selectors) so the graph reflects *your* architectural view—whether that is domain slices, infrastructure vs. application, or team-specific boundaries.
