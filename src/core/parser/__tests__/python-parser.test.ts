@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { initParser, parseFile } from "../python-parser";
 import { readTestFile } from "./test-helpers";
 
@@ -21,10 +21,7 @@ describe("python-parser", () => {
 
   it("parses a class with methods and parent in signature", async () => {
     const content = readTestFile("export_module/views/todotask.py");
-    const result = await parseFile(
-      "export_module/views/todotask.py",
-      content,
-    );
+    const result = await parseFile("export_module/views/todotask.py", content);
 
     const cls = result.scopes.find(
       (s) => s.type === "class" && s.name === "TodoTaskViewSet",
@@ -56,9 +53,7 @@ describe("python-parser", () => {
   });
 
   it("parses method identifier references for uses resolution", async () => {
-    const content = readTestFile(
-      "export_module/actions/perform_export.py",
-    );
+    const content = readTestFile("export_module/actions/perform_export.py");
     const result = await parseFile(
       "export_module/actions/perform_export.py",
       content,
@@ -80,9 +75,7 @@ describe("python-parser", () => {
   });
 
   it("parses file-level import references", async () => {
-    const content = readTestFile(
-      "core_module/actions/add_task_to_list.py",
-    );
+    const content = readTestFile("core_module/actions/add_task_to_list.py");
     const result = await parseFile(
       "core_module/actions/add_task_to_list.py",
       content,

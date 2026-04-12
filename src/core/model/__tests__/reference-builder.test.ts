@@ -1,14 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+import type {
+  ImportReference,
+  ScopeInfo,
+} from "@/core/parser/codeparsers-types";
 import {
   buildReference,
-  getModuleName,
   extractParentClasses,
   extractParentClassesFromScope,
   extractParentClassesFromSignature,
   filePathToModuleRef,
+  getModuleName,
   normalizeSymbolRef,
 } from "../reference-builder";
-import type { ScopeInfo, ImportReference } from "@/core/parser/codeparsers-types";
 
 describe("buildReference", () => {
   it("builds reference for a top-level class (.py)", () => {
@@ -29,17 +32,14 @@ describe("buildReference", () => {
 
   it("builds reference for a top-level function (.py)", () => {
     expect(
-      buildReference(
-        "core_module/tasks/run_todo_sync.py",
-        "task_RunTodoSync",
-      ),
+      buildReference("core_module/tasks/run_todo_sync.py", "task_RunTodoSync"),
     ).toBe("core_module.tasks.run_todo_sync.task_RunTodoSync");
   });
 
   it("builds reference for a TypeScript class (.ts)", () => {
-    expect(
-      buildReference("utils/base_action.ts", "BaseBusinessAction"),
-    ).toBe("utils.base_action.BaseBusinessAction");
+    expect(buildReference("utils/base_action.ts", "BaseBusinessAction")).toBe(
+      "utils.base_action.BaseBusinessAction",
+    );
   });
 
   it("builds reference for a TypeScript method (.ts)", () => {
@@ -84,19 +84,13 @@ describe("filePathToModuleRef", () => {
 describe("getModuleName", () => {
   it("returns first segment at depth 1", () => {
     expect(
-      getModuleName(
-        "export_module.views.todotask.TodoTaskViewSet.list",
-        1,
-      ),
+      getModuleName("export_module.views.todotask.TodoTaskViewSet.list", 1),
     ).toBe("export_module");
   });
 
   it("returns first two segments at depth 2", () => {
     expect(
-      getModuleName(
-        "export_module.views.todotask.TodoTaskViewSet.list",
-        2,
-      ),
+      getModuleName("export_module.views.todotask.TodoTaskViewSet.list", 2),
     ).toBe("export_module.views");
   });
 
@@ -116,16 +110,16 @@ describe("extractParentClasses (legacy)", () => {
 
   it("extracts dotted parent", () => {
     expect(
-      extractParentClasses(
-        "class TodoTaskViewSet(viewsets.ModelViewSet)",
-      ),
+      extractParentClasses("class TodoTaskViewSet(viewsets.ModelViewSet)"),
     ).toEqual(["viewsets.ModelViewSet"]);
   });
 
   it("extracts multiple parents", () => {
-    expect(
-      extractParentClasses("class Foo(Bar, Baz, Qux)"),
-    ).toEqual(["Bar", "Baz", "Qux"]);
+    expect(extractParentClasses("class Foo(Bar, Baz, Qux)")).toEqual([
+      "Bar",
+      "Baz",
+      "Qux",
+    ]);
   });
 
   it("returns empty for class without parents", () => {
@@ -140,7 +134,9 @@ describe("extractParentClasses (legacy)", () => {
 describe("extractParentClassesFromScope", () => {
   it("uses heritageClauses when available (TypeScript)", () => {
     const scope = {
-      heritageClauses: [{ clause: "extends" as const, types: ["BaseBusinessAction"] }],
+      heritageClauses: [
+        { clause: "extends" as const, types: ["BaseBusinessAction"] },
+      ],
       signature: "class AddTaskToList extends BaseBusinessAction",
     } as ScopeInfo;
     expect(extractParentClassesFromScope(scope)).toEqual([
@@ -171,49 +167,94 @@ describe("extractParentClassesFromScope", () => {
 
 describe("normalizeSymbolRef", () => {
   const pythonImports: ImportReference[] = [
-    { source: "utils.base_action", imported: "BaseBusinessAction", kind: "named", isLocal: true },
-    { source: "celery", imported: "shared_task", kind: "named", isLocal: false },
-    { source: "rest_framework", imported: "viewsets", kind: "named", isLocal: false },
+    {
+      source: "utils.base_action",
+      imported: "BaseBusinessAction",
+      kind: "named",
+      isLocal: true,
+    },
+    {
+      source: "celery",
+      imported: "shared_task",
+      kind: "named",
+      isLocal: false,
+    },
+    {
+      source: "rest_framework",
+      imported: "viewsets",
+      kind: "named",
+      isLocal: false,
+    },
   ];
 
   it("resolves a local Python import to full module path", () => {
     expect(
-      normalizeSymbolRef("BaseBusinessAction", pythonImports, "core_module/actions/get_tasks_list.py"),
+      normalizeSymbolRef(
+        "BaseBusinessAction",
+        pythonImports,
+        "core_module/actions/get_tasks_list.py",
+      ),
     ).toBe("utils.base_action.BaseBusinessAction");
   });
 
   it("resolves an external import", () => {
     expect(
-      normalizeSymbolRef("shared_task", pythonImports, "core_module/tasks/run_todo_sync.py"),
+      normalizeSymbolRef(
+        "shared_task",
+        pythonImports,
+        "core_module/tasks/run_todo_sync.py",
+      ),
     ).toBe("celery.shared_task");
   });
 
   it("resolves dotted symbol via import prefix", () => {
     expect(
-      normalizeSymbolRef("viewsets.ModelViewSet", pythonImports, "export_module/views/todotask.py"),
+      normalizeSymbolRef(
+        "viewsets.ModelViewSet",
+        pythonImports,
+        "export_module/views/todotask.py",
+      ),
     ).toBe("rest_framework.viewsets.ModelViewSet");
   });
 
   it("returns symbol unchanged when no matching import", () => {
-    expect(
-      normalizeSymbolRef("UnknownClass", pythonImports, "foo.py"),
-    ).toBe("UnknownClass");
+    expect(normalizeSymbolRef("UnknownClass", pythonImports, "foo.py")).toBe(
+      "UnknownClass",
+    );
   });
 
   const tsImports: ImportReference[] = [
-    { source: "@/utils/base_action", imported: "BaseBusinessAction", kind: "named", isLocal: false },
-    { source: "../tasks/run_exports", imported: "task_ExportAllTasks_si", kind: "named", isLocal: true },
+    {
+      source: "@/utils/base_action",
+      imported: "BaseBusinessAction",
+      kind: "named",
+      isLocal: false,
+    },
+    {
+      source: "../tasks/run_exports",
+      imported: "task_ExportAllTasks_si",
+      kind: "named",
+      isLocal: true,
+    },
   ];
 
   it("resolves a TypeScript path alias import", () => {
     expect(
-      normalizeSymbolRef("BaseBusinessAction", tsImports, "core_module/actions/add_task_to_list.ts"),
+      normalizeSymbolRef(
+        "BaseBusinessAction",
+        tsImports,
+        "core_module/actions/add_task_to_list.ts",
+      ),
     ).toBe("utils.base_action.BaseBusinessAction");
   });
 
   it("resolves a TypeScript relative import", () => {
     expect(
-      normalizeSymbolRef("task_ExportAllTasks_si", tsImports, "export_module/actions/perform_export.ts"),
+      normalizeSymbolRef(
+        "task_ExportAllTasks_si",
+        tsImports,
+        "export_module/actions/perform_export.ts",
+      ),
     ).toBe("export_module.tasks.run_exports.task_ExportAllTasks_si");
   });
 });

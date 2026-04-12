@@ -7,13 +7,15 @@ export type Transaction = {
   onCommit(cb: () => void | Promise<void>): void;
 };
 
-export async function withTransaction<T>(fn: (tx: Transaction) => Promise<T>): Promise<T> {
+export async function withTransaction<T>(
+  fn: (tx: Transaction) => Promise<T>,
+): Promise<T> {
   const state: TxState = { committed: false, callbacks: [] };
 
   const tx: Transaction = {
     onCommit(cb) {
       state.callbacks.push(cb);
-    }
+    },
   };
 
   try {
@@ -25,4 +27,3 @@ export async function withTransaction<T>(fn: (tx: Transaction) => Promise<T>): P
     if (!state.committed) state.callbacks = [];
   }
 }
-

@@ -1,8 +1,8 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { initParsers, parseFile } from "../universal-parser";
-import { readTestFile, getTestTypeScriptProjectRoot } from "./test-helpers";
+import { getTestTypeScriptProjectRoot, readTestFile } from "./test-helpers";
 
 beforeAll(async () => {
   await initParsers();

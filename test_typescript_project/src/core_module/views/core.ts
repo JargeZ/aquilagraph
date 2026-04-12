@@ -9,4 +9,3 @@ export const coreRouter = new Hono().post("/tasks", async (c) => {
   const result = await new AddTaskToList().execute(input);
   return c.json({ task: result.task });
 });
-

@@ -17,7 +17,9 @@ function safeDecodeURIComponent(value: string): string {
   }
 }
 
-export function useNodeRouteContext(nodeRefParam: string): NodeRouteContextValue {
+export function useNodeRouteContext(
+  nodeRefParam: string,
+): NodeRouteContextValue {
   const { analysisResult } = useProjectAnalysis();
 
   const decodedRef = useMemo(

@@ -10,10 +10,9 @@ export const app = new Elysia({ prefix: "/api" })
       const { task } = await new AddTaskToList().execute({ title: body.title });
       return { task };
     },
-    { body: t.Object({ title: t.String({ minLength: 1 }) }) }
+    { body: t.Object({ title: t.String({ minLength: 1 }) }) },
   )
   .get("/tasks", async () => {
     const { tasks } = await new GetTasksList().execute();
     return { tasks: serializeTasks(tasks) };
   });
-

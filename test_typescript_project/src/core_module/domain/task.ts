@@ -10,4 +10,3 @@ export type Task = Readonly<{
 export function makeTaskId(raw: string): TaskId {
   return raw as TaskId;
 }
-

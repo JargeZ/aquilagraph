@@ -88,7 +88,7 @@ export function attachSvgPanZoomTrackpadWheel(
 
     const relative = pointForZoom(evt);
     if (!relative) return;
-    const zoom = Math.pow(1 + zoomScaleSensitivity, -1 * delta);
+    const zoom = (1 + zoomScaleSensitivity) ** (-1 * delta);
     instance.zoomAtPointBy(zoom, relative);
   };
 

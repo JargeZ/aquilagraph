@@ -18,7 +18,8 @@ export class InMemoryTasksRepo implements TasksRepo {
   }
 
   async markDone(id: TaskId): Promise<void> {
-    this.#tasks = this.#tasks.map((t) => (t.id === id ? { ...t, done: true } : t));
+    this.#tasks = this.#tasks.map((t) =>
+      t.id === id ? { ...t, done: true } : t,
+    );
   }
 }
-

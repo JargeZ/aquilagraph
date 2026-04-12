@@ -16,4 +16,3 @@ export function graphModelEdgePairs(
   }
   return pairs;
 }
-

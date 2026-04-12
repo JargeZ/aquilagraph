@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import { initParsers } from "../../parser/universal-parser";
-import { scanProject } from "../../parser/project-scanner";
+import { beforeAll, describe, expect, it } from "vitest";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
   getTestTypeScriptProjectRoot,
 } from "../../parser/__tests__/test-helpers";
+import { scanProject } from "../../parser/project-scanner";
+import { initParsers } from "../../parser/universal-parser";
 import { createElementsFromAnalyses } from "../element-factory";
 import type { ExecutableElement } from "../executable-element";
 
@@ -69,8 +69,7 @@ describe("element-factory snapshots", () => {
     it("normalizes parentClasses to full module paths", () => {
       const addTask = elements.find(
         (e) =>
-          e.reference ===
-          "core_module.actions.add_task_to_list.AddTaskToList",
+          e.reference === "core_module.actions.add_task_to_list.AddTaskToList",
       );
       expect(addTask).toBeDefined();
       expect(addTask!.parentClasses).toContain(

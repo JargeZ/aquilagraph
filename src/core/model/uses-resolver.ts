@@ -28,12 +28,16 @@ export function resolveUses(
 
   for (const el of elements) {
     if (el.className && !el.reference.endsWith(`.${el.className}`)) {
-      const scope = scopeMap.get(makeScopeKey(el.sourceFile, el.name, el.className));
+      const scope = scopeMap.get(
+        makeScopeKey(el.sourceFile, el.name, el.className),
+      );
       if (scope) {
         el.uses = resolveElementUses(scope, el, importNameToRef, elementByRef);
       }
     } else if (!el.className) {
-      const scope = scopeMap.get(makeScopeKey(el.sourceFile, el.name, undefined));
+      const scope = scopeMap.get(
+        makeScopeKey(el.sourceFile, el.name, undefined),
+      );
       if (scope) {
         el.uses = resolveElementUses(scope, el, importNameToRef, elementByRef);
       }
@@ -101,10 +105,7 @@ function buildImportMap(
   for (const analysis of analyses) {
     for (const imp of analysis.importReferences) {
       const importedName = imp.imported;
-      const sourceModule = normalizeImportSource(
-        imp.source,
-        analysis.filePath,
-      );
+      const sourceModule = normalizeImportSource(imp.source, analysis.filePath);
 
       const candidateRef = `${sourceModule}.${importedName}`;
       if (elementByRef.has(candidateRef)) {
@@ -125,10 +126,7 @@ export function normalizeImportSource(
   currentFile: string,
 ): string {
   if (source.startsWith("@/")) {
-    return source
-      .slice(2)
-      .replace(/\//g, ".")
-      .replace(CODE_EXTENSIONS, "");
+    return source.slice(2).replace(/\//g, ".").replace(CODE_EXTENSIONS, "");
   }
 
   if (source.startsWith("./") || source.startsWith("../")) {
@@ -157,7 +155,6 @@ function resolveTypeScriptRelativeImport(
     if (segments[i] === "..") {
       upCount++;
     } else if (segments[i] === ".") {
-      continue;
     } else {
       break;
     }
@@ -196,9 +193,7 @@ function makeScopeKey(
   return parent ? `${filePath}::${parent}::${name}` : `${filePath}::${name}`;
 }
 
-function buildScopeMap(
-  analyses: ScopeFileAnalysis[],
-): Map<string, ScopeInfo> {
+function buildScopeMap(analyses: ScopeFileAnalysis[]): Map<string, ScopeInfo> {
   const map = new Map<string, ScopeInfo>();
   for (const analysis of analyses) {
     for (const scope of analysis.scopes) {

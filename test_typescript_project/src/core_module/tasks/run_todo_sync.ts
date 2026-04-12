@@ -7,4 +7,3 @@ export type TodoSyncPayload = Readonly<{
 export function task_RunTodoSync(payload: TodoSyncPayload) {
   return { name: todoSyncJobName, payload };
 }
-

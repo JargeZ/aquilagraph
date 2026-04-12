@@ -1,6 +1,6 @@
 import type {
-  ScopeInfo,
   ImportReference,
+  ScopeInfo,
 } from "@/core/parser/codeparsers-types";
 
 const CODE_EXTENSIONS = /\.(py|pyi|ts|tsx|js|jsx|mts|cts|mjs|cjs)$/;
@@ -85,10 +85,7 @@ export function normalizeSymbolRef(
     const matchName = imp.alias ?? imp.imported;
     if (matchName !== baseName) continue;
 
-    const resolvedSource = normalizeImportSourceForRef(
-      imp.source,
-      currentFile,
-    );
+    const resolvedSource = normalizeImportSourceForRef(imp.source, currentFile);
     return `${resolvedSource}.${imp.imported}${suffix}`;
   }
 
@@ -107,10 +104,7 @@ function normalizeImportSourceForRef(
   currentFile: string,
 ): string {
   if (source.startsWith("@/")) {
-    return source
-      .slice(2)
-      .replace(/\//g, ".")
-      .replace(CODE_EXTENSIONS, "");
+    return source.slice(2).replace(/\//g, ".").replace(CODE_EXTENSIONS, "");
   }
 
   if (source.startsWith("./") || source.startsWith("../")) {
@@ -139,7 +133,6 @@ function resolveTypeScriptRelativeImport(
     if (segments[i] === "..") {
       upCount++;
     } else if (segments[i] === ".") {
-      continue;
     } else {
       break;
     }

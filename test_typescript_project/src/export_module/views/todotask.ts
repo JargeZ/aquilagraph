@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { withTransaction } from "@/infra/tx/on_commit";
 import { GetTasksList } from "@/core_module/actions/get_tasks_list";
-import { serializeTasks } from "@/export_module/serializers/task_serializer";
 import { PerformExport } from "@/export_module/actions/perform_export";
+import { serializeTasks } from "@/export_module/serializers/task_serializer";
 import { task_ExportAllTasks_si } from "@/export_module/tasks/run_exports";
+import { withTransaction } from "@/infra/tx/on_commit";
 
 export const todoTaskRouter = new Hono()
   .get("/tasks", async (c) => {
@@ -16,7 +16,7 @@ export const todoTaskRouter = new Hono()
     const exportResult = await withTransaction(async (tx) => {
       const sig = task_ExportAllTasks_si({
         requestedBy: "api",
-        requestedAt: new Date().toISOString()
+        requestedAt: new Date().toISOString(),
       });
       tx.onCommit(sig.apply_async);
 
@@ -26,4 +26,3 @@ export const todoTaskRouter = new Hono()
 
     return c.json({ export: exportResult });
   });
-

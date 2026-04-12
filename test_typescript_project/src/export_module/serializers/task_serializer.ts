@@ -12,11 +12,10 @@ export function serializeTask(task: Task): TaskDTO {
     id: task.id,
     title: task.title,
     done: task.done,
-    createdAt: task.createdAt.toISOString()
+    createdAt: task.createdAt.toISOString(),
   };
 }
 
 export function serializeTasks(tasks: Task[]): TaskDTO[] {
   return tasks.map(serializeTask);
 }
-

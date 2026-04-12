@@ -15,8 +15,11 @@ function isTypingTarget(target: EventTarget | null): boolean {
 export function NodeDetailsPage() {
   const { nodeRef: nodeRefParam } = Route.useParams();
   const navigate = useNavigate();
-  const { projectId: ctxProjectId, analysisLoading, analysisError } =
-    useProjectAnalysis();
+  const {
+    projectId: ctxProjectId,
+    analysisLoading,
+    analysisError,
+  } = useProjectAnalysis();
   const { decodedRef, element } = useNodeRouteContext(nodeRefParam);
 
   const goBack = useCallback(() => {

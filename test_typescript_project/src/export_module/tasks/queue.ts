@@ -1,13 +1,16 @@
-import { Queue, Worker, type JobsOptions } from "bullmq";
-import { exportAllTasksJobName, type ExportAllTasksPayload } from "@/export_module/tasks/run_exports";
+import { type JobsOptions, Queue, Worker } from "bullmq";
+import {
+  type ExportAllTasksPayload,
+  exportAllTasksJobName,
+} from "@/export_module/tasks/run_exports";
 
 export const exportsQueue = new Queue("exports", {
-  connection: { host: "localhost", port: 6379 }
+  connection: { host: "localhost", port: 6379 },
 });
 
 export function enqueueExportAllTasks(
   payload: ExportAllTasksPayload,
-  opts: JobsOptions = {}
+  opts: JobsOptions = {},
 ): Promise<unknown> {
   return exportsQueue.add(exportAllTasksJobName, payload, opts);
 }
@@ -24,7 +27,6 @@ export function startExportsWorker() {
           return { ok: false, reason: "unknown job" };
       }
     },
-    { connection: { host: "localhost", port: 6379 } }
+    { connection: { host: "localhost", port: 6379 } },
   );
 }
-

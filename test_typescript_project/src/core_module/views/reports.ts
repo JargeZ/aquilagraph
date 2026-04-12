@@ -5,4 +5,3 @@ export const reportsRouter = new Hono().get("/reports/tasks", async (c) => {
   const { tasks } = await new GetTasksList().execute();
   return c.json({ total: tasks.length });
 });
-

@@ -7,4 +7,3 @@ export const app = new Hono()
   .route("/api", coreRouter)
   .route("/api", todoTaskRouter)
   .route("/api", reportsRouter);
-

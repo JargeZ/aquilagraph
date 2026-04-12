@@ -1,9 +1,6 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import { discoverCodeFiles, scanProject } from "../project-scanner";
 import { initParsers } from "../universal-parser";
-import {
-  discoverCodeFiles,
-  scanProject,
-} from "../project-scanner";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,

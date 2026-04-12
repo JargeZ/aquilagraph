@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import type { ScopeFileAnalysis } from "@/core/parser/codeparsers-types";
-import { initParsers } from "../../parser/universal-parser";
-import { scanProject } from "../../parser/project-scanner";
 import {
   createNodeFsAdapter,
   getTestProjectRoot,
 } from "../../parser/__tests__/test-helpers";
+import { scanProject } from "../../parser/project-scanner";
+import { initParsers } from "../../parser/universal-parser";
 import { createElementsFromAnalyses } from "../element-factory";
-import { resolveUses } from "../uses-resolver";
 import type { ExecutableElement } from "../executable-element";
+import { resolveUses } from "../uses-resolver";
 
 const ROOT = getTestProjectRoot();
 
@@ -86,9 +86,7 @@ describe("resolveUses", () => {
   });
 
   it("top-level tasks have no uses", () => {
-    const el = findEl(
-      "core_module.tasks.run_todo_sync.task_RunTodoSync",
-    );
+    const el = findEl("core_module.tasks.run_todo_sync.task_RunTodoSync");
     expect(el.uses).toEqual([]);
   });
 });

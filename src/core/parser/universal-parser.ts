@@ -4,7 +4,16 @@ import { ScopeExtractionParser } from "@internal/codeparsers-ts-scope";
 import type { ScopeFileAnalysis } from "./codeparsers-types";
 
 const PYTHON_EXTENSIONS = new Set([".py", ".pyi"]);
-const TYPESCRIPT_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".mts", ".cts", ".mjs", ".cjs"]);
+const TYPESCRIPT_EXTENSIONS = new Set([
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mts",
+  ".cts",
+  ".mjs",
+  ".cjs",
+]);
 
 let pythonParser: PythonScopeExtractionParser | null = null;
 let tsParser: ScopeExtractionParser | null = null;

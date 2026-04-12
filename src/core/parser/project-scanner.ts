@@ -62,8 +62,7 @@ export async function scanProject(
   const results: ScopeFileAnalysis[] = [];
 
   for (const filePath of files) {
-    const absolutePath =
-      rootPath === "" ? filePath : `${rootPath}/${filePath}`;
+    const absolutePath = rootPath === "" ? filePath : `${rootPath}/${filePath}`;
     const content = await fs.readFile(absolutePath);
     const analysis = await parseFile(filePath, content);
     results.push(analysis);
