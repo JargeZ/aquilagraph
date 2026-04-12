@@ -1,151 +1,58 @@
-# Tauri 2.0 + TanStack Start React Template
+# AquilaGraph
 
-![Tauri window screenshot](public/tauri-tanstack-start-react-template-screenshot-01.png)
+**AquilaGraph** helps you understand a codebase from a bird’s-eye view. Instead of reading files one by one, you explore structure and relationships in an **interactive graph**—so onboarding, refactors, and architecture reviews start with a clear visual map of how the code fits together.
 
-This is a [Tauri 2.0](https://v2.tauri.app/) project template using [TanStack Start](https://tanstack.com/start/latest),
-bootstrapped by combining [`create @tanstack/start`](https://tanstack.com/start/latest/docs/framework/react/quick-start)
-and [`create tauri-app`](https://v2.tauri.app/start/create-project/).
+|                 | |
+|-----------------| --- |
+| **Web app PWA** | [Open in browser](YOUR_WEB_APP_URL) — *add your hosted URL* |
+| **Desktop**     | [macOS](YOUR_DOWNLOAD_MACOS_URL) · [Windows](YOUR_DOWNLOAD_WINDOWS_URL) · [Linux](YOUR_DOWNLOAD_LINUX_URL) — *add release or download links* |
 
-This template uses [`pnpm`](https://pnpm.io/) as the Node.js dependency
-manager, and uses [TanStack Router](https://tanstack.com/router/latest) with type-safe file-based routing.
+You can **tune how code is grouped into layers**: define your own classifications (with priorities, colors, and selectors) so the graph reflects *your* architectural view—whether that is domain slices, infrastructure vs. application, or team-specific boundaries.
 
-## Template Features
+**Supported languages (for now):** **Python**, plus **JavaScript**, **TypeScript**, and **TSX**. Other languages may be added later.
 
-- TypeScript frontend using [TanStack Start](https://tanstack.com/start/latest) with [Vite](https://vite.dev/) and [React 19](https://github.com/facebook/react)
-- [TanStack Router](https://tanstack.com/router/latest) with type-safe file-based routing
-- [TailwindCSS 4](https://tailwindcss.com/) as a utility-first atomic CSS framework
-  - While not included by default, consider using
-    [React Aria components](https://react-spectrum.adobe.com/react-aria/index.html)
-    and/or [HeadlessUI components](https://headlessui.com/) for completely unstyled and
-    fully accessible UI components, which integrate nicely with TailwindCSS
-- [Vitest](https://vitest.dev/) for unit testing with [Testing Library](https://testing-library.com/)
-- Opinionated formatting and linting already setup and enabled
-  - [Biome](https://biomejs.dev/) for fast formatting, linting, and import sorting of TypeScript code
-  - [clippy](https://github.com/rust-lang/rust-clippy) and
-    [rustfmt](https://github.com/rust-lang/rustfmt) for Rust code
-- GitHub Actions to check code formatting and linting for both TypeScript and Rust
+![Main view: codebase graph](docs/readme/screenshot-graph-main.png)
 
-## Getting Started
+---
 
-### Running development server and use Tauri window
+## What you can do
 
-After cloning for the first time, change your app identifier inside
-`src-tauri/tauri.conf.json` to your own:
+- **Scan a project folder** and turn it into a navigable graph of meaningful code units and how they connect.
+- **Zoom and pan** the graph; **drill into a node** to open a focused subgraph when you need more detail.
+- **Customize layer rules** so parts of the codebase are classified, highlighted, grouped, or filtered the way you want—not a fixed taxonomy imposed by the tool.
+- **Run in the browser** for quick access or use a **desktop build** when you prefer a native app (see links above once they are set).
 
-```jsonc
-{
-  // ...
-  // The default "com.tauri.dev" will prevent you from building in release mode
-  "identifier": "com.my-application-name.app",
-  // ...
-}
+## More screenshots
+
+### Graph (alternate view or detail)
+
+![Graph: alternate or zoomed view](docs/readme/screenshot-graph-detail.png)
+
+### Settings
+
+![Project and analysis settings](docs/readme/screenshot-settings.png)
+
+---
+
+## Contributing & development
+
+The UI is a **React** app built with **Vite**; the desktop shell uses **Tauri 2**. Routing is **TanStack Router**; styling **Tailwind CSS 4**. Parsing and scope analysis rely on **Tree-sitter** (WASM) and **@luciformresearch/codeparsers**; analyzers currently cover **Python** and the **JS / TS / TSX** family. Graph layout uses **Graphviz** (`ts-graphviz`, `@viz-js/viz`). **Lingui** handles i18n; **Biome** and **Vitest** support code quality.
+
+**Requirements:** [pnpm](https://pnpm.io/) (see `package.json` for the expected version).
+
+```bash
+pnpm install
+pnpm dev          # Tauri window + dev server
+pnpm dev:vite     # frontend only (e.g. http://localhost:3000)
+pnpm build        # desktop release build
+pnpm check        # lint, typecheck, tests
+pnpm storybook    # UI components
 ```
 
-To develop and run the frontend in a Tauri window:
+| Path | Role |
+| --- | --- |
+| `src/` | Application code; routes in `src/routes/`; analysis core in `src/core/` |
+| `src-tauri/` | Tauri (Rust) backend |
+| `public/wasm/` | Tree-sitter WASM artifacts (synced via `pnpm sync:wasm` / `prepare`) |
 
-```shell
-pnpm tauri dev
-```
-
-This will load the TanStack Start frontend directly in a Tauri webview window, in addition to
-starting a development server on `localhost:3000`.
-Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> in a Chromium based WebView (e.g. on
-Windows) to open the web developer console from the Tauri window.
-
-### Building for release
-
-To build the TanStack Start frontend and the Tauri application for release:
-
-```shell
-pnpm tauri build
-```
-
-### Running tests
-
-```shell
-pnpm test
-```
-
-### Source structure
-
-TanStack Start frontend source files are located in `src/` and Tauri Rust application source
-files are located in `src-tauri/`. Please consult the TanStack Start and Tauri documentation
-respectively for questions pertaining to either technology.
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing.
-Routes are managed as files in `src/routes/`.
-
-### Adding a Route
-
-To add a new route, create a new file in the `./src/routes` directory.
-TanStack Router will automatically generate the route configuration.
-
-### Adding Links
-
-Use the `Link` component from `@tanstack/react-router` for SPA navigation:
-
-```tsx
-import { Link } from "@tanstack/react-router";
-
-<Link to="/about">About</Link>
-```
-
-### Using a Layout
-
-The root layout is located in `src/routes/__root.tsx`. Content added to the root route
-will appear in all routes. Use the `<Outlet />` component to render child routes.
-
-More information on layouts can be found in the
-[TanStack Router Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/outlets).
-
-## Prerendering
-
-TanStack Start uses prerendering to generate static HTML files at build time. This is essential for Tauri since:
-
-1. **Tauri serves static files** - Tauri loads your frontend from the local filesystem, not from a running server
-2. **No Node.js runtime** - Unlike a traditional web app, there's no backend server to handle SSR at runtime
-3. **Instant loading** - Prerendered HTML loads immediately without waiting for JavaScript to hydrate
-
-### Prerender Modes
-
-The template supports two prerendering modes, controlled by the `USE_SSR_PRERENDER_MODE` environment variable in [vite.config.ts](vite.config.ts):
-
-| Mode              | Env Variable           | Behavior                                                                         |
-| ----------------- | ---------------------- | -------------------------------------------------------------------------------- |
-| **SPA (default)** | unset, `false`, or `0` | Outputs a single `/index.html` with client-side routing to handle SPA navigation |
-| **SSR Prerender** | `true` or `1`          | Crawls links and tries to generate an HTML file per route                        |
-
-To enable SSR prerendering instead, set the environment variable before building:
-
-```shell
-USE_SSR_PRERENDER_MODE=true pnpm tauri build
-```
-
-For most Tauri apps, the default SPA mode is sufficient and simpler. Use the SSR prerendering mode if you also expect your app to be deployed as a website to allow for improved SEO on a per-route basis.
-
-## Caveats
-
-### `TypeError: can't access property "invoke", window.__TAURI_INTERNALS__ is undefined`
-
-This error occurs when Tauri APIs (like `invoke`) are called outside of Tauri's webview context. When Tauri launches your app, it runs your frontend inside a native webview (WebView2 on Windows, WebKit on macOS/Linux). During initialization, Tauri injects a `__TAURI_INTERNALS__` object into the webview's global `window` variable. This object contains the IPC bridge that enables communication between your frontend and the Rust backend (including the `invoke` function).
-
-You may encounter this error if you:
-
-- Open the dev server URL directly in a standalone browser
-- Import Tauri APIs at the module level during SSR/prerendering (Node.js context)
-- Run code that accesses Tauri APIs before the webview has fully initialized
-
-For Tauri apps, always try to develop via Tauri's webview instead of opening the URL in a browser directly. Additionally, guarded Tauri API calls or dynamic imports can be used in the frontend code to avoid this issue in SSR contexts.
-
-## Learn More
-
-To learn more about TanStack Start and Router, take a look at the following resources:
-
-- [TanStack Start Documentation](https://tanstack.com/start/latest) - learn about TanStack Start features
-- [TanStack Router Documentation](https://tanstack.com/router/latest) - learn about routing
-
-And to learn more about Tauri, take a look at the following resources:
-
-- [Tauri Documentation - Guides](https://v2.tauri.app/start/) - learn about the Tauri toolkit
+Release **app identifier**: set `identifier` in `src-tauri/tauri.conf.json` if you ship your own builds.
