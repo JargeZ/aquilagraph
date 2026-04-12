@@ -41,3 +41,6 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+      - name: Production Vite build
+        run: pnpm build:vite
