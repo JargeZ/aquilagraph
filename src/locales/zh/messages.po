@@ -1,0 +1,527 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-12 12:38+1000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: zh\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/project/project-settings-toolbar.tsx:19
+msgid "← Назад"
+msgstr "← 返回"
+
+#: src/components/analysis-config-panel.tsx:273
+msgid "Bucket"
+msgstr "分组"
+
+#: src/core/config/analysis-config.ts:217
+msgid "BusinessLogic"
+msgstr "业务逻辑"
+
+#: src/components/graph-view.tsx:117
+msgid "Class"
+msgstr "类"
+
+#: src/core/config/analysis-config.ts:198
+msgid "Controlling"
+msgstr "控制"
+
+#: src/components/graph-view.tsx:79
+#: src/routes/$projectId/node-details/$nodeRef.tsx:126
+msgid "Debug"
+msgstr "调试"
+
+#: src/components/graph-view.tsx:125
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
+msgid "Decorators"
+msgstr "装饰器"
+
+#: src/components/graph-view.tsx:258
+msgid "DOT"
+msgstr "DOT"
+
+#: src/components/analysis-config-panel.tsx:259
+msgid "Exclude"
+msgstr "排除"
+
+#: src/components/analysis-config-panel.tsx:102
+msgid "Exclude (regex, по строкам)"
+msgstr "排除（正则，按行）"
+
+#: src/components/graph-view.tsx:255
+msgid "Flow"
+msgstr "流"
+
+#: src/components/graph-view.tsx:39
+msgid "Flow renderer placeholder (extensible render pipeline)."
+msgstr "流渲染占位（可扩展渲染管线）。"
+
+#: src/components/analysis-config-panel.tsx:97
+msgid "Include (regex, по строкам)"
+msgstr "包含（正则，按行）"
+
+#: src/components/graph-view.tsx:133
+msgid "Inherits"
+msgstr "继承"
+
+#: src/components/graph-view.tsx:110
+msgid "Module"
+msgstr "模块"
+
+#: src/components/analysis-config-panel.tsx:266
+msgid "Mute"
+msgstr "静音"
+
+#: src/components/graph-view.tsx:98
+msgid "Name"
+msgstr "名称"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
+msgid "Parent classes"
+msgstr "父类"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
+#: src/routes/$projectId/node-details/$nodeRef.tsx:80
+msgid "Ref"
+msgstr "引用"
+
+#: src/components/graph-view.tsx:104
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
+msgid "Reference"
+msgstr "引用"
+
+#: src/components/analysis-config-panel.tsx:426
+msgid "regex-паттерн..."
+msgstr "正则模式…"
+
+#: src/core/config/analysis-config.ts:228
+msgid "SideEffects"
+msgstr "副作用"
+
+#: src/components/graph-view.tsx:140
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
+msgid "Source"
+msgstr "源码"
+
+#: src/components/analysis-config-panel.tsx:214
+msgid "Template: Django"
+msgstr "模板：Django"
+
+#: src/core/config/analysis-config.ts:239
+msgid "Tests"
+msgstr "测试"
+
+#: src/components/graph-view.tsx:57
+#~ msgid "Unclassified"
+#~ msgstr ""
+
+#: src/components/graph-view.tsx:147
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
+msgid "Uses"
+msgstr "使用"
+
+#: src/components/project/project-analysis-run-section.tsx:24
+msgid "Анализировать"
+msgstr "分析"
+
+#: src/components/project/project-analysis-run-section.tsx:22
+#: src/components/project/project-graph-toolbar.tsx:25
+msgid "Анализируем…"
+msgstr "正在分析…"
+
+#: src/components/classification/add-selector-filter-action.tsx:205
+msgid "Введите строку…"
+msgstr "输入文字…"
+
+#: src/components/project/project-file-count-section.tsx:31
+msgid "Выберите каталог, чтобы увидеть число файлов."
+msgstr "选择文件夹以查看文件数量。"
+
+#: src/components/classification/add-selector-filter-action.tsx:180
+msgid "Выберите…"
+msgstr "选择…"
+
+#: src/components/project/project-directory-section.tsx:38
+msgid "Выбор папки…"
+msgstr "正在选择文件夹…"
+
+#: src/components/project/project-directory-section.tsx:40
+msgid "Выбрать папку"
+msgstr "选择文件夹"
+
+#: src/components/analysis-config-panel.tsx:330
+msgid "Выбрать цвет категории"
+msgstr "选择类别颜色"
+
+#: src/components/AppShell.tsx:63
+msgid "Главная"
+msgstr "首页"
+
+#: src/components/analysis-config-panel.tsx:114
+msgid "Глубина модуля"
+msgstr "模块深度"
+
+#. placeholder {0}: elements.length
+#: src/components/graph-view.tsx:252
+msgid "Граф ({0})"
+msgstr "图（{0}）"
+
+#: src/components/analysis-config-panel.tsx:267
+msgid "Делать цвет нод полупрозрачным (скоро)"
+msgstr "节点颜色半透明（即将推出）"
+
+#: src/components/graph-view.tsx:90
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
+msgid "Детали"
+msgstr "详情"
+
+#: src/contexts/project-analysis-context.tsx:323
+msgid "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения."
+msgstr "文件夹选择对话框已打开。请关闭或等待完成。"
+
+#: src/components/classification/add-selector-filter-action.tsx:225
+msgid "Добавить"
+msgstr "添加"
+
+#: src/components/classification/add-selector-filter-action.tsx:61
+msgid "Добавить reference в классификацию"
+msgstr "将引用加入分类"
+
+#: src/components/classification/add-selector-filter-action.tsx:63
+msgid "Добавить декоратор в классификацию"
+msgstr "将装饰器加入分类"
+
+#: src/components/analysis-config-panel.tsx:197
+#: src/components/analysis-config-panel.tsx:202
+msgid "Добавить классификацию"
+msgstr "添加分类"
+
+#: src/components/classification/add-selector-filter-action.tsx:65
+msgid "Добавить родительский класс в классификацию"
+msgstr "将父类加入分类"
+
+#: src/contexts/project-analysis-context.tsx:219
+msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
+msgstr "未授予访问权限。请重试或重新选择文件夹。"
+
+#: src/routes/$projectId/node-details/$nodeRef.tsx:92
+msgid "Заглушка"
+msgstr "占位"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:145
+msgid "Загрузка анализа…"
+msgstr "正在加载分析…"
+
+#: src/routes/$projectId/node-details/$nodeRef.tsx:50
+msgid "Загрузка…"
+msgstr "加载中…"
+
+#: src/components/classification/add-selector-filter-action.tsx:195
+msgid "Значение"
+msgstr "值"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:187
+#: src/routes/$projectId/node-details/$nodeRef.tsx:75
+msgid "К графу"
+msgstr "转到图"
+
+#: src/components/project/project-directory-section.tsx:28
+msgid "Каталог"
+msgstr "文件夹"
+
+#: src/routes/$projectId/index.tsx:57
+msgid "Каталог не выбран"
+msgstr "未选择文件夹"
+
+#: src/contexts/project-analysis-context.tsx:287
+msgid "Каталог проекта"
+msgstr "项目文件夹"
+
+#: src/components/analysis-config-panel.tsx:133
+#: src/components/analysis-config-panel.tsx:154
+msgid "Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+msgstr "当类中连接到其他节点的方法数量不少于设定值时，该类会被归入子图。"
+
+#: src/components/node-search-command.tsx:192
+msgid "Класс, метод, путь к файлу…"
+msgstr "类、方法、文件路径…"
+
+#: src/components/analysis-config-panel.tsx:178
+msgid "Классификации"
+msgstr "分类"
+
+#: src/components/classification/add-selector-filter-action.tsx:151
+msgid "Классификаций пока нет."
+msgstr "尚无分类。"
+
+#: src/components/classification/add-selector-filter-action.tsx:168
+#: src/core/config/analysis-config.ts:80
+msgid "Классификация"
+msgstr "分类"
+
+#: src/components/graph-view.tsx:292
+msgid "Копировать DOT"
+msgstr "复制 DOT"
+
+#: src/components/analysis-config-panel.tsx:135
+msgid "Минимально методов для детализации"
+msgstr "子图所需最少方法数"
+
+#: src/components/AppShell.tsx:45
+msgid "На главную"
+msgstr "回首页"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
+#: src/routes/$projectId/node-details/$nodeRef.tsx:115
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:141
+msgid "Назад"
+msgstr "返回"
+
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:94
+msgid "Назад к графу"
+msgstr "返回图"
+
+#: src/components/analysis-config-panel.tsx:251
+msgid "Название классификации"
+msgstr "分类名称"
+
+#: src/components/project/project-graph-toolbar.tsx:30
+#: src/components/project/project-settings-toolbar.tsx:23
+#: src/routes/$projectId/index.tsx:47
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:155
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:171
+#: src/routes/$projectId/node-details/$nodeRef.tsx:60
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:104
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:120
+msgid "Настройки"
+msgstr "设置"
+
+#: src/components/analysis-config-panel.tsx:92
+msgid "Настройки анализа"
+msgstr "分析设置"
+
+#: src/components/analysis-config-panel.tsx:201
+msgid "Не более {MAX_CLASSIFICATIONS} классификаций"
+msgstr "最多 {MAX_CLASSIFICATIONS} 个分类"
+
+#: src/contexts/project-analysis-context.tsx:328
+msgid "Не удалось выбрать каталог"
+msgstr "无法选择文件夹"
+
+#: src/contexts/project-analysis-context.tsx:231
+msgid "Не удалось запросить доступ"
+msgstr "无法请求访问权限"
+
+#: src/contexts/project-analysis-context.tsx:264
+msgid "Не удалось прочитать каталог"
+msgstr "无法读取文件夹"
+
+#: src/components/project/project-delete-section.tsx:27
+msgid "Не удалось удалить проект"
+msgstr "无法删除项目"
+
+#: src/contexts/project-analysis-context.tsx:365
+msgid "Неизвестная ошибка анализа"
+msgstr "未知分析错误"
+
+#: src/components/graph-view.tsx:57
+msgid "Неклассифицировано"
+msgstr "未分类"
+
+#: src/components/node-search-command.tsx:214
+msgid "Нет узлов"
+msgstr "无节点"
+
+#: src/components/node-search-command.tsx:212
+msgid "Ничего не найдено"
+msgstr "无结果"
+
+#: src/core/config/analysis-config.ts:172
+msgid "Новая классификация"
+msgstr "新分类"
+
+#: src/routes/index.tsx:41
+msgid "Новый проект"
+msgstr "新项目"
+
+#: src/contexts/project-analysis-context.tsx:192
+msgid "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ»."
+msgstr "需要再次授权已保存的文件夹。请点击授予访问权限。"
+
+#: src/components/project/project-directory-section.tsx:58
+msgid "Обновить счётчик"
+msgstr "刷新计数"
+
+#: src/components/analysis-config-panel.tsx:274
+msgid "Объединять ноды класса в субграф на графе"
+msgstr "在图上将类的节点合并为子图"
+
+#: src/components/project/project-delete-section.tsx:38
+msgid "Опасная зона"
+msgstr "危险区域"
+
+#: src/routes/$projectId/index.tsx:68
+msgid "Открыть настройки"
+msgstr "打开设置"
+
+#: src/components/classification/add-selector-filter-action.tsx:217
+#: src/components/project/project-delete-section.tsx:72
+msgid "Отмена"
+msgstr "取消"
+
+#: src/contexts/project-analysis-context.tsx:403
+msgid "Ошибка построения графа"
+msgstr "构建图时出错"
+
+#: src/components/dot-svg-canvas.tsx:337
+msgid "Ошибка рендеринга графа:"
+msgstr "渲染图时出错："
+
+#: src/components/project/project-directory-section.tsx:65
+msgid "Папка не выбрана — нажмите «Выбрать папку»."
+msgstr "未选择文件夹 — 请点击选择文件夹。"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:92
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:195
+msgid "Подграф"
+msgstr "子图"
+
+#: src/components/node-search-command.tsx:179
+msgid "Поиск узлов графа"
+msgstr "搜索图节点"
+
+#: src/routes/index.tsx:64
+msgid "Пока нет проектов."
+msgstr "尚无项目。"
+
+#: src/components/project/project-directory-section.tsx:70
+msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
+msgstr "重新加载页面后，浏览器需要再次授权读取文件夹。"
+
+#: src/components/graph-view-skeleton.tsx:18
+msgid "Построение графа"
+msgstr "正在构建图"
+
+#: src/components/graph-view-skeleton.tsx:16
+msgid "Построение графа, ожидание"
+msgstr "正在构建图，请稍候"
+
+#: src/components/project/project-delete-section.tsx:15
+msgid "проект"
+msgstr "项目"
+
+#: src/components/project/project-graph-toolbar.tsx:20
+#: src/components/project/project-settings-toolbar.tsx:23
+msgid "Проект"
+msgstr "项目"
+
+#. placeholder {0}: projects.length + 1
+#: src/routes/index.tsx:21
+msgid "Проект {0}"
+msgstr "项目 {0}"
+
+#: src/components/project/project-directory-section.tsx:49
+msgid "Разрешить доступ"
+msgstr "授予访问权限"
+
+#: src/components/node-search-command.tsx:206
+msgid "Результаты поиска"
+msgstr "搜索结果"
+
+#: src/components/dot-svg-canvas.tsx:363
+msgid "Скачать SVG"
+msgstr "下载 SVG"
+
+#: src/components/graph-view.tsx:292
+msgid "Скопировано"
+msgstr "已复制"
+
+#: src/components/analysis-config-panel.tsx:260
+msgid "Скрывать ноды этой категории из графа (скоро)"
+msgstr "从图中隐藏此类别节点（即将推出）"
+
+#: src/components/analysis-config-panel.tsx:172
+msgid "Скрыть неклассифицированные"
+msgstr "隐藏未分类"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:164
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:113
+msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
+msgstr "请先在主图标签页选择项目文件夹并等待分析完成。"
+
+#: src/routes/index.tsx:34
+msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
+msgstr "创建项目 — 将出现在标签页中并获得带 UUID 的地址。"
+
+#: src/components/classification/add-selector-filter-action.tsx:156
+msgid "Создать в настройках"
+msgstr "在设置中创建"
+
+#: src/components/dot-svg-canvas.tsx:292
+msgid "Сохранить граф как SVG"
+msgstr "将图保存为 SVG"
+
+#: src/components/project/project-file-count-section.tsx:21
+msgid "Считаем…"
+msgstr "正在计数…"
+
+#: src/components/project/project-delete-section.tsx:41
+msgid "Удалить «{projectLabel}» из приложения. Папка на диске не затрагивается; восстановить проект в списке будет нельзя."
+msgstr "从应用中移除「{projectLabel}」。磁盘上的文件夹不受影响；无法将项目恢复到列表。"
+
+#: src/components/analysis-config-panel.tsx:283
+msgid "Удалить классификацию"
+msgstr "删除分类"
+
+#: src/components/project/project-delete-section.tsx:83
+msgid "Удалить навсегда"
+msgstr "永久删除"
+
+#: src/components/project/project-delete-section.tsx:57
+msgid "Удалить проект"
+msgstr "删除项目"
+
+#: src/components/project/project-delete-section.tsx:63
+msgid "Удалить проект без возможности отмены?"
+msgstr "删除项目且无法撤销？"
+
+#: src/components/project/project-delete-section.tsx:81
+msgid "Удаляем…"
+msgstr "正在删除…"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:180
+#: src/routes/$projectId/node-details/$nodeRef.tsx:69
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:89
+msgid "Узел не найден в графе проекта или ссылка некорректна."
+msgstr "在项目图中未找到节点或链接无效。"
+
+#: src/routes/$projectId/index.tsx:60
+msgid "Укажите папку проекта в настройках — анализ запустится автоматически."
+msgstr "在设置中指定项目文件夹 — 分析将自动开始。"
+
+#: src/components/project/project-file-count-section.tsx:17
+msgid "Файлы"
+msgstr "文件"
+
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
+msgid "Фулл граф"
+msgstr "完整图"
+
+#: src/components/analysis-config-panel.tsx:351
+msgid "Цвет {hex}"
+msgstr "颜色 {hex}"
+
+#: src/contexts/project-analysis-context.tsx:302
+msgid "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API."
+msgstr "此浏览器不支持选择文件夹。请使用 Chrome、Edge 或其他支持 File System Access API 的浏览器。"
+
+#: src/components/language-switcher.tsx:29
+msgid "Язык интерфейса"
+msgstr "界面语言"

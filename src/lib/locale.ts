@@ -65,6 +65,12 @@ export function toHtmlLang(locale: SupportedLocale): string {
   return locale;
 }
 
+const rtlLocales = new Set<SupportedLocale>(["ar", "fa"]);
+
+export function isRtlLocale(locale: SupportedLocale): boolean {
+  return rtlLocales.has(locale);
+}
+
 export const LOCALE_NATIVE_LABELS: Record<SupportedLocale, string> = {
   ru: "Русский",
   en: "English",

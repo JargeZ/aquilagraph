@@ -1,0 +1,527 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-04-12 12:38+1000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: es\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/project/project-settings-toolbar.tsx:19
+msgid "← Назад"
+msgstr "← Atrás"
+
+#: src/components/analysis-config-panel.tsx:273
+msgid "Bucket"
+msgstr "Grupo"
+
+#: src/core/config/analysis-config.ts:217
+msgid "BusinessLogic"
+msgstr "Lógica de negocio"
+
+#: src/components/graph-view.tsx:117
+msgid "Class"
+msgstr "Clase"
+
+#: src/core/config/analysis-config.ts:198
+msgid "Controlling"
+msgstr "Control"
+
+#: src/components/graph-view.tsx:79
+#: src/routes/$projectId/node-details/$nodeRef.tsx:126
+msgid "Debug"
+msgstr "Depuración"
+
+#: src/components/graph-view.tsx:125
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
+msgid "Decorators"
+msgstr "Decoradores"
+
+#: src/components/graph-view.tsx:258
+msgid "DOT"
+msgstr "DOT"
+
+#: src/components/analysis-config-panel.tsx:259
+msgid "Exclude"
+msgstr "Excluir"
+
+#: src/components/analysis-config-panel.tsx:102
+msgid "Exclude (regex, по строкам)"
+msgstr "Excluir (regex, por línea)"
+
+#: src/components/graph-view.tsx:255
+msgid "Flow"
+msgstr "Flujo"
+
+#: src/components/graph-view.tsx:39
+msgid "Flow renderer placeholder (extensible render pipeline)."
+msgstr "Marcador de posición del renderizador de flujo (canal de renderizado extensible)."
+
+#: src/components/analysis-config-panel.tsx:97
+msgid "Include (regex, по строкам)"
+msgstr "Incluir (regex, por línea)"
+
+#: src/components/graph-view.tsx:133
+msgid "Inherits"
+msgstr "Hereda"
+
+#: src/components/graph-view.tsx:110
+msgid "Module"
+msgstr "Módulo"
+
+#: src/components/analysis-config-panel.tsx:266
+msgid "Mute"
+msgstr "Silenciar"
+
+#: src/components/graph-view.tsx:98
+msgid "Name"
+msgstr "Nombre"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:258
+msgid "Parent classes"
+msgstr "Clases padre"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:201
+#: src/routes/$projectId/node-details/$nodeRef.tsx:80
+msgid "Ref"
+msgstr "Ref"
+
+#: src/components/graph-view.tsx:104
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
+msgid "Reference"
+msgstr "Referencia"
+
+#: src/components/analysis-config-panel.tsx:426
+msgid "regex-паттерн..."
+msgstr "Patrón regex…"
+
+#: src/core/config/analysis-config.ts:228
+msgid "SideEffects"
+msgstr "Efectos secundarios"
+
+#: src/components/graph-view.tsx:140
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
+msgid "Source"
+msgstr "Origen"
+
+#: src/components/analysis-config-panel.tsx:214
+msgid "Template: Django"
+msgstr "Plantilla: Django"
+
+#: src/core/config/analysis-config.ts:239
+msgid "Tests"
+msgstr "Pruebas"
+
+#: src/components/graph-view.tsx:57
+#~ msgid "Unclassified"
+#~ msgstr ""
+
+#: src/components/graph-view.tsx:147
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
+msgid "Uses"
+msgstr "Usa"
+
+#: src/components/project/project-analysis-run-section.tsx:24
+msgid "Анализировать"
+msgstr "Analizar"
+
+#: src/components/project/project-analysis-run-section.tsx:22
+#: src/components/project/project-graph-toolbar.tsx:25
+msgid "Анализируем…"
+msgstr "Analizando…"
+
+#: src/components/classification/add-selector-filter-action.tsx:205
+msgid "Введите строку…"
+msgstr "Escriba texto…"
+
+#: src/components/project/project-file-count-section.tsx:31
+msgid "Выберите каталог, чтобы увидеть число файлов."
+msgstr "Seleccione una carpeta para ver el número de archivos."
+
+#: src/components/classification/add-selector-filter-action.tsx:180
+msgid "Выберите…"
+msgstr "Seleccionar…"
+
+#: src/components/project/project-directory-section.tsx:38
+msgid "Выбор папки…"
+msgstr "Eligiendo carpeta…"
+
+#: src/components/project/project-directory-section.tsx:40
+msgid "Выбрать папку"
+msgstr "Elegir carpeta"
+
+#: src/components/analysis-config-panel.tsx:330
+msgid "Выбрать цвет категории"
+msgstr "Elegir color de categoría"
+
+#: src/components/AppShell.tsx:63
+msgid "Главная"
+msgstr "Inicio"
+
+#: src/components/analysis-config-panel.tsx:114
+msgid "Глубина модуля"
+msgstr "Profundidad del módulo"
+
+#. placeholder {0}: elements.length
+#: src/components/graph-view.tsx:252
+msgid "Граф ({0})"
+msgstr "Grafo ({0})"
+
+#: src/components/analysis-config-panel.tsx:267
+msgid "Делать цвет нод полупрозрачным (скоро)"
+msgstr "Hacer el color de nodos semitransparente (próximamente)"
+
+#: src/components/graph-view.tsx:90
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
+msgid "Детали"
+msgstr "Detalles"
+
+#: src/contexts/project-analysis-context.tsx:323
+msgid "Диалог выбора папки уже открыт. Закройте его или дождитесь завершения."
+msgstr "El selector de carpetas ya está abierto. Ciérrelo o espere a que termine."
+
+#: src/components/classification/add-selector-filter-action.tsx:225
+msgid "Добавить"
+msgstr "Añadir"
+
+#: src/components/classification/add-selector-filter-action.tsx:61
+msgid "Добавить reference в классификацию"
+msgstr "Añadir referencia a la clasificación"
+
+#: src/components/classification/add-selector-filter-action.tsx:63
+msgid "Добавить декоратор в классификацию"
+msgstr "Añadir decorador a la clasificación"
+
+#: src/components/analysis-config-panel.tsx:197
+#: src/components/analysis-config-panel.tsx:202
+msgid "Добавить классификацию"
+msgstr "Añadir clasificación"
+
+#: src/components/classification/add-selector-filter-action.tsx:65
+msgid "Добавить родительский класс в классификацию"
+msgstr "Añadir clase padre a la clasificación"
+
+#: src/contexts/project-analysis-context.tsx:219
+msgid "Доступ не выдан. Попробуйте снова или выберите папку заново."
+msgstr "No se concedió acceso. Inténtelo de nuevo o elija la carpeta otra vez."
+
+#: src/routes/$projectId/node-details/$nodeRef.tsx:92
+msgid "Заглушка"
+msgstr "Marcador de posición"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:145
+msgid "Загрузка анализа…"
+msgstr "Cargando análisis…"
+
+#: src/routes/$projectId/node-details/$nodeRef.tsx:50
+msgid "Загрузка…"
+msgstr "Cargando…"
+
+#: src/components/classification/add-selector-filter-action.tsx:195
+msgid "Значение"
+msgstr "Valor"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:187
+#: src/routes/$projectId/node-details/$nodeRef.tsx:75
+msgid "К графу"
+msgstr "Al grafo"
+
+#: src/components/project/project-directory-section.tsx:28
+msgid "Каталог"
+msgstr "Carpeta"
+
+#: src/routes/$projectId/index.tsx:57
+msgid "Каталог не выбран"
+msgstr "No hay carpeta seleccionada"
+
+#: src/contexts/project-analysis-context.tsx:287
+msgid "Каталог проекта"
+msgstr "Carpeta del proyecto"
+
+#: src/components/analysis-config-panel.tsx:133
+#: src/components/analysis-config-panel.tsx:154
+msgid "Класс будет сгруппирован в субграф, если в классе есть как минимум заданное количество методов, которые ведут к другим нодам"
+msgstr "Una clase se agrupa en un subgrafo cuando tiene al menos el número configurado de métodos que conectan con otros nodos."
+
+#: src/components/node-search-command.tsx:192
+msgid "Класс, метод, путь к файлу…"
+msgstr "Clase, método, ruta del archivo…"
+
+#: src/components/analysis-config-panel.tsx:178
+msgid "Классификации"
+msgstr "Clasificaciones"
+
+#: src/components/classification/add-selector-filter-action.tsx:151
+msgid "Классификаций пока нет."
+msgstr "Aún no hay clasificaciones."
+
+#: src/components/classification/add-selector-filter-action.tsx:168
+#: src/core/config/analysis-config.ts:80
+msgid "Классификация"
+msgstr "Clasificación"
+
+#: src/components/graph-view.tsx:292
+msgid "Копировать DOT"
+msgstr "Copiar DOT"
+
+#: src/components/analysis-config-panel.tsx:135
+msgid "Минимально методов для детализации"
+msgstr "Mínimo de métodos para el subgrafo"
+
+#: src/components/AppShell.tsx:45
+msgid "На главную"
+msgstr "Ir al inicio"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:310
+#: src/routes/$projectId/node-details/$nodeRef.tsx:115
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:141
+msgid "Назад"
+msgstr "Atrás"
+
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:94
+msgid "Назад к графу"
+msgstr "Volver al grafo"
+
+#: src/components/analysis-config-panel.tsx:251
+msgid "Название классификации"
+msgstr "Nombre de la clasificación"
+
+#: src/components/project/project-graph-toolbar.tsx:30
+#: src/components/project/project-settings-toolbar.tsx:23
+#: src/routes/$projectId/index.tsx:47
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:155
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:171
+#: src/routes/$projectId/node-details/$nodeRef.tsx:60
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:104
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:120
+msgid "Настройки"
+msgstr "Ajustes"
+
+#: src/components/analysis-config-panel.tsx:92
+msgid "Настройки анализа"
+msgstr "Ajustes de análisis"
+
+#: src/components/analysis-config-panel.tsx:201
+msgid "Не более {MAX_CLASSIFICATIONS} классификаций"
+msgstr "Como máximo {MAX_CLASSIFICATIONS} clasificaciones"
+
+#: src/contexts/project-analysis-context.tsx:328
+msgid "Не удалось выбрать каталог"
+msgstr "No se pudo seleccionar la carpeta"
+
+#: src/contexts/project-analysis-context.tsx:231
+msgid "Не удалось запросить доступ"
+msgstr "No se pudo solicitar acceso"
+
+#: src/contexts/project-analysis-context.tsx:264
+msgid "Не удалось прочитать каталог"
+msgstr "No se pudo leer la carpeta"
+
+#: src/components/project/project-delete-section.tsx:27
+msgid "Не удалось удалить проект"
+msgstr "No se pudo eliminar el proyecto"
+
+#: src/contexts/project-analysis-context.tsx:365
+msgid "Неизвестная ошибка анализа"
+msgstr "Error de análisis desconocido"
+
+#: src/components/graph-view.tsx:57
+msgid "Неклассифицировано"
+msgstr "Sin clasificar"
+
+#: src/components/node-search-command.tsx:214
+msgid "Нет узлов"
+msgstr "No hay nodos"
+
+#: src/components/node-search-command.tsx:212
+msgid "Ничего не найдено"
+msgstr "Sin resultados"
+
+#: src/core/config/analysis-config.ts:172
+msgid "Новая классификация"
+msgstr "Nueva clasificación"
+
+#: src/routes/index.tsx:41
+msgid "Новый проект"
+msgstr "Nuevo proyecto"
+
+#: src/contexts/project-analysis-context.tsx:192
+msgid "Нужно снова разрешить доступ к сохранённой папке. Нажмите «Разрешить доступ»."
+msgstr "Vuelva a permitir el acceso a la carpeta guardada. Pulse Conceder acceso."
+
+#: src/components/project/project-directory-section.tsx:58
+msgid "Обновить счётчик"
+msgstr "Actualizar recuento"
+
+#: src/components/analysis-config-panel.tsx:274
+msgid "Объединять ноды класса в субграф на графе"
+msgstr "Agrupar nodos de la clase en un subgrafo en el grafo"
+
+#: src/components/project/project-delete-section.tsx:38
+msgid "Опасная зона"
+msgstr "Zona peligrosa"
+
+#: src/routes/$projectId/index.tsx:68
+msgid "Открыть настройки"
+msgstr "Abrir ajustes"
+
+#: src/components/classification/add-selector-filter-action.tsx:217
+#: src/components/project/project-delete-section.tsx:72
+msgid "Отмена"
+msgstr "Cancelar"
+
+#: src/contexts/project-analysis-context.tsx:403
+msgid "Ошибка построения графа"
+msgstr "Error al construir el grafo"
+
+#: src/components/dot-svg-canvas.tsx:337
+msgid "Ошибка рендеринга графа:"
+msgstr "Error al renderizar el grafo:"
+
+#: src/components/project/project-directory-section.tsx:65
+msgid "Папка не выбрана — нажмите «Выбрать папку»."
+msgstr "No hay carpeta seleccionada — pulse Elegir carpeta."
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:92
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:195
+msgid "Подграф"
+msgstr "Subgrafo"
+
+#: src/components/node-search-command.tsx:179
+msgid "Поиск узлов графа"
+msgstr "Buscar nodos del grafo"
+
+#: src/routes/index.tsx:64
+msgid "Пока нет проектов."
+msgstr "Aún no hay proyectos."
+
+#: src/components/project/project-directory-section.tsx:70
+msgid "После перезагрузки страницы браузер требует повторного разрешения на чтение каталога."
+msgstr "Tras recargar la página, el navegador vuelve a pedir permiso para leer la carpeta."
+
+#: src/components/graph-view-skeleton.tsx:18
+msgid "Построение графа"
+msgstr "Construyendo grafo"
+
+#: src/components/graph-view-skeleton.tsx:16
+msgid "Построение графа, ожидание"
+msgstr "Construyendo grafo, espere"
+
+#: src/components/project/project-delete-section.tsx:15
+msgid "проект"
+msgstr "proyecto"
+
+#: src/components/project/project-graph-toolbar.tsx:20
+#: src/components/project/project-settings-toolbar.tsx:23
+msgid "Проект"
+msgstr "Proyecto"
+
+#. placeholder {0}: projects.length + 1
+#: src/routes/index.tsx:21
+msgid "Проект {0}"
+msgstr "Proyecto {0}"
+
+#: src/components/project/project-directory-section.tsx:49
+msgid "Разрешить доступ"
+msgstr "Conceder acceso"
+
+#: src/components/node-search-command.tsx:206
+msgid "Результаты поиска"
+msgstr "Resultados de búsqueda"
+
+#: src/components/dot-svg-canvas.tsx:363
+msgid "Скачать SVG"
+msgstr "Descargar SVG"
+
+#: src/components/graph-view.tsx:292
+msgid "Скопировано"
+msgstr "Copiado"
+
+#: src/components/analysis-config-panel.tsx:260
+msgid "Скрывать ноды этой категории из графа (скоро)"
+msgstr "Ocultar nodos de esta categoría en el grafo (próximamente)"
+
+#: src/components/analysis-config-panel.tsx:172
+msgid "Скрыть неклассифицированные"
+msgstr "Ocultar sin clasificar"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:164
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:113
+msgid "Сначала выберите каталог проекта и дождитесь анализа на главной вкладке графа."
+msgstr "Primero seleccione la carpeta del proyecto y espere el análisis en la pestaña principal del grafo."
+
+#: src/routes/index.tsx:34
+msgid "Создайте проект — он появится во вкладках и получит свой адрес с UUID."
+msgstr "Cree un proyecto: aparecerá en las pestañas y tendrá su propia URL con UUID."
+
+#: src/components/classification/add-selector-filter-action.tsx:156
+msgid "Создать в настройках"
+msgstr "Crear en ajustes"
+
+#: src/components/dot-svg-canvas.tsx:292
+msgid "Сохранить граф как SVG"
+msgstr "Guardar grafo como SVG"
+
+#: src/components/project/project-file-count-section.tsx:21
+msgid "Считаем…"
+msgstr "Contando…"
+
+#: src/components/project/project-delete-section.tsx:41
+msgid "Удалить «{projectLabel}» из приложения. Папка на диске не затрагивается; восстановить проект в списке будет нельзя."
+msgstr "Quitar «{projectLabel}» de la aplicación. La carpeta en disco no cambia; no podrá restaurar el proyecto en la lista."
+
+#: src/components/analysis-config-panel.tsx:283
+msgid "Удалить классификацию"
+msgstr "Eliminar clasificación"
+
+#: src/components/project/project-delete-section.tsx:83
+msgid "Удалить навсегда"
+msgstr "Eliminar para siempre"
+
+#: src/components/project/project-delete-section.tsx:57
+msgid "Удалить проект"
+msgstr "Eliminar proyecto"
+
+#: src/components/project/project-delete-section.tsx:63
+msgid "Удалить проект без возможности отмены?"
+msgstr "¿Eliminar el proyecto sin poder deshacerlo?"
+
+#: src/components/project/project-delete-section.tsx:81
+msgid "Удаляем…"
+msgstr "Eliminando…"
+
+#: src/routes/$projectId/node-debug-details/$nodeRef.tsx:180
+#: src/routes/$projectId/node-details/$nodeRef.tsx:69
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:89
+msgid "Узел не найден в графе проекта или ссылка некорректна."
+msgstr "Nodo no encontrado en el grafo del proyecto o enlace no válido."
+
+#: src/routes/$projectId/index.tsx:60
+msgid "Укажите папку проекта в настройках — анализ запустится автоматически."
+msgstr "Indique la carpeta del proyecto en los ajustes: el análisis comenzará automáticamente."
+
+#: src/components/project/project-file-count-section.tsx:17
+msgid "Файлы"
+msgstr "Archivos"
+
+#: src/routes/$projectId/node-sub-graph/$nodeRef.tsx:149
+msgid "Фулл граф"
+msgstr "Grafo completo"
+
+#: src/components/analysis-config-panel.tsx:351
+msgid "Цвет {hex}"
+msgstr "Color {hex}"
+
+#: src/contexts/project-analysis-context.tsx:302
+msgid "Этот браузер не поддерживает выбор папки. Используйте Chrome, Edge или другой браузер с File System Access API."
+msgstr "Este navegador no admite elegir carpetas. Use Chrome, Edge u otro con la API File System Access."
+
+#: src/components/language-switcher.tsx:29
+msgid "Язык интерфейса"
+msgstr "Idioma de la interfaz"

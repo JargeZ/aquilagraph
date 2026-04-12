@@ -11,6 +11,7 @@ import { LocaleContext } from "@/contexts/locale-context-types";
 import { activateLocale } from "@/lib/activate-locale";
 import { appI18n } from "@/lib/app-i18n";
 import {
+  isRtlLocale,
   LOCALE_STORAGE_KEY,
   resolveInitialLocale,
   type SupportedLocale,
@@ -26,6 +27,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     void activateLocale(preferred).then((effective) => {
       setLocaleState(effective);
       document.documentElement.lang = toHtmlLang(effective);
+      document.documentElement.dir = isRtlLocale(effective) ? "rtl" : "ltr";
       setReady(true);
     });
   }, []);
@@ -35,6 +37,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     void activateLocale(next).then((effective) => {
       setLocaleState(effective);
       document.documentElement.lang = toHtmlLang(effective);
+      document.documentElement.dir = isRtlLocale(effective) ? "rtl" : "ltr";
     });
   }, []);
 
