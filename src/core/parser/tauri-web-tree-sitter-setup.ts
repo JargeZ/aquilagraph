@@ -14,7 +14,7 @@ function ensureProcessVersionsForWebTreeSitter(): void {
     versions?: Record<string, string | undefined>;
   };
   if (typeof p.versions !== "object" || p.versions === null) {
-    p.versions = {};
+    p.versions = {} as NodeJS.ProcessVersions;
   }
 }
 

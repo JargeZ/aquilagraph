@@ -40,7 +40,7 @@ export function filterUnclassifiedNodes(
     el: ExecutableElement,
     visited: Set<ExecutableElement>,
   ): boolean {
-    if (cache.has(el)) return cache.get(el)!;
+    if (cache.has(el)) return cache.get(el) ?? false;
     if (el.type !== UNCLASSIFIED_TYPE) return true;
     if (visited.has(el)) return false;
 

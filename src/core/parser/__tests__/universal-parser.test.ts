@@ -16,7 +16,7 @@ describe("universal-parser", () => {
     expect(result.scopes.length).toBeGreaterThanOrEqual(1);
     const cls = result.scopes.find((s) => s.name === "BaseBusinessAction");
     expect(cls).toBeDefined();
-    expect(cls!.type).toBe("class");
+    expect(cls?.type).toBe("class");
   });
 
   it("parses TypeScript files", async () => {
@@ -30,7 +30,7 @@ describe("universal-parser", () => {
     expect(result.scopes.length).toBeGreaterThanOrEqual(1);
     const cls = result.scopes.find((s) => s.name === "BaseBusinessAction");
     expect(cls).toBeDefined();
-    expect(cls!.type).toBe("class");
+    expect(cls?.type).toBe("class");
   });
 
   it("auto-detects language from extension", async () => {

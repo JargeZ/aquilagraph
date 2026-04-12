@@ -1,6 +1,6 @@
-# Installs Node.js dependencies and pnpm, and checks formatting + linting
+# Installs Node.js dependencies and pnpm; runs Biome and TypeScript checks
 
-name: Frontend linting
+name: Frontend lint and typecheck
 permissions:
   contents: read
 
@@ -15,7 +15,7 @@ on:
 
 jobs:
   frontend-linting:
-    name: Frontend linting
+    name: Frontend lint and typecheck
     strategy:
       fail-fast: true
       matrix:
@@ -39,5 +39,5 @@ jobs:
       - name: Install dependencies from lockfile
         run: pnpm install --frozen-lockfile
 
-      - name: Run lint step
-        run: pnpm lint
+      - name: Run lint and typecheck
+        run: pnpm check

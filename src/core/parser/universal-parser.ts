@@ -29,6 +29,7 @@ async function getPythonParser(): Promise<PythonScopeExtractionParser> {
   if (pythonParser) return pythonParser;
   pythonParser = new PythonScopeExtractionParser();
   pythonInitPromise ??= pythonParser.initialize();
+  // biome-ignore lint/nursery/useAwaitThenable: initialize() returns Promise<void> (codeparsers-internal.d.ts); Biome does not resolve the internal path alias types.
   await pythonInitPromise;
   return pythonParser;
 }
@@ -37,6 +38,7 @@ async function getTsParser(): Promise<ScopeExtractionParser> {
   if (tsParser) return tsParser;
   tsParser = new ScopeExtractionParser("typescript");
   tsInitPromise ??= tsParser.initialize();
+  // biome-ignore lint/nursery/useAwaitThenable: initialize() returns Promise<void> (codeparsers-internal.d.ts); Biome does not resolve the internal path alias types.
   await tsInitPromise;
   return tsParser;
 }

@@ -30,7 +30,8 @@ export async function discoverCodeFiles(
   const queue = [rootPath];
 
   while (queue.length > 0) {
-    const dir = queue.pop()!;
+    const dir = queue.pop();
+    if (dir === undefined) break;
     const entries = await fs.listDir(dir);
 
     for (const entry of entries) {

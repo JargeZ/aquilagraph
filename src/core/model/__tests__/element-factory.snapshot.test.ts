@@ -72,7 +72,7 @@ describe("element-factory snapshots", () => {
           e.reference === "core_module.actions.add_task_to_list.AddTaskToList",
       );
       expect(addTask).toBeDefined();
-      expect(addTask!.parentClasses).toContain(
+      expect(addTask?.parentClasses).toContain(
         "utils.base_action.BaseBusinessAction",
       );
     });

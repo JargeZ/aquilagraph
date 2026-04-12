@@ -5,7 +5,6 @@ import type {
 } from "@/core/parser/codeparsers-types";
 import {
   buildReference,
-  extractParentClasses,
   extractParentClassesFromScope,
   extractParentClassesFromSignature,
   filePathToModuleRef,
@@ -101,33 +100,37 @@ describe("getModuleName", () => {
   });
 });
 
-describe("extractParentClasses (legacy)", () => {
+describe("extractParentClassesFromSignature", () => {
   it("extracts single parent from Python signature", () => {
     expect(
-      extractParentClasses("class PerformExport(BaseBusinessAction)"),
+      extractParentClassesFromSignature(
+        "class PerformExport(BaseBusinessAction)",
+      ),
     ).toEqual(["BaseBusinessAction"]);
   });
 
   it("extracts dotted parent", () => {
     expect(
-      extractParentClasses("class TodoTaskViewSet(viewsets.ModelViewSet)"),
+      extractParentClassesFromSignature(
+        "class TodoTaskViewSet(viewsets.ModelViewSet)",
+      ),
     ).toEqual(["viewsets.ModelViewSet"]);
   });
 
   it("extracts multiple parents", () => {
-    expect(extractParentClasses("class Foo(Bar, Baz, Qux)")).toEqual([
-      "Bar",
-      "Baz",
-      "Qux",
-    ]);
+    expect(
+      extractParentClassesFromSignature("class Foo(Bar, Baz, Qux)"),
+    ).toEqual(["Bar", "Baz", "Qux"]);
   });
 
   it("returns empty for class without parents", () => {
-    expect(extractParentClasses("class BaseBusinessAction")).toEqual([]);
+    expect(
+      extractParentClassesFromSignature("class BaseBusinessAction"),
+    ).toEqual([]);
   });
 
   it("returns empty for non-class signature", () => {
-    expect(extractParentClasses("def foo(a, b)")).toEqual([]);
+    expect(extractParentClassesFromSignature("def foo(a, b)")).toEqual([]);
   });
 });
 

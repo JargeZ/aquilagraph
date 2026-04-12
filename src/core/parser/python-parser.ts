@@ -10,6 +10,7 @@ async function getParser(): Promise<PythonScopeExtractionParser> {
 
   parserInstance = new PythonScopeExtractionParser();
   initPromise ??= parserInstance.initialize();
+  // biome-ignore lint/nursery/useAwaitThenable: initialize() returns Promise<void> (codeparsers-internal.d.ts); Biome does not resolve the internal path alias types.
   await initPromise;
   return parserInstance;
 }

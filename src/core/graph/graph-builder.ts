@@ -370,14 +370,16 @@ function groupByModule(
       if (!mod.classes.has(classRef)) {
         mod.classes.set(classRef, []);
       }
-      mod.classes.get(classRef)!.push(el);
+      const methodBucket = mod.classes.get(classRef);
+      if (methodBucket) methodBucket.push(el);
     } else if (el.className) {
       // Class node itself -- also goes into the class subgraph
       const classRef = el.className;
       if (!mod.classes.has(classRef)) {
         mod.classes.set(classRef, []);
       }
-      mod.classes.get(classRef)!.push(el);
+      const classBucket = mod.classes.get(classRef);
+      if (classBucket) classBucket.push(el);
     } else {
       mod.standalone.push(el);
     }

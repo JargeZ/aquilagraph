@@ -63,7 +63,7 @@ describe("createElementsFromAnalyses", () => {
         e.reference === "export_module.views.todotask.TodoTaskViewSet.list",
     );
     expect(listMethod).toBeDefined();
-    expect(listMethod!.className).toBe("TodoTaskViewSet");
+    expect(listMethod?.className).toBe("TodoTaskViewSet");
   });
 
   it("assigns className to the class itself", () => {
@@ -71,7 +71,7 @@ describe("createElementsFromAnalyses", () => {
       (e) => e.reference === "export_module.views.todotask.TodoTaskViewSet",
     );
     expect(cls).toBeDefined();
-    expect(cls!.className).toBe("TodoTaskViewSet");
+    expect(cls?.className).toBe("TodoTaskViewSet");
   });
 
   it("methods inherit normalized parentClasses from their class", () => {
@@ -81,7 +81,7 @@ describe("createElementsFromAnalyses", () => {
         "core_module.actions.get_tasks_list.GetTasksList.execute",
     );
     expect(execute).toBeDefined();
-    expect(execute!.parentClasses).toContain(
+    expect(execute?.parentClasses).toContain(
       "utils.base_action.BaseBusinessAction",
     );
   });
@@ -90,7 +90,7 @@ describe("createElementsFromAnalyses", () => {
     const cls = elements.find(
       (e) => e.reference === "export_module.views.todotask.TodoTaskViewSet",
     );
-    expect(cls!.parentClasses).toEqual([
+    expect(cls?.parentClasses).toEqual([
       "rest_framework.viewsets.ModelViewSet",
     ]);
   });
@@ -100,14 +100,14 @@ describe("createElementsFromAnalyses", () => {
       (e) => e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
     );
     expect(task).toBeDefined();
-    expect(task!.decorators.some((d) => d.includes("shared_task"))).toBe(true);
+    expect(task?.decorators.some((d) => d.includes("shared_task"))).toBe(true);
   });
 
   it("top-level functions have null className", () => {
     const task = elements.find(
       (e) => e.reference === "core_module.tasks.run_todo_sync.task_RunTodoSync",
     );
-    expect(task!.className).toBeNull();
+    expect(task?.className).toBeNull();
   });
 
   it("all elements start as unclassified", () => {

@@ -16,6 +16,8 @@
     "tauri": "tauri",
     "format": "biome format",
     "lint": "biome check",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "check": "pnpm lint && pnpm typecheck",
     "fix": "biome check --write",
     "dev": "tauri dev",
     "build": "tauri build",

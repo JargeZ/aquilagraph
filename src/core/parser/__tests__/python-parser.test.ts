@@ -16,7 +16,7 @@ describe("python-parser", () => {
       (s) => s.type === "class" && s.name === "BaseBusinessAction",
     );
     expect(cls).toBeDefined();
-    expect(cls!.type).toBe("class");
+    expect(cls?.type).toBe("class");
   });
 
   it("parses a class with methods and parent in signature", async () => {
@@ -27,7 +27,7 @@ describe("python-parser", () => {
       (s) => s.type === "class" && s.name === "TodoTaskViewSet",
     );
     expect(cls).toBeDefined();
-    expect(cls!.signature).toContain("viewsets.ModelViewSet");
+    expect(cls?.signature).toContain("viewsets.ModelViewSet");
 
     const methods = result.scopes.filter(
       (s) => s.type === "method" && s.parent === "TodoTaskViewSet",
@@ -48,8 +48,8 @@ describe("python-parser", () => {
       (s) => s.type === "function" && s.name === "task_RunTodoSync",
     );
     expect(fn).toBeDefined();
-    expect(fn!.decorators).toBeDefined();
-    expect(fn!.decorators!.some((d) => d.includes("shared_task"))).toBe(true);
+    expect(fn?.decorators).toBeDefined();
+    expect(fn?.decorators?.some((d) => d.includes("shared_task"))).toBe(true);
   });
 
   it("parses method identifier references for uses resolution", async () => {
@@ -63,11 +63,12 @@ describe("python-parser", () => {
       (s) => s.name === "execute" && s.parent === "PerformExport",
     );
     expect(execute).toBeDefined();
-    expect(execute!.identifierReferences.length).toBeGreaterThan(0);
+    expect(execute?.identifierReferences.length).toBeGreaterThan(0);
 
-    const importedRefs = execute!.identifierReferences.filter(
-      (r) => r.kind === "import" && r.isLocalImport,
-    );
+    const importedRefs =
+      execute?.identifierReferences.filter(
+        (r) => r.kind === "import" && r.isLocalImport,
+      ) ?? [];
     const identifiers = importedRefs.map((r) => r.identifier);
     expect(identifiers).toContain("GetTasksList");
     expect(identifiers).toContain("task_RunTodoSync");
