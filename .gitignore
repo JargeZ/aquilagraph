@@ -18,6 +18,7 @@ count.txt
 .tanstack
 .wrangler
 .output
+e2e/output
 .vinxi
 todos.json
 storybook-static
