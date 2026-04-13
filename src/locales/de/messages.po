@@ -25,7 +25,7 @@ msgstr "Gruppe"
 msgid "BusinessLogic"
 msgstr "Geschäftslogik"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "Klasse"
 
@@ -33,17 +33,17 @@ msgstr "Klasse"
 msgid "Controlling"
 msgstr "Steuerung"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "Debug"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "Dekoratoren"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "Ausschließen"
 msgid "Exclude (regex, по строкам)"
 msgstr "Ausschließen (Regex, zeilenweise)"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "Fluss"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "Platzhalter für Flow-Renderer (erweiterbare Render-Pipeline)."
 
@@ -67,11 +67,11 @@ msgstr "Platzhalter für Flow-Renderer (erweiterbare Render-Pipeline)."
 msgid "Include (regex, по строкам)"
 msgstr "Einschließen (Regex, zeilenweise)"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "Erbt"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "Modul"
 
@@ -79,7 +79,7 @@ msgstr "Modul"
 msgid "Mute"
 msgstr "Stummschalten"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "Name"
 
@@ -92,7 +92,7 @@ msgstr "Basisklassen"
 msgid "Ref"
 msgstr "Ref"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "Referenz"
@@ -105,7 +105,7 @@ msgstr "Regex-Muster…"
 msgid "SideEffects"
 msgstr "Nebenwirkungen"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "Quelle"
@@ -118,7 +118,7 @@ msgstr "Vorlage: Django"
 msgid "Tests"
 msgstr "Tests"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "Verwendet"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "Modultiefe"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "Graph ({0})"
 
@@ -181,7 +181,7 @@ msgstr "Graph ({0})"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "Knotenfarbe halbtransparent machen"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "Details"
@@ -278,7 +278,7 @@ msgstr "Noch keine Klassifikationen."
 msgid "Классификация"
 msgstr "Klassifikation"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "DOT kopieren"
 
@@ -355,7 +355,7 @@ msgstr "Projekt konnte nicht gelöscht werden"
 msgid "Неизвестная ошибка анализа"
 msgstr "Unbekannter Analysefehler"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "Nicht klassifiziert"
 
@@ -404,7 +404,7 @@ msgstr "Abbrechen"
 msgid "Ошибка построения графа"
 msgstr "Fehler beim Erstellen des Graphs"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "Fehler beim Rendern des Graphs:"
 
@@ -459,11 +459,11 @@ msgstr "Zugriff erlauben"
 msgid "Результаты поиска"
 msgstr "Suchergebnisse"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "SVG herunterladen"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "Kopiert"
 
@@ -488,7 +488,7 @@ msgstr "Erstellen Sie Projekte und öffnen Sie einen Codeordner — jedes Projek
 msgid "Создать в настройках"
 msgstr "In Einstellungen anlegen"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "Graph als SVG speichern"
 

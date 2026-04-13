@@ -25,7 +25,7 @@ msgstr "Nhóm"
 msgid "BusinessLogic"
 msgstr "Logic nghiệp vụ"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "Lớp"
 
@@ -33,17 +33,17 @@ msgstr "Lớp"
 msgid "Controlling"
 msgstr "Điều khiển"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "Gỡ lỗi"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "Trình trang trí"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "Loại trừ"
 msgid "Exclude (regex, по строкам)"
 msgstr "Loại trừ (regex, theo dòng)"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "Luồng"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "Giữ chỗ bộ kết xuất luồng (pipeline kết xuất mở rộng được)."
 
@@ -67,11 +67,11 @@ msgstr "Giữ chỗ bộ kết xuất luồng (pipeline kết xuất mở rộng
 msgid "Include (regex, по строкам)"
 msgstr "Bao gồm (regex, theo dòng)"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "Kế thừa"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "Mô-đun"
 
@@ -79,7 +79,7 @@ msgstr "Mô-đun"
 msgid "Mute"
 msgstr "Tắt tiếng"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "Tên"
 
@@ -92,7 +92,7 @@ msgstr "Lớp cha"
 msgid "Ref"
 msgstr "Tham chiếu"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "Tham chiếu"
@@ -105,7 +105,7 @@ msgstr "mẫu regex…"
 msgid "SideEffects"
 msgstr "Tác dụng phụ"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "Nguồn"
@@ -118,7 +118,7 @@ msgstr "Mẫu: Django"
 msgid "Tests"
 msgstr "Kiểm thử"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "Sử dụng"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "Độ sâu mô-đun"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "Đồ thị ({0})"
 
@@ -181,7 +181,7 @@ msgstr "Đồ thị ({0})"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "Làm màu nút bán trong suốt"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "Chi tiết"
@@ -278,7 +278,7 @@ msgstr "Chưa có phân loại nào."
 msgid "Классификация"
 msgstr "Phân loại"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "Sao chép DOT"
 
@@ -355,7 +355,7 @@ msgstr "Không xóa được dự án"
 msgid "Неизвестная ошибка анализа"
 msgstr "Lỗi phân tích không xác định"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "Chưa phân loại"
 
@@ -404,7 +404,7 @@ msgstr "Hủy"
 msgid "Ошибка построения графа"
 msgstr "Lỗi dựng đồ thị"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "Lỗi kết xuất đồ thị:"
 
@@ -459,11 +459,11 @@ msgstr "Cấp quyền truy cập"
 msgid "Результаты поиска"
 msgstr "Kết quả tìm kiếm"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "Tải SVG"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "Đã sao chép"
 
@@ -488,7 +488,7 @@ msgstr "Tạo dự án và mở thư mục mã — mỗi dự án có tab và đ
 msgid "Создать в настройках"
 msgstr "Tạo trong cài đặt"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "Lưu đồ thị dạng SVG"
 

@@ -10,7 +10,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "codeceptjs run"
   },
   "dependencies": {
     "abbrev": "^2.0.0",
@@ -470,7 +470,7 @@
     "string-width": "^5.1.1",
     "string-width-cjs": "^5.1.1",
     "strip-ansi": "^6.0.1",
-    "strip-ansi-cjs": "^6.0.1",
+    "strip-ansi-cjs": "^8.0.0",
     "strip-final-newline": "^2.0.0",
     "strip-json-comments": "^3.1.1",
     "sumchecker": "^3.0.1",
@@ -515,7 +515,7 @@
     "winston-transport": "^4.9.0",
     "workerpool": "^9.3.4",
     "wrap-ansi": "^6.2.0",
-    "wrap-ansi-cjs": "^7.0.0",
+    "wrap-ansi-cjs": "^8.0.0",
     "wrappy": "^1.0.2",
     "write-file-atomic": "^4.0.2",
     "ws": "^7.5.10",

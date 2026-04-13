@@ -25,7 +25,7 @@ msgstr "กลุ่ม"
 msgid "BusinessLogic"
 msgstr "ตรรกะทางธุรกิจ"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "คลาส"
 
@@ -33,17 +33,17 @@ msgstr "คลาส"
 msgid "Controlling"
 msgstr "การควบคุม"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "ดีบัก"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "ตัวตกแต่ง"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "ยกเว้น"
 msgid "Exclude (regex, по строкам)"
 msgstr "ยกเว้น (regex ทีละบรรทัด)"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "โฟลว์"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "ตัวยึดที่สำหรับตัวเรนเดอร์โฟลว์ (สายประมวลผลที่ขยายได้)"
 
@@ -67,11 +67,11 @@ msgstr "ตัวยึดที่สำหรับตัวเรนเดอ
 msgid "Include (regex, по строкам)"
 msgstr "รวม (regex ทีละบรรทัด)"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "สืบทอด"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "โมดูล"
 
@@ -79,7 +79,7 @@ msgstr "โมดูล"
 msgid "Mute"
 msgstr "ปิดเสียง"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "ชื่อ"
 
@@ -92,7 +92,7 @@ msgstr "คลาสแม่"
 msgid "Ref"
 msgstr "อ้างอิง"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "การอ้างอิง"
@@ -105,7 +105,7 @@ msgstr "รูปแบบ regex…"
 msgid "SideEffects"
 msgstr "ผลข้างเคียง"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "ซอร์ส"
@@ -118,7 +118,7 @@ msgstr "เทมเพลต: Django"
 msgid "Tests"
 msgstr "การทดสอบ"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "ใช้"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "ความลึกของโมดูล"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "กราฟ ({0})"
 
@@ -181,7 +181,7 @@ msgstr "กราฟ ({0})"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "ทำให้สีโหนดโปร่งแสงบางส่วน"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "รายละเอียด"
@@ -278,7 +278,7 @@ msgstr "ยังไม่มีประเภท"
 msgid "Классификация"
 msgstr "ประเภท"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "คัดลอก DOT"
 
@@ -355,7 +355,7 @@ msgstr "ลบโปรเจกต์ไม่สำเร็จ"
 msgid "Неизвестная ошибка анализа"
 msgstr "ข้อผิดพลาดการวิเคราะห์ที่ไม่รู้จัก"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "ยังไม่จัดประเภท"
 
@@ -404,7 +404,7 @@ msgstr "ยกเลิก"
 msgid "Ошибка построения графа"
 msgstr "ข้อผิดพลาดในการสร้างกราฟ"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "ข้อผิดพลาดในการเรนเดอร์กราฟ:"
 
@@ -459,11 +459,11 @@ msgstr "อนุญาตการเข้าถึง"
 msgid "Результаты поиска"
 msgstr "ผลการค้นหา"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "ดาวน์โหลด SVG"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "คัดลอกแล้ว"
 
@@ -488,7 +488,7 @@ msgstr "สร้างโปรเจ็กต์และเปิดโฟล
 msgid "Создать в настройках"
 msgstr "สร้างในการตั้งค่า"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "บันทึกกราฟเป็น SVG"
 

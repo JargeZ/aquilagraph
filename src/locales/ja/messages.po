@@ -25,7 +25,7 @@ msgstr "バケット"
 msgid "BusinessLogic"
 msgstr "ビジネスロジック"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "クラス"
 
@@ -33,17 +33,17 @@ msgstr "クラス"
 msgid "Controlling"
 msgstr "制御"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "デバッグ"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "デコレータ"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "除外"
 msgid "Exclude (regex, по строкам)"
 msgstr "除外（正規表現・行単位）"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "フロー"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "フローレンダラーのプレースホルダー（拡張可能なレンダーパイプライン）。"
 
@@ -67,11 +67,11 @@ msgstr "フローレンダラーのプレースホルダー（拡張可能なレ
 msgid "Include (regex, по строкам)"
 msgstr "含める（正規表現・行単位）"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "継承"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "モジュール"
 
@@ -79,7 +79,7 @@ msgstr "モジュール"
 msgid "Mute"
 msgstr "ミュート"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "名前"
 
@@ -92,7 +92,7 @@ msgstr "親クラス"
 msgid "Ref"
 msgstr "参照"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "参照"
@@ -105,7 +105,7 @@ msgstr "正規表現パターン…"
 msgid "SideEffects"
 msgstr "副作用"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "ソース"
@@ -118,7 +118,7 @@ msgstr "テンプレート: Django"
 msgid "Tests"
 msgstr "テスト"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "使用"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "モジュールの深さ"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "グラフ（{0}）"
 
@@ -181,7 +181,7 @@ msgstr "グラフ（{0}）"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "ノードの色を半透明にする"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "詳細"
@@ -278,7 +278,7 @@ msgstr "まだ分類がありません。"
 msgid "Классификация"
 msgstr "分類"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "DOTをコピー"
 
@@ -355,7 +355,7 @@ msgstr "プロジェクトを削除できませんでした"
 msgid "Неизвестная ошибка анализа"
 msgstr "不明な解析エラー"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "未分類"
 
@@ -404,7 +404,7 @@ msgstr "キャンセル"
 msgid "Ошибка построения графа"
 msgstr "グラフの構築エラー"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "グラフのレンダリングエラー:"
 
@@ -459,11 +459,11 @@ msgstr "アクセスを許可"
 msgid "Результаты поиска"
 msgstr "検索結果"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "SVGをダウンロード"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "コピーしました"
 
@@ -488,7 +488,7 @@ msgstr "プロジェクトを作成し、コードフォルダを開きます。
 msgid "Создать в настройках"
 msgstr "設定で作成"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "グラフをSVGとして保存"
 

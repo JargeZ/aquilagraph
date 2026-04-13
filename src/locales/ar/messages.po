@@ -25,7 +25,7 @@ msgstr "مجموعة"
 msgid "BusinessLogic"
 msgstr "منطق الأعمال"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "صنف"
 
@@ -33,17 +33,17 @@ msgstr "صنف"
 msgid "Controlling"
 msgstr "تحكم"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "تصحيح"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "مزينات"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "استبعاد"
 msgid "Exclude (regex, по строкам)"
 msgstr "استبعاد (تعبير منتظم، سطر بسطر)"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "تدفق"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "عنصر نائب لعارض التدفق (مسار عرض قابل للتوسيع)."
 
@@ -67,11 +67,11 @@ msgstr "عنصر نائب لعارض التدفق (مسار عرض قابل لل
 msgid "Include (regex, по строкам)"
 msgstr "تضمين (تعبير منتظم، سطر بسطر)"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "يرث"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "وحدة"
 
@@ -79,7 +79,7 @@ msgstr "وحدة"
 msgid "Mute"
 msgstr "كتم"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "الاسم"
 
@@ -92,7 +92,7 @@ msgstr "الأصناف الأب"
 msgid "Ref"
 msgstr "مرجع"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "مرجع"
@@ -105,7 +105,7 @@ msgstr "نمط تعبير منتظم…"
 msgid "SideEffects"
 msgstr "آثار جانبية"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "مصدر"
@@ -118,7 +118,7 @@ msgstr "قالب: Django"
 msgid "Tests"
 msgstr "اختبارات"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "يستخدم"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "عمق الوحدة"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "رسم بياني ({0})"
 
@@ -181,7 +181,7 @@ msgstr "رسم بياني ({0})"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "جعل لون العقد شبه شفاف"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "تفاصيل"
@@ -278,7 +278,7 @@ msgstr "لا توجد تصنيفات بعد."
 msgid "Классификация"
 msgstr "تصنيف"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "نسخ DOT"
 
@@ -355,7 +355,7 @@ msgstr "تعذر حذف المشروع"
 msgid "Неизвестная ошибка анализа"
 msgstr "خطأ تحليل غير معروف"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "غير مصنف"
 
@@ -404,7 +404,7 @@ msgstr "إلغاء"
 msgid "Ошибка построения графа"
 msgstr "خطأ في بناء الرسم"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "خطأ في عرض الرسم:"
 
@@ -459,11 +459,11 @@ msgstr "منح الوصول"
 msgid "Результаты поиска"
 msgstr "نتائج البحث"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "تنزيل SVG"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "تم النسخ"
 
@@ -488,7 +488,7 @@ msgstr "أنشئ مشاريع وافتح مجلدًا للشفرة — لكل م
 msgid "Создать в настройках"
 msgstr "إنشاء في الإعدادات"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "حفظ الرسم كـ SVG"
 

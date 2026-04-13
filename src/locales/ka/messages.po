@@ -25,7 +25,7 @@ msgstr "ჯგუფი"
 msgid "BusinessLogic"
 msgstr "ბიზნეს-ლოგიკა"
 
-#: src/components/graph-view.tsx:117
+#: src/components/graph-view.tsx:121
 msgid "Class"
 msgstr "კლასი"
 
@@ -33,17 +33,17 @@ msgstr "კლასი"
 msgid "Controlling"
 msgstr "კონტროლი"
 
-#: src/components/graph-view.tsx:79
+#: src/components/graph-view.tsx:83
 #: src/routes/$projectId/node-details/$nodeRef.tsx:126
 msgid "Debug"
 msgstr "დებაგი"
 
-#: src/components/graph-view.tsx:125
+#: src/components/graph-view.tsx:129
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:241
 msgid "Decorators"
 msgstr "დეკორატორები"
 
-#: src/components/graph-view.tsx:258
+#: src/components/graph-view.tsx:266
 msgid "DOT"
 msgstr "DOT"
 
@@ -55,11 +55,11 @@ msgstr "გამორიცხვა"
 msgid "Exclude (regex, по строкам)"
 msgstr "გამორიცხვა (regex, ხაზებად)"
 
-#: src/components/graph-view.tsx:255
+#: src/components/graph-view.tsx:263
 msgid "Flow"
 msgstr "ნაკადი"
 
-#: src/components/graph-view.tsx:39
+#: src/components/graph-view.tsx:43
 msgid "Flow renderer placeholder (extensible render pipeline)."
 msgstr "ნაკადის რენდერის placeholder (გაფართოებადი რენდერ-ხაზი)."
 
@@ -67,11 +67,11 @@ msgstr "ნაკადის რენდერის placeholder (გაფა
 msgid "Include (regex, по строкам)"
 msgstr "ჩართვა (regex, ხაზებად)"
 
-#: src/components/graph-view.tsx:133
+#: src/components/graph-view.tsx:137
 msgid "Inherits"
 msgstr "აქვს მემკვიდრეობა"
 
-#: src/components/graph-view.tsx:110
+#: src/components/graph-view.tsx:114
 msgid "Module"
 msgstr "მოდული"
 
@@ -79,7 +79,7 @@ msgstr "მოდული"
 msgid "Mute"
 msgstr "დადუმება"
 
-#: src/components/graph-view.tsx:98
+#: src/components/graph-view.tsx:102
 msgid "Name"
 msgstr "სახელი"
 
@@ -92,7 +92,7 @@ msgstr "მშობელი კლასები"
 msgid "Ref"
 msgstr "Ref"
 
-#: src/components/graph-view.tsx:104
+#: src/components/graph-view.tsx:108
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:230
 msgid "Reference"
 msgstr "მითითება"
@@ -105,7 +105,7 @@ msgstr "regex შაბლონი…"
 msgid "SideEffects"
 msgstr "გვერდითი ეფექტები"
 
-#: src/components/graph-view.tsx:140
+#: src/components/graph-view.tsx:144
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:277
 msgid "Source"
 msgstr "წყარო"
@@ -118,7 +118,7 @@ msgstr "შაბლონი: Django"
 msgid "Tests"
 msgstr "ტესტები"
 
-#: src/components/graph-view.tsx:147
+#: src/components/graph-view.tsx:151
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:286
 msgid "Uses"
 msgstr "იყენებს"
@@ -173,7 +173,7 @@ msgid "Глубина модуля"
 msgstr "მოდულის სიღრმე"
 
 #. placeholder {0}: elements.length
-#: src/components/graph-view.tsx:252
+#: src/components/graph-view.tsx:260
 msgid "Граф ({0})"
 msgstr "გრაფი ({0})"
 
@@ -181,7 +181,7 @@ msgstr "გრაფი ({0})"
 msgid "Делать цвет нод полупрозрачным"
 msgstr "კვანძების ფერის ნახევრად გამჭვირვალე გაკეთება"
 
-#: src/components/graph-view.tsx:90
+#: src/components/graph-view.tsx:94
 #: src/routes/$projectId/node-debug-details/$nodeRef.tsx:103
 msgid "Детали"
 msgstr "დეტალები"
@@ -278,7 +278,7 @@ msgstr "კლასიფიკაციები ჯერ არ არის
 msgid "Классификация"
 msgstr "კლასიფიკაცია"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:303
 msgid "Копировать DOT"
 msgstr "DOT-ის კოპირება"
 
@@ -355,7 +355,7 @@ msgstr "პროექტის წაშლა ვერ მოხერხდ
 msgid "Неизвестная ошибка анализа"
 msgstr "ანალიზის უცნობი შეცდომა"
 
-#: src/components/graph-view.tsx:57
+#: src/components/graph-view.tsx:61
 msgid "Неклассифицировано"
 msgstr "კლასიფიცირებული არ არის"
 
@@ -404,7 +404,7 @@ msgstr "გაუქმება"
 msgid "Ошибка построения графа"
 msgstr "გრაფის აგების შეცდომა"
 
-#: src/components/dot-svg-canvas.tsx:337
+#: src/components/dot-svg-canvas.tsx:361
 msgid "Ошибка рендеринга графа:"
 msgstr "გრაფის რენდერის შეცდომა:"
 
@@ -459,11 +459,11 @@ msgstr "წვდომის დაშვება"
 msgid "Результаты поиска"
 msgstr "ძიების შედეგები"
 
-#: src/components/dot-svg-canvas.tsx:363
+#: src/components/dot-svg-canvas.tsx:387
 msgid "Скачать SVG"
 msgstr "SVG-ის ჩამოტვირთვა"
 
-#: src/components/graph-view.tsx:292
+#: src/components/graph-view.tsx:301
 msgid "Скопировано"
 msgstr "კოპირებულია"
 
@@ -488,7 +488,7 @@ msgstr "შექმენით პროექტები და გახს
 msgid "Создать в настройках"
 msgstr "შექმნა პარამეტრებში"
 
-#: src/components/dot-svg-canvas.tsx:292
+#: src/components/dot-svg-canvas.tsx:316
 msgid "Сохранить граф как SVG"
 msgstr "გრაფის შენახვა SVG-ად"
 

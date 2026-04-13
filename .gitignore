@@ -34,3 +34,6 @@ storybook-static
 *.sln
 *.sw?
 /src/locales/*/*.js
+/public/wasm/tree-sitter.wasm
+/public/wasm/tree-sitter-python.wasm
+/public/wasm/tree-sitter-typescript.wasm
