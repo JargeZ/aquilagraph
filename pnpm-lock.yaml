@@ -1251,6 +1251,9 @@ importers:
       open:
         specifier: ^7.4.2
         version: 7.4.2
+      openai:
+        specifier: ^6.34.0
+        version: 6.34.0(ws@7.5.10)(zod@3.25.76)
       ora:
         specifier: ^5.4.1
         version: 5.4.1
@@ -7665,6 +7668,18 @@ packages:
   open@7.4.2:
     resolution: {integrity: sha512-MVHddDVweXZF3awtlAS+6pgKLlm/JgxZ90+/NBurBoQctVOOB/zDdVjcyPzQ+0laDGbsWgrRkflI65sQeOgT9Q==}
     engines: {node: '>=8'}
+
+  openai@6.34.0:
+    resolution: {integrity: sha512-yEr2jdGf4tVFYG6ohmr3pF6VJuveP0EA/sS8TBx+4Eq5NT10alu5zg2dmxMXMgqpihRDQlFGpRt2XwsGj+Fyxw==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.25 || ^4.0
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
 
   ora-classic@5.4.2:
     resolution: {integrity: sha512-/xX8D5AMHB+LnvEJHOglmq6pXwm65CQ/gqPrIjIN5GJ1Bl9KC9fSmgzR/FwjrtalDj/WVxukAVuH8GP00Zpiaw==}
@@ -16004,6 +16019,11 @@ snapshots:
     dependencies:
       is-docker: 2.2.1
       is-wsl: 2.2.0
+
+  openai@6.34.0(ws@7.5.10)(zod@3.25.76):
+    optionalDependencies:
+      ws: 7.5.10
+      zod: 3.25.76
 
   ora-classic@5.4.2:
     dependencies:

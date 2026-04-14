@@ -17,6 +17,7 @@
     "preview": "vite preview",
     "preview:e2e": "vite preview --port 4141 --strictPort --host 127.0.0.1",
     "e2e": "node scripts/run-e2e.mjs",
+    "e2e:ai": "pnpm run --filter e2e test shell",
     "test": "vitest run",
     "tauri": "tauri",
     "format": "biome format",

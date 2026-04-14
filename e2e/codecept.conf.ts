@@ -13,6 +13,7 @@ export const config: CodeceptJS.MainConfig = {
     Playwright: {
       browser: 'chromium',
       url: 'http://localhost:4141',
+      locale: 'en-US',
       show: true
     }
   },
