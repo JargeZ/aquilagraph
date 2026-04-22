@@ -12,7 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProjectIdRouteImport } from './routes/$projectId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectIdIndexRouteImport } from './routes/$projectId/index'
+import { Route as ProjectIdViewRouteImport } from './routes/$projectId/view'
 import { Route as ProjectIdSettingsRouteImport } from './routes/$projectId/settings'
+import { Route as ProjectIdViewModulesGraphRouteImport } from './routes/$projectId/view/modules-graph'
+import { Route as ProjectIdViewModulesDotRouteImport } from './routes/$projectId/view/modules-dot'
+import { Route as ProjectIdViewFullGraphRouteImport } from './routes/$projectId/view/full-graph'
+import { Route as ProjectIdViewFullDotRouteImport } from './routes/$projectId/view/full-dot'
+import { Route as ProjectIdViewFlowRouteImport } from './routes/$projectId/view/flow'
 import { Route as ProjectIdNodeSubGraphNodeRefRouteImport } from './routes/$projectId/node-sub-graph/$nodeRef'
 import { Route as ProjectIdNodeDetailsNodeRefRouteImport } from './routes/$projectId/node-details/$nodeRef'
 import { Route as ProjectIdNodeDebugDetailsNodeRefRouteImport } from './routes/$projectId/node-debug-details/$nodeRef'
@@ -32,10 +38,41 @@ const ProjectIdIndexRoute = ProjectIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectIdRoute,
 } as any)
+const ProjectIdViewRoute = ProjectIdViewRouteImport.update({
+  id: '/view',
+  path: '/view',
+  getParentRoute: () => ProjectIdRoute,
+} as any)
 const ProjectIdSettingsRoute = ProjectIdSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => ProjectIdRoute,
+} as any)
+const ProjectIdViewModulesGraphRoute =
+  ProjectIdViewModulesGraphRouteImport.update({
+    id: '/modules-graph',
+    path: '/modules-graph',
+    getParentRoute: () => ProjectIdViewRoute,
+  } as any)
+const ProjectIdViewModulesDotRoute = ProjectIdViewModulesDotRouteImport.update({
+  id: '/modules-dot',
+  path: '/modules-dot',
+  getParentRoute: () => ProjectIdViewRoute,
+} as any)
+const ProjectIdViewFullGraphRoute = ProjectIdViewFullGraphRouteImport.update({
+  id: '/full-graph',
+  path: '/full-graph',
+  getParentRoute: () => ProjectIdViewRoute,
+} as any)
+const ProjectIdViewFullDotRoute = ProjectIdViewFullDotRouteImport.update({
+  id: '/full-dot',
+  path: '/full-dot',
+  getParentRoute: () => ProjectIdViewRoute,
+} as any)
+const ProjectIdViewFlowRoute = ProjectIdViewFlowRouteImport.update({
+  id: '/flow',
+  path: '/flow',
+  getParentRoute: () => ProjectIdViewRoute,
 } as any)
 const ProjectIdNodeSubGraphNodeRefRoute =
   ProjectIdNodeSubGraphNodeRefRouteImport.update({
@@ -60,28 +97,46 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$projectId': typeof ProjectIdRouteWithChildren
   '/$projectId/settings': typeof ProjectIdSettingsRoute
+  '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId/': typeof ProjectIdIndexRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
+  '/$projectId/view/flow': typeof ProjectIdViewFlowRoute
+  '/$projectId/view/full-dot': typeof ProjectIdViewFullDotRoute
+  '/$projectId/view/full-graph': typeof ProjectIdViewFullGraphRoute
+  '/$projectId/view/modules-dot': typeof ProjectIdViewModulesDotRoute
+  '/$projectId/view/modules-graph': typeof ProjectIdViewModulesGraphRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$projectId/settings': typeof ProjectIdSettingsRoute
+  '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId': typeof ProjectIdIndexRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
+  '/$projectId/view/flow': typeof ProjectIdViewFlowRoute
+  '/$projectId/view/full-dot': typeof ProjectIdViewFullDotRoute
+  '/$projectId/view/full-graph': typeof ProjectIdViewFullGraphRoute
+  '/$projectId/view/modules-dot': typeof ProjectIdViewModulesDotRoute
+  '/$projectId/view/modules-graph': typeof ProjectIdViewModulesGraphRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$projectId': typeof ProjectIdRouteWithChildren
   '/$projectId/settings': typeof ProjectIdSettingsRoute
+  '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId/': typeof ProjectIdIndexRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
+  '/$projectId/view/flow': typeof ProjectIdViewFlowRoute
+  '/$projectId/view/full-dot': typeof ProjectIdViewFullDotRoute
+  '/$projectId/view/full-graph': typeof ProjectIdViewFullGraphRoute
+  '/$projectId/view/modules-dot': typeof ProjectIdViewModulesDotRoute
+  '/$projectId/view/modules-graph': typeof ProjectIdViewModulesGraphRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,27 +144,45 @@ export interface FileRouteTypes {
     | '/'
     | '/$projectId'
     | '/$projectId/settings'
+    | '/$projectId/view'
     | '/$projectId/'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
+    | '/$projectId/view/flow'
+    | '/$projectId/view/full-dot'
+    | '/$projectId/view/full-graph'
+    | '/$projectId/view/modules-dot'
+    | '/$projectId/view/modules-graph'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$projectId/settings'
+    | '/$projectId/view'
     | '/$projectId'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
+    | '/$projectId/view/flow'
+    | '/$projectId/view/full-dot'
+    | '/$projectId/view/full-graph'
+    | '/$projectId/view/modules-dot'
+    | '/$projectId/view/modules-graph'
   id:
     | '__root__'
     | '/'
     | '/$projectId'
     | '/$projectId/settings'
+    | '/$projectId/view'
     | '/$projectId/'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
+    | '/$projectId/view/flow'
+    | '/$projectId/view/full-dot'
+    | '/$projectId/view/full-graph'
+    | '/$projectId/view/modules-dot'
+    | '/$projectId/view/modules-graph'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -140,12 +213,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectIdIndexRouteImport
       parentRoute: typeof ProjectIdRoute
     }
+    '/$projectId/view': {
+      id: '/$projectId/view'
+      path: '/view'
+      fullPath: '/$projectId/view'
+      preLoaderRoute: typeof ProjectIdViewRouteImport
+      parentRoute: typeof ProjectIdRoute
+    }
     '/$projectId/settings': {
       id: '/$projectId/settings'
       path: '/settings'
       fullPath: '/$projectId/settings'
       preLoaderRoute: typeof ProjectIdSettingsRouteImport
       parentRoute: typeof ProjectIdRoute
+    }
+    '/$projectId/view/modules-graph': {
+      id: '/$projectId/view/modules-graph'
+      path: '/modules-graph'
+      fullPath: '/$projectId/view/modules-graph'
+      preLoaderRoute: typeof ProjectIdViewModulesGraphRouteImport
+      parentRoute: typeof ProjectIdViewRoute
+    }
+    '/$projectId/view/modules-dot': {
+      id: '/$projectId/view/modules-dot'
+      path: '/modules-dot'
+      fullPath: '/$projectId/view/modules-dot'
+      preLoaderRoute: typeof ProjectIdViewModulesDotRouteImport
+      parentRoute: typeof ProjectIdViewRoute
+    }
+    '/$projectId/view/full-graph': {
+      id: '/$projectId/view/full-graph'
+      path: '/full-graph'
+      fullPath: '/$projectId/view/full-graph'
+      preLoaderRoute: typeof ProjectIdViewFullGraphRouteImport
+      parentRoute: typeof ProjectIdViewRoute
+    }
+    '/$projectId/view/full-dot': {
+      id: '/$projectId/view/full-dot'
+      path: '/full-dot'
+      fullPath: '/$projectId/view/full-dot'
+      preLoaderRoute: typeof ProjectIdViewFullDotRouteImport
+      parentRoute: typeof ProjectIdViewRoute
+    }
+    '/$projectId/view/flow': {
+      id: '/$projectId/view/flow'
+      path: '/flow'
+      fullPath: '/$projectId/view/flow'
+      preLoaderRoute: typeof ProjectIdViewFlowRouteImport
+      parentRoute: typeof ProjectIdViewRoute
     }
     '/$projectId/node-sub-graph/$nodeRef': {
       id: '/$projectId/node-sub-graph/$nodeRef'
@@ -171,8 +286,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ProjectIdViewRouteChildren {
+  ProjectIdViewFlowRoute: typeof ProjectIdViewFlowRoute
+  ProjectIdViewFullDotRoute: typeof ProjectIdViewFullDotRoute
+  ProjectIdViewFullGraphRoute: typeof ProjectIdViewFullGraphRoute
+  ProjectIdViewModulesDotRoute: typeof ProjectIdViewModulesDotRoute
+  ProjectIdViewModulesGraphRoute: typeof ProjectIdViewModulesGraphRoute
+}
+
+const ProjectIdViewRouteChildren: ProjectIdViewRouteChildren = {
+  ProjectIdViewFlowRoute: ProjectIdViewFlowRoute,
+  ProjectIdViewFullDotRoute: ProjectIdViewFullDotRoute,
+  ProjectIdViewFullGraphRoute: ProjectIdViewFullGraphRoute,
+  ProjectIdViewModulesDotRoute: ProjectIdViewModulesDotRoute,
+  ProjectIdViewModulesGraphRoute: ProjectIdViewModulesGraphRoute,
+}
+
+const ProjectIdViewRouteWithChildren = ProjectIdViewRoute._addFileChildren(
+  ProjectIdViewRouteChildren,
+)
+
 interface ProjectIdRouteChildren {
   ProjectIdSettingsRoute: typeof ProjectIdSettingsRoute
+  ProjectIdViewRoute: typeof ProjectIdViewRouteWithChildren
   ProjectIdIndexRoute: typeof ProjectIdIndexRoute
   ProjectIdNodeDebugDetailsNodeRefRoute: typeof ProjectIdNodeDebugDetailsNodeRefRoute
   ProjectIdNodeDetailsNodeRefRoute: typeof ProjectIdNodeDetailsNodeRefRoute
@@ -181,6 +317,7 @@ interface ProjectIdRouteChildren {
 
 const ProjectIdRouteChildren: ProjectIdRouteChildren = {
   ProjectIdSettingsRoute: ProjectIdSettingsRoute,
+  ProjectIdViewRoute: ProjectIdViewRouteWithChildren,
   ProjectIdIndexRoute: ProjectIdIndexRoute,
   ProjectIdNodeDebugDetailsNodeRefRoute: ProjectIdNodeDebugDetailsNodeRefRoute,
   ProjectIdNodeDetailsNodeRefRoute: ProjectIdNodeDetailsNodeRefRoute,

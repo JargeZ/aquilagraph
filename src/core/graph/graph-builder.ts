@@ -21,8 +21,10 @@ import {
   classificationById,
   DEFAULT_ANALYSIS_CONFIG,
 } from "../config/analysis-config";
-import type { ExecutableElement } from "../model/executable-element";
-import { UNCLASSIFIED_TYPE } from "../model/executable-element";
+import {
+  ExecutableElement,
+  UNCLASSIFIED_TYPE,
+} from "../model/executable-element";
 import { getModuleName } from "../model/reference-builder";
 
 const UNCLASSIFIED_STYLE = {
@@ -460,11 +462,131 @@ export function buildCompositeInputs(
       const key = `${from}\0${to}`;
       if (edgeSeen.has(key)) continue;
       edgeSeen.add(key);
-      interModuleEdges.push({ fromRef: from, toRef: to, fromModule: fromMod, toModule: toMod });
+      interModuleEdges.push({
+        fromRef: from,
+        toRef: to,
+        fromModule: fromMod,
+        toModule: toMod,
+      });
     }
   }
 
   return { modules: moduleData, interModuleEdges };
+}
+
+export interface ModuleGraphResult {
+  dot: string;
+  elements: ExecutableElement[];
+  graph: RootGraphModel;
+}
+
+/** Builds a module-level directed graph: one node per module, edges weighted by inter-module call count. */
+export function buildModuleGraphResult(
+  elements: ExecutableElement[],
+  config: AnalysisConfig,
+): ModuleGraphResult {
+  const modules = groupByModule(elements, config.moduleDepth);
+  const elementSet = new Set(elements);
+  const threshold =
+    config.minMethodsForClassDetail ??
+    DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail;
+  const collapsedClassFullRefs = computeCollapsedClassRefs(
+    modules,
+    elementSet,
+    threshold,
+  );
+
+  const refToModule = new Map<string, string>();
+  for (const el of elements) {
+    const ref = canonicalReference(el, collapsedClassFullRefs);
+    refToModule.set(ref, getModuleName(el.reference, config.moduleDepth));
+  }
+
+  // Aggregate inter-module edges: (fromModule, toModule) → { count, sample toRefs }
+  const edgeMap = new Map<string, { count: number; toRefs: string[] }>();
+  const edgeSeen = new Set<string>();
+  for (const el of elements) {
+    for (const target of el.uses) {
+      if (!elementSet.has(target)) continue;
+      const from = canonicalReference(el, collapsedClassFullRefs);
+      const to = canonicalReference(target, collapsedClassFullRefs);
+      if (from === to) continue;
+      const fromMod = refToModule.get(from);
+      const toMod = refToModule.get(to);
+      if (!fromMod || !toMod || fromMod === toMod) continue;
+      const key = `${from}\0${to}`;
+      if (edgeSeen.has(key)) continue;
+      edgeSeen.add(key);
+      const edgeKey = `${fromMod}\0${toMod}`;
+      let entry = edgeMap.get(edgeKey);
+      if (!entry) {
+        entry = { count: 0, toRefs: [] };
+        edgeMap.set(edgeKey, entry);
+      }
+      entry.count++;
+      const shortRef = to.split(".").pop() ?? to;
+      if (!entry.toRefs.includes(shortRef)) entry.toRefs.push(shortRef);
+    }
+  }
+
+  // Synthetic elements: one per module, wired with uses for highlight support
+  const moduleElements = modules.map(
+    (mod) =>
+      new ExecutableElement({
+        reference: mod.name,
+        module: mod.name,
+        className: null,
+        name: mod.name.split(".").pop() ?? mod.name,
+        type: UNCLASSIFIED_TYPE,
+        decorators: [],
+        parentClasses: [],
+        sourceFile: "",
+        startLine: 0,
+        endLine: 0,
+      }),
+  );
+  const moduleElByName = new Map(
+    moduleElements.map((el) => [el.reference, el]),
+  );
+  for (const [key] of edgeMap) {
+    const sep = key.indexOf("\0");
+    const fromEl = moduleElByName.get(key.slice(0, sep));
+    const toEl = moduleElByName.get(key.slice(sep + 1));
+    if (fromEl && toEl && !fromEl.uses.includes(toEl)) fromEl.uses.push(toEl);
+  }
+
+  const graph = digraph("MODULES", (g) => {
+    g.set(attribute.rankdir, "LR");
+    g.set(attribute.fontname, "Helvetica");
+    g.node({ [attribute.fontname]: "Helvetica", [attribute.fontsize]: 11 });
+    g.edge({ [attribute.fontname]: "Helvetica", [attribute.fontsize]: 9 });
+
+    for (const mod of modules) {
+      const shortName = mod.name.split(".").pop() ?? mod.name;
+      g.node(mod.name, {
+        [attribute.label]: `${shortName}\n${mod.name}`,
+        [attribute.shape]: "box",
+        [attribute.style]: "filled",
+        [attribute.fillcolor]: "#4A90D9",
+        [attribute.fontcolor]: "white",
+      });
+    }
+
+    for (const [key, { count, toRefs }] of edgeMap) {
+      const sep = key.indexOf("\0");
+      const fromMod = key.slice(0, sep);
+      const toMod = key.slice(sep + 1);
+      const top3 = toRefs.slice(0, 3);
+      const more = toRefs.length - top3.length;
+      const labelParts = [`${count}`, ...top3];
+      if (more > 0) labelParts.push(`+${more} more`);
+      g.edge([fromMod, toMod], {
+        [attribute.label]: labelParts.join("\n"),
+      });
+    }
+  });
+
+  return { dot: graphToDot(graph), elements: moduleElements, graph };
 }
 
 function buildSingleModuleGraph(
@@ -482,7 +604,12 @@ function buildSingleModuleGraph(
     g.subgraph(`cluster_${mod.name}`, (sg) => {
       sg.set(attribute.label, mod.name);
       sg.set(attribute.style, "dashed");
-      addModuleClusterContents(sg as GraphContainer, mod, config, collapsedClassFullRefs);
+      addModuleClusterContents(
+        sg as GraphContainer,
+        mod,
+        config,
+        collapsedClassFullRefs,
+      );
     });
 
     const edgeSeen = new Set<string>();
