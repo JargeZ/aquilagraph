@@ -12,6 +12,7 @@ import type { RootGraphModel } from "ts-graphviz";
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import { classificationById } from "@/core/config/analysis-config";
 import { graphModelEdgePairs } from "@/core/graph/graph-model-edge-pairs";
+import { renderCompositeLayout } from "@/core/graph/composite-layout";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import { mutedClusterTitlesForMutedElements } from "@/lib/muted-viz-cluster-titles";
@@ -137,7 +138,9 @@ export function DotSvgCanvas({
         const { default: svgPanZoom } = await import("svg-pan-zoom");
         if (cancelled) return;
 
-        const svg = viz.renderSVGElement(dot, { engine: "dot" });
+        const svg =
+          renderCompositeLayout(viz, elements, analysisConfig) ??
+          viz.renderSVGElement(dot, { engine: "dot" });
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         svg.style.position = "absolute";

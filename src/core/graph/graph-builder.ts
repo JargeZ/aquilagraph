@@ -75,10 +75,22 @@ type GraphContainer = {
   set: (key: unknown, value: unknown) => void;
 };
 
-interface ModuleGroup {
+export interface ModuleGroup {
   name: string;
   classes: Map<string, ExecutableElement[]>;
   standalone: ExecutableElement[];
+}
+
+export interface CompositeModuleData {
+  name: string;
+  dot: string;
+}
+
+export interface InterModuleEdgeData {
+  fromRef: string;
+  toRef: string;
+  fromModule: string;
+  toModule: string;
 }
 
 export function buildGraph(
@@ -394,4 +406,98 @@ export function buildDot(
   config: AnalysisConfig,
 ): string {
   return graphToDot(buildGraph(elements, config));
+}
+
+export function buildCompositeInputs(
+  elements: ExecutableElement[],
+  config: AnalysisConfig,
+): { modules: CompositeModuleData[]; interModuleEdges: InterModuleEdgeData[] } {
+  const modules = groupByModule(elements, config.moduleDepth);
+  const elementSet = new Set(elements);
+  const threshold =
+    config.minMethodsForClassDetail ??
+    DEFAULT_ANALYSIS_CONFIG.minMethodsForClassDetail;
+  const collapsedClassFullRefs = computeCollapsedClassRefs(
+    modules,
+    elementSet,
+    threshold,
+  );
+
+  const refToModule = new Map<string, string>();
+  for (const el of elements) {
+    const ref = canonicalReference(el, collapsedClassFullRefs);
+    refToModule.set(ref, getModuleName(el.reference, config.moduleDepth));
+  }
+
+  const moduleData: CompositeModuleData[] = [];
+  for (const mod of modules) {
+    const allModElements = [
+      ...mod.standalone,
+      ...Array.from(mod.classes.values()).flat(),
+    ];
+    const modElementSet = new Set(allModElements);
+    const modGraph = buildSingleModuleGraph(
+      mod,
+      config,
+      collapsedClassFullRefs,
+      elements,
+      modElementSet,
+    );
+    moduleData.push({ name: mod.name, dot: graphToDot(modGraph) });
+  }
+
+  const edgeSeen = new Set<string>();
+  const interModuleEdges: InterModuleEdgeData[] = [];
+  for (const el of elements) {
+    for (const target of el.uses) {
+      if (!elementSet.has(target)) continue;
+      const from = canonicalReference(el, collapsedClassFullRefs);
+      const to = canonicalReference(target, collapsedClassFullRefs);
+      if (from === to) continue;
+      const fromMod = refToModule.get(from);
+      const toMod = refToModule.get(to);
+      if (!fromMod || !toMod || fromMod === toMod) continue;
+      const key = `${from}\0${to}`;
+      if (edgeSeen.has(key)) continue;
+      edgeSeen.add(key);
+      interModuleEdges.push({ fromRef: from, toRef: to, fromModule: fromMod, toModule: toMod });
+    }
+  }
+
+  return { modules: moduleData, interModuleEdges };
+}
+
+function buildSingleModuleGraph(
+  mod: ModuleGroup,
+  config: AnalysisConfig,
+  collapsedClassFullRefs: Set<string>,
+  allElements: ExecutableElement[],
+  modElementSet: Set<ExecutableElement>,
+): RootGraphModel {
+  return digraph("G", (g) => {
+    g.set(attribute.rankdir, "LR");
+    g.set(attribute.fontname, "Helvetica");
+    g.node({ [attribute.fontname]: "Helvetica", [attribute.fontsize]: 10 });
+
+    g.subgraph(`cluster_${mod.name}`, (sg) => {
+      sg.set(attribute.label, mod.name);
+      sg.set(attribute.style, "dashed");
+      addModuleClusterContents(sg as GraphContainer, mod, config, collapsedClassFullRefs);
+    });
+
+    const edgeSeen = new Set<string>();
+    for (const el of allElements) {
+      if (!modElementSet.has(el)) continue;
+      for (const target of el.uses) {
+        if (!modElementSet.has(target)) continue;
+        const from = canonicalReference(el, collapsedClassFullRefs);
+        const to = canonicalReference(target, collapsedClassFullRefs);
+        if (from === to) continue;
+        const key = `${from}\0${to}`;
+        if (edgeSeen.has(key)) continue;
+        edgeSeen.add(key);
+        g.edge([from, to]);
+      }
+    }
+  });
 }
