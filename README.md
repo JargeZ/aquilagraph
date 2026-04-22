@@ -11,7 +11,7 @@ You can **tune how code is grouped into layers**: define your own classification
 
 **Supported languages (for now):** **Python**, plus **JavaScript**, **TypeScript**, and **TSX**. Other languages may be added later.
 
-![Main view: codebase graph](docs/readme/screenshot-graph-main.png)
+![Main view: codebase graph](e2e/output/graph-rendered.png)
 
 ---
 
@@ -26,7 +26,7 @@ You can **tune how code is grouped into layers**: define your own classification
 
 ### Graph (alternate view or detail)
 
-![Graph: alternate or zoomed view](docs/readme/screenshot-graph-detail.png)
+![Graph: alternate or zoomed view](e2e/output/subgraph-rendered.png)
 
 ### Settings
 
