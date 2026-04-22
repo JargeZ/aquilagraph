@@ -1,12 +1,6 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@ui/molecules/tabs/tabs";
 import { useContext, useEffect, useState } from "react";
 import type { RootGraphModel } from "ts-graphviz";
 import { ProjectAnalysisContext } from "@/contexts/project-analysis-context-shared";
@@ -24,26 +18,9 @@ interface GraphViewProps {
   elements: ExecutableElement[];
   graph: RootGraphModel;
   dot: string;
-  /** Синхронизировать выбранный узел (например, центр подграфа по роуту). */
   initialSelectedRef?: string;
   onNodeDoubleClick?: (element: ExecutableElement) => void;
   compositeLayout?: boolean;
-}
-
-type FlowRenderable = {
-  readonly graph: RootGraphModel;
-  readonly elements: readonly ExecutableElement[];
-};
-
-function FlowRendererPlaceholder(_renderable: FlowRenderable) {
-  // Важно: раньше тут был рендер через React Flow, но способ рендера должен оставаться сменяемым.
-  // В будущем должен быть возможен другой движок (SVG/Canvas/WebGL/DOM), поэтому держим Flow как
-  // пример «рендер-функции», которая принимает входные данные и возвращает UI.
-  return (
-    <div className="flex h-full items-center justify-center rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground">
-      <Trans>Flow renderer placeholder (extensible render pipeline).</Trans>
-    </div>
-  );
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
@@ -165,52 +142,6 @@ function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
   );
 }
 
-function DotGraphCanvas({
-  dot,
-  graph,
-  elements,
-  selectedElement,
-  onSelectElement,
-  onNodeDoubleClick,
-  followSelectionInViewport,
-  compositeLayout,
-}: {
-  dot: string;
-  graph: RootGraphModel;
-  elements: ExecutableElement[];
-  selectedElement: ExecutableElement | null;
-  onSelectElement: (element: ExecutableElement | null) => void;
-  onNodeDoubleClick?: (element: ExecutableElement) => void;
-  followSelectionInViewport: boolean;
-  compositeLayout?: boolean;
-}) {
-  const projectCtx = useContext(ProjectAnalysisContext);
-  const analysisConfig =
-    projectCtx?.analysisConfig ?? DEFAULT_ANALYSIS_CONFIG;
-  return (
-    <div className="flex h-full gap-3">
-      <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
-        <DotSvgCanvas
-          dot={dot}
-          graph={graph}
-          elements={elements}
-          analysisConfig={analysisConfig}
-          selectedRef={selectedElement?.reference ?? null}
-          onSelectElement={onSelectElement}
-          onNodeDoubleClick={onNodeDoubleClick}
-          followSelectionInViewport={followSelectionInViewport}
-          compositeLayout={compositeLayout}
-        />
-      </div>
-      {selectedElement && (
-        <div className="w-64 shrink-0">
-          <NodeDetailsPanel element={selectedElement} />
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function GraphView({
   elements,
   graph,
@@ -219,8 +150,9 @@ export function GraphView({
   onNodeDoubleClick,
   compositeLayout,
 }: GraphViewProps) {
-  const { t } = useLingui();
-  const [copied, setCopied] = useState(false);
+  const projectCtx = useContext(ProjectAnalysisContext);
+  const analysisConfig = projectCtx?.analysisConfig ?? DEFAULT_ANALYSIS_CONFIG;
+
   const [selectedElement, setSelectedElement] =
     useState<ExecutableElement | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -242,79 +174,34 @@ export function GraphView({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(dot);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const followViewport = searchOpen;
-
   return (
-    <Tabs defaultValue="graph" className="flex h-full flex-col">
+    <div className="flex h-full flex-col">
       <NodeSearchCommand
         elements={elements}
         open={searchOpen}
         onOpenChange={setSearchOpen}
         onActiveElementChange={setSelectedElement}
       />
-
-      <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1">
-        <TabsList>
-          <TabsTrigger value="graph">
-            {t`Граф (${elements.length})`}
-          </TabsTrigger>
-          <TabsTrigger value="flow">
-            <Trans>Flow</Trans>
-          </TabsTrigger>
-          <TabsTrigger value="dot">
-            <Trans>DOT</Trans>
-          </TabsTrigger>
-        </TabsList>
+      <div className="flex min-h-0 flex-1 gap-3">
+        <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+          <DotSvgCanvas
+            dot={dot}
+            graph={graph}
+            elements={elements}
+            analysisConfig={analysisConfig}
+            selectedRef={selectedElement?.reference ?? null}
+            onSelectElement={setSelectedElement}
+            onNodeDoubleClick={onNodeDoubleClick}
+            followSelectionInViewport={searchOpen}
+            compositeLayout={compositeLayout}
+          />
+        </div>
+        {selectedElement && (
+          <div className="w-64 shrink-0 overflow-y-auto p-1">
+            <NodeDetailsPanel element={selectedElement} />
+          </div>
+        )}
       </div>
-
-      <TabsContent value="graph" className="min-h-0 flex-1">
-        <DotGraphCanvas
-          dot={dot}
-          graph={graph}
-          elements={elements}
-          selectedElement={selectedElement}
-          onSelectElement={setSelectedElement}
-          onNodeDoubleClick={onNodeDoubleClick}
-          followSelectionInViewport={followViewport}
-          compositeLayout={compositeLayout}
-        />
-      </TabsContent>
-
-      <TabsContent value="flow" className="min-h-0 flex-1">
-        <div className="flex h-full gap-3">
-          <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
-            <FlowRendererPlaceholder graph={graph} elements={elements} />
-          </div>
-          {selectedElement && (
-            <div className="w-64 shrink-0">
-              <NodeDetailsPanel element={selectedElement} />
-            </div>
-          )}
-        </div>
-      </TabsContent>
-
-      <TabsContent value="dot" className="min-h-0 flex-1 overflow-auto p-4">
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-end">
-            <Button variant="outline" size="sm" onClick={handleCopy}>
-              {copied ? (
-                <Trans>Скопировано</Trans>
-              ) : (
-                <Trans>Копировать DOT</Trans>
-              )}
-            </Button>
-          </div>
-          <pre className="overflow-auto rounded-lg border border-border bg-muted/30 p-4 font-mono text-xs text-foreground">
-            {dot}
-          </pre>
-        </div>
-      </TabsContent>
-    </Tabs>
+    </div>
   );
 }
