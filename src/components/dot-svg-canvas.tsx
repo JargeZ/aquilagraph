@@ -11,8 +11,8 @@ import {
 import type { RootGraphModel } from "ts-graphviz";
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import { classificationById } from "@/core/config/analysis-config";
-import { graphModelEdgePairs } from "@/core/graph/graph-model-edge-pairs";
 import { renderCompositeLayout } from "@/core/graph/composite-layout";
+import { graphModelEdgePairs } from "@/core/graph/graph-model-edge-pairs";
 import type { ExecutableElement } from "@/core/model/executable-element";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import { mutedClusterTitlesForMutedElements } from "@/lib/muted-viz-cluster-titles";
@@ -98,6 +98,7 @@ export function DotSvgCanvas({
   const shortClickRef = useRef(createShortClickPointerRef());
   const [error, setError] = useState<string | null>(null);
   const [svgReady, setSvgReady] = useState(false);
+  const [dotCopied, setDotCopied] = useState(false);
 
   const edgePairs = useMemo(() => graphModelEdgePairs(graph), [graph]);
 
@@ -124,6 +125,7 @@ export function DotSvgCanvas({
     [elements, analysisConfig],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional — SVG re-renders only on dot change; compositeLayout/elements/analysisConfig are stable per render
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -144,8 +146,7 @@ export function DotSvgCanvas({
         const svg =
           (compositeLayout
             ? renderCompositeLayout(viz, elements, analysisConfig)
-            : null) ??
-          viz.renderSVGElement(dot, { engine: "dot" });
+            : null) ?? viz.renderSVGElement(dot, { engine: "dot" });
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         svg.style.position = "absolute";
@@ -383,7 +384,24 @@ export function DotSvgCanvas({
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
       />
-      <div className="pointer-events-none absolute top-2 right-2 z-10">
+      <div className="pointer-events-none absolute top-2 right-2 z-10 flex gap-1.5">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="pointer-events-auto shadow-sm"
+          onClick={async () => {
+            await navigator.clipboard.writeText(dot);
+            setDotCopied(true);
+            setTimeout(() => setDotCopied(false), 2000);
+          }}
+        >
+          {dotCopied ? (
+            <Trans>Скопировано</Trans>
+          ) : (
+            <Trans>Копировать DOT</Trans>
+          )}
+        </Button>
         <Button
           type="button"
           variant="outline"
