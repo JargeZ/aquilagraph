@@ -71,6 +71,7 @@ export function NodeSubGraphPage() {
         graph={subgraph.graph}
         dot={subgraph.dot}
         initialSelectedRef={decodedRef}
+        compositeLayout={false}
         onNodeDoubleClick={(el: ExecutableElement) => {
           void navigate({
             to: "/$projectId/node-sub-graph/$nodeRef",

@@ -17,6 +17,9 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const PADDING = 20;
 const GV_MARGIN = 4; // Graphviz default graph margin in points
 
+/** Minimum number of modules required to activate composite layout. */
+export const COMPOSITE_MODULE_THRESHOLD = 4;
+
 interface Pt {
   x: number;
   y: number;
@@ -92,7 +95,7 @@ export function renderCompositeLayout(
   config: AnalysisConfig,
 ): SVGSVGElement | null {
   const { modules, interModuleEdges } = buildCompositeInputs(elements, config);
-  if (modules.length <= 1) return null;
+  if (modules.length <= COMPOSITE_MODULE_THRESHOLD) return null;
 
   // ── Pass 1: render each module with dot ──────────────────────────────────
   const moduleSvgs = new Map<string, SVGSVGElement>();

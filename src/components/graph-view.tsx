@@ -27,6 +27,7 @@ interface GraphViewProps {
   /** Синхронизировать выбранный узел (например, центр подграфа по роуту). */
   initialSelectedRef?: string;
   onNodeDoubleClick?: (element: ExecutableElement) => void;
+  compositeLayout?: boolean;
 }
 
 type FlowRenderable = {
@@ -172,6 +173,7 @@ function DotGraphCanvas({
   onSelectElement,
   onNodeDoubleClick,
   followSelectionInViewport,
+  compositeLayout,
 }: {
   dot: string;
   graph: RootGraphModel;
@@ -180,6 +182,7 @@ function DotGraphCanvas({
   onSelectElement: (element: ExecutableElement | null) => void;
   onNodeDoubleClick?: (element: ExecutableElement) => void;
   followSelectionInViewport: boolean;
+  compositeLayout?: boolean;
 }) {
   const projectCtx = useContext(ProjectAnalysisContext);
   const analysisConfig =
@@ -196,6 +199,7 @@ function DotGraphCanvas({
           onSelectElement={onSelectElement}
           onNodeDoubleClick={onNodeDoubleClick}
           followSelectionInViewport={followSelectionInViewport}
+          compositeLayout={compositeLayout}
         />
       </div>
       {selectedElement && (
@@ -213,6 +217,7 @@ export function GraphView({
   dot,
   initialSelectedRef,
   onNodeDoubleClick,
+  compositeLayout,
 }: GraphViewProps) {
   const { t } = useLingui();
   const [copied, setCopied] = useState(false);
@@ -277,6 +282,7 @@ export function GraphView({
           onSelectElement={setSelectedElement}
           onNodeDoubleClick={onNodeDoubleClick}
           followSelectionInViewport={followViewport}
+          compositeLayout={compositeLayout}
         />
       </TabsContent>
 

@@ -53,6 +53,8 @@ interface DotSvgCanvasProps {
   onNodeDoubleClick?: (element: ExecutableElement) => void;
   /** Панорамировать и масштабировать к выбранному узлу (например, пока открыт поиск). */
   followSelectionInViewport?: boolean;
+  /** Использовать композитный лейаут (dot per module + neato). Default: true. */
+  compositeLayout?: boolean;
 }
 
 function findNodeGroup(target: EventTarget | null): SVGGElement | null {
@@ -88,6 +90,7 @@ export function DotSvgCanvas({
   onSelectElement,
   onNodeDoubleClick,
   followSelectionInViewport = false,
+  compositeLayout = true,
 }: DotSvgCanvasProps) {
   const { t } = useLingui();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -139,7 +142,9 @@ export function DotSvgCanvas({
         if (cancelled) return;
 
         const svg =
-          renderCompositeLayout(viz, elements, analysisConfig) ??
+          (compositeLayout
+            ? renderCompositeLayout(viz, elements, analysisConfig)
+            : null) ??
           viz.renderSVGElement(dot, { engine: "dot" });
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
