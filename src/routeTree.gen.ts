@@ -22,6 +22,7 @@ import { Route as ProjectIdViewFlowRouteImport } from './routes/$projectId/view/
 import { Route as ProjectIdNodeSubGraphNodeRefRouteImport } from './routes/$projectId/node-sub-graph/$nodeRef'
 import { Route as ProjectIdNodeDetailsNodeRefRouteImport } from './routes/$projectId/node-details/$nodeRef'
 import { Route as ProjectIdNodeDebugDetailsNodeRefRouteImport } from './routes/$projectId/node-debug-details/$nodeRef'
+import { Route as ProjectIdModuleSubGraphModuleNameRouteImport } from './routes/$projectId/module-sub-graph/$moduleName'
 
 const ProjectIdRoute = ProjectIdRouteImport.update({
   id: '/$projectId',
@@ -92,6 +93,12 @@ const ProjectIdNodeDebugDetailsNodeRefRoute =
     path: '/node-debug-details/$nodeRef',
     getParentRoute: () => ProjectIdRoute,
   } as any)
+const ProjectIdModuleSubGraphModuleNameRoute =
+  ProjectIdModuleSubGraphModuleNameRouteImport.update({
+    id: '/module-sub-graph/$moduleName',
+    path: '/module-sub-graph/$moduleName',
+    getParentRoute: () => ProjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId/': typeof ProjectIdIndexRoute
+  '/$projectId/module-sub-graph/$moduleName': typeof ProjectIdModuleSubGraphModuleNameRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId': typeof ProjectIdIndexRoute
+  '/$projectId/module-sub-graph/$moduleName': typeof ProjectIdModuleSubGraphModuleNameRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/$projectId/settings': typeof ProjectIdSettingsRoute
   '/$projectId/view': typeof ProjectIdViewRouteWithChildren
   '/$projectId/': typeof ProjectIdIndexRoute
+  '/$projectId/module-sub-graph/$moduleName': typeof ProjectIdModuleSubGraphModuleNameRoute
   '/$projectId/node-debug-details/$nodeRef': typeof ProjectIdNodeDebugDetailsNodeRefRoute
   '/$projectId/node-details/$nodeRef': typeof ProjectIdNodeDetailsNodeRefRoute
   '/$projectId/node-sub-graph/$nodeRef': typeof ProjectIdNodeSubGraphNodeRefRoute
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/$projectId/settings'
     | '/$projectId/view'
     | '/$projectId/'
+    | '/$projectId/module-sub-graph/$moduleName'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/$projectId/settings'
     | '/$projectId/view'
     | '/$projectId'
+    | '/$projectId/module-sub-graph/$moduleName'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
@@ -175,6 +187,7 @@ export interface FileRouteTypes {
     | '/$projectId/settings'
     | '/$projectId/view'
     | '/$projectId/'
+    | '/$projectId/module-sub-graph/$moduleName'
     | '/$projectId/node-debug-details/$nodeRef'
     | '/$projectId/node-details/$nodeRef'
     | '/$projectId/node-sub-graph/$nodeRef'
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectIdNodeDebugDetailsNodeRefRouteImport
       parentRoute: typeof ProjectIdRoute
     }
+    '/$projectId/module-sub-graph/$moduleName': {
+      id: '/$projectId/module-sub-graph/$moduleName'
+      path: '/module-sub-graph/$moduleName'
+      fullPath: '/$projectId/module-sub-graph/$moduleName'
+      preLoaderRoute: typeof ProjectIdModuleSubGraphModuleNameRouteImport
+      parentRoute: typeof ProjectIdRoute
+    }
   }
 }
 
@@ -310,6 +330,7 @@ interface ProjectIdRouteChildren {
   ProjectIdSettingsRoute: typeof ProjectIdSettingsRoute
   ProjectIdViewRoute: typeof ProjectIdViewRouteWithChildren
   ProjectIdIndexRoute: typeof ProjectIdIndexRoute
+  ProjectIdModuleSubGraphModuleNameRoute: typeof ProjectIdModuleSubGraphModuleNameRoute
   ProjectIdNodeDebugDetailsNodeRefRoute: typeof ProjectIdNodeDebugDetailsNodeRefRoute
   ProjectIdNodeDetailsNodeRefRoute: typeof ProjectIdNodeDetailsNodeRefRoute
   ProjectIdNodeSubGraphNodeRefRoute: typeof ProjectIdNodeSubGraphNodeRefRoute
@@ -319,6 +340,8 @@ const ProjectIdRouteChildren: ProjectIdRouteChildren = {
   ProjectIdSettingsRoute: ProjectIdSettingsRoute,
   ProjectIdViewRoute: ProjectIdViewRouteWithChildren,
   ProjectIdIndexRoute: ProjectIdIndexRoute,
+  ProjectIdModuleSubGraphModuleNameRoute:
+    ProjectIdModuleSubGraphModuleNameRoute,
   ProjectIdNodeDebugDetailsNodeRefRoute: ProjectIdNodeDebugDetailsNodeRefRoute,
   ProjectIdNodeDetailsNodeRefRoute: ProjectIdNodeDetailsNodeRefRoute,
   ProjectIdNodeSubGraphNodeRefRoute: ProjectIdNodeSubGraphNodeRefRoute,

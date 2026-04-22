@@ -1,13 +1,15 @@
 import { Trans } from "@lingui/react/macro";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { DotSvgCanvas } from "@/components/dot-svg-canvas";
 import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import { buildModuleGraphResult } from "@/core/graph/graph-builder";
+import type { ExecutableElement } from "@/core/model/executable-element";
 
 export function ModulesGraphPage() {
+  const navigate = useNavigate();
   const {
     projectId,
     rootPath,
@@ -16,6 +18,19 @@ export function ModulesGraphPage() {
     analysisError,
     analysisConfig,
   } = useProjectAnalysis();
+
+  const handleModuleDoubleClick = useCallback(
+    (el: ExecutableElement) => {
+      void navigate({
+        to: "/$projectId/module-sub-graph/$moduleName",
+        params: {
+          projectId,
+          moduleName: encodeURIComponent(el.reference),
+        },
+      });
+    },
+    [navigate, projectId],
+  );
 
   const moduleGraph = useMemo(() => {
     if (!analysisResult) return null;
@@ -67,6 +82,7 @@ export function ModulesGraphPage() {
       elements={moduleGraph.elements}
       analysisConfig={analysisConfig}
       compositeLayout={false}
+      onNodeDoubleClick={handleModuleDoubleClick}
     />
   );
 }

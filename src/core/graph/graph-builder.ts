@@ -589,6 +589,60 @@ export function buildModuleGraphResult(
   return { dot: graphToDot(graph), elements: moduleElements, graph };
 }
 
+/**
+ * Subgraph centered on a single module:
+ * - all elements belonging to that module
+ * - elements in other modules that are CALLED BY this module (forward)
+ * - elements in other modules that CALL INTO this module (backward)
+ */
+export function buildModuleSubgraphResult(
+  allElements: ExecutableElement[],
+  moduleName: string,
+  config: AnalysisConfig,
+): { elements: ExecutableElement[]; graph: RootGraphModel; dot: string } | null {
+  const { moduleDepth } = config;
+  const elementSet = new Set(allElements);
+
+  const moduleEls = new Set(
+    allElements.filter(
+      (el) => getModuleName(el.reference, moduleDepth) === moduleName,
+    ),
+  );
+  if (moduleEls.size === 0) return null;
+
+  // Forward: targets called by module elements that live in other modules
+  const forwardEls = new Set<ExecutableElement>();
+  for (const el of moduleEls) {
+    for (const target of el.uses) {
+      if (elementSet.has(target) && !moduleEls.has(target)) {
+        forwardEls.add(target);
+      }
+    }
+  }
+
+  // Backward: elements outside module that call at least one element inside
+  const backwardEls = new Set<ExecutableElement>();
+  for (const el of allElements) {
+    if (moduleEls.has(el)) continue;
+    for (const target of el.uses) {
+      if (moduleEls.has(target)) {
+        backwardEls.add(el);
+        break;
+      }
+    }
+  }
+
+  const selected = [
+    ...Array.from(moduleEls),
+    ...Array.from(forwardEls),
+    ...Array.from(backwardEls),
+  ];
+
+  const graph = buildGraph(selected, config);
+  const dot = graphToDot(graph);
+  return { elements: selected, graph, dot };
+}
+
 function buildSingleModuleGraph(
   mod: ModuleGroup,
   config: AnalysisConfig,
