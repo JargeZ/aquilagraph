@@ -1,7 +1,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
 import type { RootGraphModel } from "ts-graphviz";
 import { ProjectAnalysisContext } from "@/contexts/project-analysis-context-shared";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
@@ -21,6 +21,7 @@ interface GraphViewProps {
   initialSelectedRef?: string;
   onNodeDoubleClick?: (element: ExecutableElement) => void;
   compositeLayout?: boolean;
+  topRightOverlay?: ReactNode;
 }
 
 function NodeDetailsPanel({ element }: { element: ExecutableElement }) {
@@ -149,6 +150,7 @@ export function GraphView({
   initialSelectedRef,
   onNodeDoubleClick,
   compositeLayout,
+  topRightOverlay,
 }: GraphViewProps) {
   const projectCtx = useContext(ProjectAnalysisContext);
   const analysisConfig = projectCtx?.analysisConfig ?? DEFAULT_ANALYSIS_CONFIG;
@@ -194,6 +196,7 @@ export function GraphView({
             onNodeDoubleClick={onNodeDoubleClick}
             followSelectionInViewport={searchOpen}
             compositeLayout={compositeLayout}
+            topRightOverlay={topRightOverlay}
           />
         </div>
         {selectedElement && (

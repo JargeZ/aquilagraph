@@ -1,11 +1,17 @@
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@ui/molecules/button/button";
-import type { ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { GraphView } from "@/components/graph-view";
 import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
+import { buildModuleFilteredGraphResult } from "@/core/graph/build-module-filtered-graph-result";
 import type { ExecutableElement } from "@/core/model/executable-element";
+import { getModuleName } from "@/core/model/reference-builder";
+import {
+  ModuleFilterOverlay,
+  type ModuleFilterItem,
+} from "@ui/organisms/module-filter-overlay/module-filter-overlay";
 
 export function FullGraphPage() {
   const navigate = useNavigate();
@@ -15,17 +21,86 @@ export function FullGraphPage() {
     analysisResult,
     analysisLoading,
     analysisError,
+    analysisConfig,
   } = useProjectAnalysis();
+
+  const elementSet = useMemo(() => {
+    return analysisResult ? new Set(analysisResult.elements) : null;
+  }, [analysisResult]);
+
+  const allModules = useMemo(() => {
+    if (!analysisResult) return [] as string[];
+    const s = new Set<string>();
+    for (const el of analysisResult.elements) {
+      s.add(getModuleName(el.reference, analysisConfig.moduleDepth));
+    }
+    return Array.from(s).sort((a, b) => a.localeCompare(b));
+  }, [analysisResult, analysisConfig.moduleDepth]);
+
+  const moduleStats = useMemo(() => {
+    const incoming = new Map<string, Set<string>>();
+    const outgoing = new Map<string, Set<string>>();
+    if (!analysisResult || !elementSet) return { incoming, outgoing };
+
+    const ensure = (m: Map<string, Set<string>>, k: string) => {
+      let s = m.get(k);
+      if (!s) {
+        s = new Set<string>();
+        m.set(k, s);
+      }
+      return s;
+    };
+
+    for (const el of analysisResult.elements) {
+      const fromMod = getModuleName(el.reference, analysisConfig.moduleDepth);
+      for (const target of el.uses) {
+        if (!elementSet.has(target)) continue;
+        const toMod = getModuleName(target.reference, analysisConfig.moduleDepth);
+        if (toMod === fromMod) continue;
+        ensure(outgoing, fromMod).add(toMod);
+        ensure(incoming, toMod).add(fromMod);
+      }
+    }
+    return { incoming, outgoing };
+  }, [analysisResult, analysisConfig.moduleDepth, elementSet]);
+
+  const moduleItems: ModuleFilterItem[] = useMemo(() => {
+    return allModules.map((name) => ({
+      name,
+      incomingCount: moduleStats.incoming.get(name)?.size ?? 0,
+      outgoingCount: moduleStats.outgoing.get(name)?.size ?? 0,
+    }));
+  }, [allModules, moduleStats]);
+
+  const [selectedModules, setSelectedModules] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!analysisResult) return;
+    setSelectedModules(new Set(allModules));
+  }, [analysisResult, allModules]);
+
+  const filtered = useMemo(() => {
+    if (!analysisResult) return null;
+    if (selectedModules.size === allModules.length) return analysisResult;
+    return buildModuleFilteredGraphResult(analysisResult, selectedModules, analysisConfig);
+  }, [analysisResult, selectedModules, analysisConfig, allModules.length]);
 
   let body: ReactNode;
   if (analysisLoading) {
     body = <GraphViewSkeleton />;
-  } else if (analysisResult) {
+  } else if (filtered) {
     body = (
       <GraphView
-        elements={analysisResult.elements}
-        graph={analysisResult.graph}
-        dot={analysisResult.dot}
+        elements={filtered.elements}
+        graph={filtered.graph}
+        dot={filtered.dot}
+        topRightOverlay={
+          <ModuleFilterOverlay
+            items={moduleItems}
+            selected={selectedModules}
+            onSelectedChange={setSelectedModules}
+          />
+        }
         onNodeDoubleClick={(el: ExecutableElement) => {
           void navigate({
             to: "/$projectId/node-sub-graph/$nodeRef",

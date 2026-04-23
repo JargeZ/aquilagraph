@@ -1,6 +1,7 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Button } from "@ui/molecules/button/button";
 import {
+  type ReactNode,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -55,6 +56,8 @@ interface DotSvgCanvasProps {
   followSelectionInViewport?: boolean;
   /** Использовать композитный лейаут (dot per module + neato). Default: true. */
   compositeLayout?: boolean;
+  /** Дополнительный оверлей в правом верхнем углу, под кнопками. */
+  topRightOverlay?: ReactNode;
 }
 
 function findNodeGroup(target: EventTarget | null): SVGGElement | null {
@@ -91,6 +94,7 @@ export function DotSvgCanvas({
   onNodeDoubleClick,
   followSelectionInViewport = false,
   compositeLayout = true,
+  topRightOverlay,
 }: DotSvgCanvasProps) {
   const { t } = useLingui();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -384,34 +388,39 @@ export function DotSvgCanvas({
         onClick={handleClick}
         onDoubleClick={handleDoubleClick}
       />
-      <div className="pointer-events-none absolute top-2 right-2 z-10 flex gap-1.5">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="pointer-events-auto shadow-sm"
-          onClick={async () => {
-            await navigator.clipboard.writeText(dot);
-            setDotCopied(true);
-            setTimeout(() => setDotCopied(false), 2000);
-          }}
-        >
-          {dotCopied ? (
-            <Trans>Скопировано</Trans>
-          ) : (
-            <Trans>Копировать DOT</Trans>
-          )}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="pointer-events-auto shadow-sm"
-          disabled={!svgReady}
-          onClick={() => void handleDownloadSvg()}
-        >
-          <Trans>Скачать SVG</Trans>
-        </Button>
+      <div className="pointer-events-none absolute top-2 right-2 z-10 flex flex-col items-end gap-2">
+        <div className="flex gap-1.5">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="pointer-events-auto shadow-sm"
+            onClick={async () => {
+              await navigator.clipboard.writeText(dot);
+              setDotCopied(true);
+              setTimeout(() => setDotCopied(false), 2000);
+            }}
+          >
+            {dotCopied ? (
+              <Trans>Скопировано</Trans>
+            ) : (
+              <Trans>Копировать DOT</Trans>
+            )}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="pointer-events-auto shadow-sm"
+            disabled={!svgReady}
+            onClick={() => void handleDownloadSvg()}
+          >
+            <Trans>Скачать SVG</Trans>
+          </Button>
+        </div>
+        {topRightOverlay ? (
+          <div className="pointer-events-auto">{topRightOverlay}</div>
+        ) : null}
       </div>
     </div>
   );
