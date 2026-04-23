@@ -1,7 +1,7 @@
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import { classificationById } from "@/core/config/analysis-config";
 import type { ExecutableElement } from "@/core/model/executable-element";
-import { getModuleName } from "@/core/model/reference-builder";
+import { getModuleNameWithRoots } from "@/core/model/reference-builder";
 
 /** Как в graph-builder: безопасный id субграфа из id классификации. */
 function safeGraphId(id: string): string {
@@ -16,7 +16,11 @@ function clusterTitlesForMutedElement(
   el: ExecutableElement,
   config: AnalysisConfig,
 ): string[] {
-  const modName = getModuleName(el.reference, config.moduleDepth);
+  const modName = getModuleNameWithRoots(
+    el.reference,
+    config.moduleDepth,
+    config.moduleRoots,
+  );
   const c = classificationById(config, el.type);
   const inBucket = Boolean(c?.groupInBucket);
 

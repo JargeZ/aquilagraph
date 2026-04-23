@@ -32,6 +32,34 @@ export function getModuleName(reference: string, depth: number): string {
   return parts.slice(0, depth).join(".");
 }
 
+function matchesModuleRoot(reference: string, root: string): boolean {
+  if (!root) return false;
+  if (reference === root) return true;
+  return reference.startsWith(`${root}.`);
+}
+
+/**
+ * Returns module name with support for user-defined module roots.
+ * If roots are provided, the most specific matching root wins.
+ * Otherwise falls back to `getModuleName(reference, moduleDepth)`.
+ */
+export function getModuleNameWithRoots(
+  reference: string,
+  moduleDepth: number,
+  moduleRoots: readonly string[] | undefined,
+): string {
+  const roots = (moduleRoots ?? []).filter(Boolean);
+  if (roots.length > 0) {
+    let best: string | null = null;
+    for (const r of roots) {
+      if (!matchesModuleRoot(reference, r)) continue;
+      if (best === null || r.length > best.length) best = r;
+    }
+    if (best) return best;
+  }
+  return getModuleName(reference, moduleDepth);
+}
+
 /**
  * Extracts parent class names from a scope, using heritageClauses (TS)
  * or signature regex (Python) depending on what's available.

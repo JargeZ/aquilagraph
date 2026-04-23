@@ -25,7 +25,7 @@ import {
   ExecutableElement,
   UNCLASSIFIED_TYPE,
 } from "../model/executable-element";
-import { getModuleName } from "../model/reference-builder";
+import { getModuleNameWithRoots } from "../model/reference-builder";
 
 const UNCLASSIFIED_STYLE = {
   color: "#D3D3D3",
@@ -99,7 +99,7 @@ export function buildGraph(
   elements: ExecutableElement[],
   config: AnalysisConfig,
 ): RootGraphModel {
-  const modules = groupByModule(elements, config.moduleDepth);
+  const modules = groupByModule(elements, config);
   const elementSet = new Set(elements);
   const threshold =
     config.minMethodsForClassDetail ??
@@ -365,12 +365,16 @@ function addNode(
 
 function groupByModule(
   elements: ExecutableElement[],
-  depth: number,
+  config: AnalysisConfig,
 ): ModuleGroup[] {
   const moduleMap = new Map<string, ModuleGroup>();
 
   for (const el of elements) {
-    const moduleName = getModuleName(el.reference, depth);
+    const moduleName = getModuleNameWithRoots(
+      el.reference,
+      config.moduleDepth,
+      config.moduleRoots,
+    );
     let mod = moduleMap.get(moduleName);
     if (!mod) {
       mod = { name: moduleName, classes: new Map(), standalone: [] };
@@ -414,7 +418,7 @@ export function buildCompositeInputs(
   elements: ExecutableElement[],
   config: AnalysisConfig,
 ): { modules: CompositeModuleData[]; interModuleEdges: InterModuleEdgeData[] } {
-  const modules = groupByModule(elements, config.moduleDepth);
+  const modules = groupByModule(elements, config);
   const elementSet = new Set(elements);
   const threshold =
     config.minMethodsForClassDetail ??
@@ -428,7 +432,14 @@ export function buildCompositeInputs(
   const refToModule = new Map<string, string>();
   for (const el of elements) {
     const ref = canonicalReference(el, collapsedClassFullRefs);
-    refToModule.set(ref, getModuleName(el.reference, config.moduleDepth));
+    refToModule.set(
+      ref,
+      getModuleNameWithRoots(
+        el.reference,
+        config.moduleDepth,
+        config.moduleRoots,
+      ),
+    );
   }
 
   const moduleData: CompositeModuleData[] = [];
@@ -485,7 +496,7 @@ export function buildModuleGraphResult(
   elements: ExecutableElement[],
   config: AnalysisConfig,
 ): ModuleGraphResult {
-  const modules = groupByModule(elements, config.moduleDepth);
+  const modules = groupByModule(elements, config);
   const elementSet = new Set(elements);
   const threshold =
     config.minMethodsForClassDetail ??
@@ -499,7 +510,14 @@ export function buildModuleGraphResult(
   const refToModule = new Map<string, string>();
   for (const el of elements) {
     const ref = canonicalReference(el, collapsedClassFullRefs);
-    refToModule.set(ref, getModuleName(el.reference, config.moduleDepth));
+    refToModule.set(
+      ref,
+      getModuleNameWithRoots(
+        el.reference,
+        config.moduleDepth,
+        config.moduleRoots,
+      ),
+    );
   }
 
   // Aggregate inter-module edges: (fromModule, toModule) → { count, sample toRefs }
@@ -600,12 +618,14 @@ export function buildModuleSubgraphResult(
   moduleName: string,
   config: AnalysisConfig,
 ): { elements: ExecutableElement[]; graph: RootGraphModel; dot: string } | null {
-  const { moduleDepth } = config;
+  const { moduleDepth, moduleRoots } = config;
   const elementSet = new Set(allElements);
 
   const moduleEls = new Set(
     allElements.filter(
-      (el) => getModuleName(el.reference, moduleDepth) === moduleName,
+      (el) =>
+        getModuleNameWithRoots(el.reference, moduleDepth, moduleRoots) ===
+        moduleName,
     ),
   );
   if (moduleEls.size === 0) return null;

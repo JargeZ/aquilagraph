@@ -7,7 +7,7 @@ import { GraphViewSkeleton } from "@/components/graph-view-skeleton";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import { buildModuleFilteredGraphResult } from "@/core/graph/build-module-filtered-graph-result";
 import type { ExecutableElement } from "@/core/model/executable-element";
-import { getModuleName } from "@/core/model/reference-builder";
+import { getModuleNameWithRoots } from "@/core/model/reference-builder";
 import {
   ModuleFilterOverlay,
   type ModuleFilterItem,
@@ -32,10 +32,20 @@ export function FullGraphPage() {
     if (!analysisResult) return [] as string[];
     const s = new Set<string>();
     for (const el of analysisResult.elements) {
-      s.add(getModuleName(el.reference, analysisConfig.moduleDepth));
+      s.add(
+        getModuleNameWithRoots(
+          el.reference,
+          analysisConfig.moduleDepth,
+          analysisConfig.moduleRoots,
+        ),
+      );
     }
     return Array.from(s).sort((a, b) => a.localeCompare(b));
-  }, [analysisResult, analysisConfig.moduleDepth]);
+  }, [
+    analysisResult,
+    analysisConfig.moduleDepth,
+    analysisConfig.moduleRoots,
+  ]);
 
   const moduleStats = useMemo(() => {
     const incoming = new Map<string, Set<string>>();
@@ -52,17 +62,30 @@ export function FullGraphPage() {
     };
 
     for (const el of analysisResult.elements) {
-      const fromMod = getModuleName(el.reference, analysisConfig.moduleDepth);
+      const fromMod = getModuleNameWithRoots(
+        el.reference,
+        analysisConfig.moduleDepth,
+        analysisConfig.moduleRoots,
+      );
       for (const target of el.uses) {
         if (!elementSet.has(target)) continue;
-        const toMod = getModuleName(target.reference, analysisConfig.moduleDepth);
+        const toMod = getModuleNameWithRoots(
+          target.reference,
+          analysisConfig.moduleDepth,
+          analysisConfig.moduleRoots,
+        );
         if (toMod === fromMod) continue;
         ensure(outgoing, fromMod).add(toMod);
         ensure(incoming, toMod).add(fromMod);
       }
     }
     return { incoming, outgoing };
-  }, [analysisResult, analysisConfig.moduleDepth, elementSet]);
+  }, [
+    analysisResult,
+    analysisConfig.moduleDepth,
+    analysisConfig.moduleRoots,
+    elementSet,
+  ]);
 
   const moduleItems: ModuleFilterItem[] = useMemo(() => {
     return allModules.map((name) => ({

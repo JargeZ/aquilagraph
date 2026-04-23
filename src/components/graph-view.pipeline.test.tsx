@@ -40,7 +40,7 @@ describe("GraphView + analyze pipeline", () => {
       </I18nProvider>,
     );
 
-    expect(screen.getByRole("tab", { name: /Граф/ })).toBeDefined();
-    expect(screen.getByRole("tab", { name: /DOT/ })).toBeDefined();
+    expect(screen.getByRole("button", { name: /Копировать DOT/ })).toBeDefined();
+    expect(screen.getByRole("button", { name: /Скачать SVG/ })).toBeDefined();
   }, 60_000);
 });

@@ -8,7 +8,7 @@ import {
 } from "@/core/parser/__tests__/test-helpers";
 import { buildModuleFilteredGraphResult } from "./build-module-filtered-graph-result";
 
-const TEST_PROJECT_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG;
+const TEST_PROJECT_CONFIG: AnalysisConfig = { ...TEST_ANALYSIS_CONFIG, moduleDepth: 1 };
 
 async function getFullAnalysis() {
   const fs = createNodeFsAdapter(getTestProjectRoot());

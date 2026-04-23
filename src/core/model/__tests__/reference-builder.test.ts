@@ -9,6 +9,7 @@ import {
   extractParentClassesFromSignature,
   filePathToModuleRef,
   getModuleName,
+  getModuleNameWithRoots,
   normalizeSymbolRef,
 } from "../reference-builder";
 
@@ -97,6 +98,38 @@ describe("getModuleName", () => {
     expect(getModuleName("utils.base_action.BaseBusinessAction", 10)).toBe(
       "utils.base_action.BaseBusinessAction",
     );
+  });
+});
+
+describe("getModuleNameWithRoots", () => {
+  it("falls back to moduleDepth when no roots", () => {
+    expect(
+      getModuleNameWithRoots(
+        "src.components.ui.molecules.Button.render",
+        2,
+        [],
+      ),
+    ).toBe("src.components");
+  });
+
+  it("uses matching root as module name", () => {
+    expect(
+      getModuleNameWithRoots(
+        "src.components.ui.molecules.Button.render",
+        2,
+        ["src.components.ui.molecules"],
+      ),
+    ).toBe("src.components.ui.molecules");
+  });
+
+  it("picks the most specific matching root", () => {
+    expect(
+      getModuleNameWithRoots(
+        "src.components.ui.molecules.Button.render",
+        2,
+        ["src.components.ui", "src.components.ui.molecules"],
+      ),
+    ).toBe("src.components.ui.molecules");
   });
 });
 

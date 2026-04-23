@@ -33,6 +33,14 @@ describe("normalizeAnalysisConfig", () => {
     expect(n.classifications[0].id).toBe("c1");
     expect(n.classifications[0].name).toBe("One");
     expect(n.moduleDepth).toBe(DEFAULT_ANALYSIS_CONFIG.moduleDepth);
+    expect(n.moduleRoots).toEqual(DEFAULT_ANALYSIS_CONFIG.moduleRoots);
+  });
+
+  it("normalizes moduleRoots to non-empty trimmed strings", () => {
+    const n = normalizeAnalysisConfig({
+      moduleRoots: ["  src.components.ui.molecules  ", "", " ", 123],
+    });
+    expect(n.moduleRoots).toEqual(["src.components.ui.molecules"]);
   });
 
   it("drops classifications without id", () => {

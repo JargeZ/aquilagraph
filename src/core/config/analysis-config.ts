@@ -27,6 +27,12 @@ export interface AnalysisConfig {
   exclude: string[];
   moduleDepth: number;
   /**
+   * Явные корни модулей, заданные пользователем интерактивным деревом директорий.
+   * Хранятся в dot-notation (как `reference`), например `src.components.ui.molecules`.
+   * При наличии корней они имеют приоритет над `moduleDepth` при определении имени модуля.
+   */
+  moduleRoots: string[];
+  /**
    * Минимум методов с исходящими рёбрами к другим нодам графа, чтобы показать класс субграфом.
    * Значение <= 0 отключает свёртку (всегда субграф с методами, как до этой настройки).
    */
@@ -54,7 +60,8 @@ export function getAnalysisConfigKey(projectId: string): string {
 export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
   include: [],
   exclude: [],
-  moduleDepth: 1,
+  moduleDepth: 2,
+  moduleRoots: [],
   minMethodsForClassDetail: 3,
   hideUnclassified: true,
   classifications: [],
@@ -129,6 +136,20 @@ export function normalizeAnalysisConfig(raw: unknown): AnalysisConfig {
       ? Math.max(1, Math.min(10, Math.floor(o.moduleDepth)))
       : DEFAULT_ANALYSIS_CONFIG.moduleDepth;
 
+  const moduleRoots = Array.isArray(o.moduleRoots)
+    ? o.moduleRoots
+        .filter((x): x is string => typeof x === "string")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : DEFAULT_ANALYSIS_CONFIG.moduleRoots;
+
+  const dotCount = (s: string) => (s.match(/\./g) ?? []).length;
+  moduleRoots.sort((a, b) => {
+    const dc = dotCount(b) - dotCount(a);
+    if (dc !== 0) return dc;
+    return a.localeCompare(b);
+  });
+
   const minMethodsForClassDetail =
     typeof o.minMethodsForClassDetail === "number" &&
     Number.isFinite(o.minMethodsForClassDetail)
@@ -157,6 +178,7 @@ export function normalizeAnalysisConfig(raw: unknown): AnalysisConfig {
     include,
     exclude,
     moduleDepth,
+    moduleRoots,
     minMethodsForClassDetail,
     hideUnclassified,
     classifications,

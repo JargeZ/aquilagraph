@@ -18,6 +18,7 @@ import type {
   ClassificationConfig,
   SelectorConfig,
 } from "@/core/config/analysis-config";
+import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 import {
   createNewClassification,
   DEFAULT_ANALYSIS_CONFIG,
@@ -26,6 +27,7 @@ import {
 } from "@/core/config/analysis-config";
 import { CLASSIFICATION_COLOR_PALETTE } from "@/core/config/classification-palette";
 import { cn } from "@/lib/utils";
+import { ModuleRootsPicker } from "@ui/organisms/module-roots-picker/module-roots-picker";
 
 interface AnalysisConfigPanelProps {
   config: AnalysisConfig;
@@ -37,8 +39,8 @@ export function AnalysisConfigPanel({
   onChange,
 }: AnalysisConfigPanelProps) {
   const { t } = useLingui();
-  const moduleDepthId = useId();
   const minMethodsId = useId();
+  const { analysisResult } = useProjectAnalysis();
 
   const updateField = useCallback(
     <K extends keyof AnalysisConfig>(key: K, value: AnalysisConfig[K]) => {
@@ -105,26 +107,18 @@ export function AnalysisConfigPanel({
           />
         </div>
 
-        <div className="flex flex-wrap items-start gap-6">
-          <div>
-            <label
-              htmlFor={moduleDepthId}
-              className="mb-1 block text-xs font-medium text-muted-foreground"
-            >
-              <Trans>Глубина модуля</Trans>
-            </label>
-            <input
-              id={moduleDepthId}
-              type="number"
-              min={1}
-              max={10}
-              value={config.moduleDepth}
-              onChange={(e) =>
-                updateField("moduleDepth", Math.max(1, Number(e.target.value)))
-              }
-              className="h-8 w-20 rounded-lg border border-border bg-background px-2 text-sm text-foreground focus:border-ring focus:ring-1 focus:ring-ring/50 focus:outline-none"
-            />
-          </div>
+        <div className="flex flex-col gap-4">
+          <ModuleRootsPicker
+            moduleDepth={config.moduleDepth}
+            moduleRoots={config.moduleRoots}
+            sourceFiles={
+              analysisResult?.elements
+                ?.map((e) => e.sourceFile)
+                .filter(Boolean) ?? []
+            }
+            onModuleDepthChange={(next) => updateField("moduleDepth", next)}
+            onModuleRootsChange={(next) => updateField("moduleRoots", next)}
+          />
 
           <div className="max-w-md">
             <label

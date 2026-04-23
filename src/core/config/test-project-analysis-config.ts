@@ -38,12 +38,14 @@ export function standardTestClassifications(): ClassificationConfig[] {
 /** Для интеграционных тестов анализа (глубина модулей по умолчанию). */
 export const TEST_ANALYSIS_CONFIG: AnalysisConfig = {
   ...DEFAULT_ANALYSIS_CONFIG,
+  moduleDepth: 1,
   classifications: standardTestClassifications(),
 };
 
 /** Для graph-builder: всегда субграф по классам. */
 export const TEST_ANALYSIS_CONFIG_GRAPH: AnalysisConfig = {
   ...DEFAULT_ANALYSIS_CONFIG,
+  moduleDepth: 1,
   minMethodsForClassDetail: 0,
   classifications: standardTestClassifications(),
 };

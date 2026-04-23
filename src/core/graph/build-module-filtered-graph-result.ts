@@ -8,7 +8,7 @@ import type { AnalysisResult } from "@/core/analyze";
 import type { AnalysisConfig } from "@/core/config/analysis-config";
 import { graphToDot } from "@/core/graph/graph-builder";
 import type { ExecutableElement } from "@/core/model/executable-element";
-import { getModuleName } from "@/core/model/reference-builder";
+import { getModuleNameWithRoots } from "@/core/model/reference-builder";
 
 type GraphContainer = {
   readonly nodes: readonly NodeModel[];
@@ -86,7 +86,11 @@ function resolveGraphNodeId(
 }
 
 function elementModuleName(el: ExecutableElement, config: AnalysisConfig): string {
-  return getModuleName(el.reference, config.moduleDepth);
+  return getModuleNameWithRoots(
+    el.reference,
+    config.moduleDepth,
+    config.moduleRoots,
+  );
 }
 
 /**

@@ -35,6 +35,7 @@ function mockAnalysisConfig(
     include: [],
     exclude: [],
     moduleDepth: 1,
+    moduleRoots: [],
     minMethodsForClassDetail: 3,
     hideUnclassified: true,
     classifications,

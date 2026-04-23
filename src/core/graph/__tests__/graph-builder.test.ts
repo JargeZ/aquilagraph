@@ -19,7 +19,7 @@ const ROOT = getTestProjectRoot();
 
 let analyses: ScopeFileAnalysis[];
 
-const TEST_CONFIG: AnalysisConfig = TEST_ANALYSIS_CONFIG_GRAPH;
+const TEST_CONFIG: AnalysisConfig = { ...TEST_ANALYSIS_CONFIG_GRAPH, moduleDepth: 1 };
 
 const ADD_TASK_CLASS = "core_module.actions.add_task_to_list.AddTaskToList";
 const ADD_TASK_EXECUTE = `${ADD_TASK_CLASS}.execute`;
@@ -156,6 +156,7 @@ describe("buildGraph", () => {
     ];
     const config: AnalysisConfig = {
       ...DEFAULT_ANALYSIS_CONFIG,
+      moduleDepth: 1,
       minMethodsForClassDetail: 0,
       classifications: [
         {
@@ -217,6 +218,7 @@ describe("buildGraph", () => {
     ];
     const config: AnalysisConfig = {
       ...DEFAULT_ANALYSIS_CONFIG,
+      moduleDepth: 1,
       classifications: [
         {
           id: "cat_ctrl",
