@@ -11,7 +11,7 @@ export function ProjectSettingsToolbar({
   projectId,
   projectName,
 }: ProjectSettingsToolbarProps) {
-  const { t } = useLingui();
+  const displayName = projectName?.trim() ? projectName : "Unnamed";
   return (
     <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-1.5">
       <Button variant="ghost" size="sm" asChild>
@@ -20,7 +20,7 @@ export function ProjectSettingsToolbar({
         </Link>
       </Button>
       <h1 className="truncate text-sm font-medium text-foreground">
-        <Trans>Настройки</Trans> — {projectName ?? t`Проект`}
+        <Trans>Настройки</Trans> — {displayName}
       </h1>
     </div>
   );

@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { Logo } from "@ui/atoms/logo/logo";
 import { Tabs, TabsList, TabsTrigger } from "@ui/molecules/tabs/tabs";
+import { Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -76,7 +77,23 @@ export const AppShell: React.FC = () => {
             {hydrated &&
               projects.map((p) => (
                 <TabsTrigger key={p.id} value={p.id}>
-                  {getProjectDisplayTitle(p, pathsByProject, webRootLabels)}
+                  <span className="inline-flex min-w-0 items-center gap-1.5">
+                    <span className="min-w-0 truncate">
+                      {getProjectDisplayTitle(p, pathsByProject, webRootLabels)}
+                    </span>
+                    {value === p.id ? (
+                      <Link
+                        to="/$projectId/settings"
+                        params={{ projectId: p.id }}
+                        aria-label={t`Настройки проекта`}
+                        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        onClick={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <Settings className="size-4" aria-hidden />
+                      </Link>
+                    ) : null}
+                  </span>
                 </TabsTrigger>
               ))}
           </TabsList>

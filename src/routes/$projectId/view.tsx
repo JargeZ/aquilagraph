@@ -1,6 +1,5 @@
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { ProjectGraphToolbar } from "@/components/project/project-graph-toolbar";
 import { useProjectAnalysis } from "@/contexts/use-project-analysis";
 
 const TAB_ACTIVE_CLASS =
@@ -9,14 +8,9 @@ const TAB_INACTIVE_CLASS =
   "border-b-2 border-transparent px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground";
 
 export function ViewLayout() {
-  const { projectId, project, analysisLoading } = useProjectAnalysis();
+  const { projectId } = useProjectAnalysis();
   return (
     <div className="flex h-full flex-col">
-      <ProjectGraphToolbar
-        projectId={projectId}
-        projectName={project?.name}
-        analysisLoading={analysisLoading}
-      />
       <div className="flex shrink-0 items-end gap-0 border-b border-border px-4">
         <Link
           to="/$projectId/view/modules-graph"

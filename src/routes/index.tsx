@@ -53,12 +53,12 @@ export const Home: React.FC = () => {
     const id = crypto.randomUUID();
     const next: Project = {
       id,
-      name: t`Проект ${projects.length + 1}`,
+      name: "",
       createdAt: Date.now(),
     };
     setProjects([...projects, next]);
     void navigate({ to: "/$projectId", params: { projectId: id } });
-  }, [projects, setProjects, navigate, t]);
+  }, [projects, setProjects, navigate]);
 
   return (
     <div className="relative min-h-full overflow-hidden">

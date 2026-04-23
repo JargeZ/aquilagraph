@@ -38,6 +38,7 @@ import {
 } from "@/lib/directory-handle-fs-adapter";
 import { isTauriRuntime } from "@/lib/is-tauri";
 import {
+  basenameFromPath,
   PROJECT_PATHS_STORAGE_KEY,
   PROJECT_WEB_ROOT_LABELS_KEY,
   PROJECTS_STORAGE_KEY,
@@ -143,6 +144,40 @@ export function ProjectAnalysisProvider({
   ] = useState(false);
 
   const project = projects.find((p) => p.id === projectId);
+
+  const setProjectName = useCallback(
+    (name: string) => {
+      setProjects((prev) =>
+        prev.map((p) => (p.id === projectId ? { ...p, name } : p)),
+      );
+    },
+    [projectId, setProjects],
+  );
+
+  useEffect(() => {
+    if (!project) return;
+    if (project.name.trim()) return;
+
+    const folderName = isTauriRuntime()
+      ? pathsByProject[projectId]
+        ? basenameFromPath(pathsByProject[projectId] ?? "")
+        : ""
+      : webRootLabels[projectId] ?? browserRootHandle?.name ?? "";
+
+    const next = folderName.trim();
+    if (!next) return;
+
+    setProjects((prev) =>
+      prev.map((p) => (p.id === projectId ? { ...p, name: next } : p)),
+    );
+  }, [
+    project,
+    projectId,
+    pathsByProject,
+    webRootLabels,
+    browserRootHandle,
+    setProjects,
+  ]);
 
   const tauriRootPath = isTauriRuntime()
     ? (pathsByProject[projectId] ?? null)
@@ -448,6 +483,7 @@ export function ProjectAnalysisProvider({
       value={{
         projectId,
         project,
+        setProjectName,
         rootPath,
         pickDirectory,
         pickDirectoryLoading,

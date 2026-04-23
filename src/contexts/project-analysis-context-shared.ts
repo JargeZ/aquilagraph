@@ -6,6 +6,7 @@ import type { Project } from "@/types/project";
 export interface ProjectAnalysisContextValue {
   projectId: string;
   project: Project | undefined;
+  setProjectName: (name: string) => void;
   rootPath: string | null;
   pickDirectory: () => Promise<void>;
   /** Браузер: true, пока открыт диалог выбора папки (нельзя вызывать showDirectoryPicker повторно). */

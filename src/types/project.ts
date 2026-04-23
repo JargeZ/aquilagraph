@@ -11,17 +11,15 @@ export function basenameFromPath(path: string): string {
   return seg ?? path;
 }
 
-/** Заголовок проекта: имя каталога из пути, иначе подпись веб-корня, иначе сохранённое имя. */
+/** Заголовок проекта для UI: в первую очередь сохранённое имя. */
 export function getProjectDisplayTitle(
   project: Project,
-  pathsByProject: Record<string, string>,
-  webRootLabels: Record<string, string>,
+  _pathsByProject: Record<string, string>,
+  _webRootLabels: Record<string, string>,
 ): string {
-  const diskPath = pathsByProject[project.id];
-  if (diskPath) return basenameFromPath(diskPath);
-  const web = webRootLabels[project.id];
-  if (web) return web;
-  return project.name;
+  const saved = project.name.trim();
+  if (saved) return saved;
+  return "Unnamed";
 }
 
 export const PROJECTS_STORAGE_KEY = "visualizer-projects";
